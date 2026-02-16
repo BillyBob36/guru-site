@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guru – Questions en suspens</title>
+  <meta name="description" content="Guru – Répondez aux questions en suspens pour affiner notre proposition.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- ===== HEADER ===== -->
+  <header class="header">
+    <div class="header-inner">
+      <a href="index.html" class="logo">
+        <span class="logo-icon">◈</span>
+        <span class="logo-text">GURU</span>
+      </a>
+      <nav class="nav" id="mainNav">
+        <a href="index.html">Retour au site</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ===== HERO MINI ===== -->
+  <section class="hero hero-mini">
+    <div class="hero-bg">
+      <div class="hero-overlay" style="background: linear-gradient(180deg, rgba(15,15,18,0.85) 0%, rgba(15,15,18,0.95) 100%);"></div>
+    </div>
+    <div class="container">
+      <div class="hero-content fade-up" style="padding: 60px 0 40px;">
+        <div class="hero-badge">
+          <span class="badge-dot"></span>
+          <span>Questions en suspens</span>
+        </div>
+        <h1>Questions en <span class="highlight">suspens</span></h1>
+        <p class="subtitle">Merci de prendre quelques minutes pour répondre à ces questions. Vos réponses nous aideront à affiner notre proposition.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FORM SECTION ===== -->
+  <section class="section-form" style="padding-top: 60px;">
+    <div class="container">
+      <div class="form-wrapper fade-up">
+        <form action="https://formsubmit.co/johann@metagora.tech" method="POST">
+          <input type="hidden" name="_subject" value="Réponses aux questions en suspens – Guru">
+          <input type="hidden" name="_captcha" value="false">
+          <input type="hidden" name="_template" value="table">
+          <input type="hidden" name="_next" value="">
+          <input type="hidden" name="_cc" value="tony@metagora.tech">
+          <input type="text" name="_honey" style="display:none">
+
+          <div class="form-grid">
+
+            <div class="form-group full">
+              <label>Qui est la personne qui arrive le plus souvent sur votre site ?</label>
+              <p class="form-hint">Responsable événementiel, marketing/communication, RH, direction générale, agence événementielle…</p>
+              <textarea name="persona_visiteur" rows="3" placeholder="Votre réponse…"></textarea>
+            </div>
+
+            <div class="form-group full">
+              <label>Comment décririez-vous le positionnement de Guru ?</label>
+              <p class="form-hint">Expert événement sous forte pression, premium accessible, sur-mesure rapport qualité-prix…</p>
+              <textarea name="positionnement" rows="3" placeholder="Votre réponse…"></textarea>
+            </div>
+
+            <div class="form-group full">
+              <label>Quels territoires de langage souhaitez-vous pour Guru ?</label>
+              <p class="form-hint">ADN geek-food, excellence culinaire premium, côté gaming…</p>
+              <textarea name="territoires_langage" rows="3" placeholder="Votre réponse…"></textarea>
+            </div>
+
+            <div class="form-group full">
+              <label>Parmi les prestations, lesquelles doivent absolument apparaître comme blocs principaux ?</label>
+              <p class="form-hint">Cocktails dînatoires, Buffets thématiques, Repas assis, Plateaux repas, Petit-déjeuner / pauses café, Bar / cocktails…</p>
+              <textarea name="prestations_principales" rows="3" placeholder="Votre réponse…"></textarea>
+            </div>
+
+            <div class="form-group full">
+              <label>Pouvez-vous préciser ce qu'il faut mettre en avant sur le Z Event 2025 ?</label>
+              <p class="form-hint">Nombre de jours, couverts/jour, contraintes horaires/logistiques, demandes spéciales…</p>
+              <textarea name="zevent_2025" rows="3" placeholder="Votre réponse…"></textarea>
+            </div>
+
+            <div class="form-group full">
+              <label>Remarques libres</label>
+              <p class="form-hint">Toute information complémentaire que vous souhaitez partager…</p>
+              <textarea name="remarques_libres" rows="4" placeholder="Votre réponse…"></textarea>
+            </div>
+
+          </div>
+          <button type="submit" class="btn-submit">Envoyer mes réponses</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <a href="index.html" class="footer-logo">
+          <span class="logo-icon">◈</span>
+          <span class="logo-text">GURU</span>
+        </a>
+        <p class="footer-text">© 2025 Guru – Traiteur événementiel premium. Tous droits réservés.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Scroll animations
+    document.addEventListener('DOMContentLoaded', () => {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) entry.target.classList.add('visible');
+        });
+      }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+      document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+    });
+  </script>
+</body>
+</html>

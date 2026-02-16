@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guru – Traiteur événementiel premium</title>
+  <meta name="description" content="Guru, traiteur 360 pour événements sous pression. Buffets, bars, staff et scénographie pour vos événements B2B partout en France.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- ===== HEADER ===== -->
+  <header class="header">
+    <div class="header-inner">
+      <a href="#" class="logo">
+        <span class="logo-icon">◈</span>
+        <span class="logo-text">GURU</span>
+      </a>
+      <button class="hamburger" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="nav" id="mainNav">
+        <a href="#for-who" data-i18n="navForWho">Pour qui ?</a>
+        <a href="#services" data-i18n="navServices">Services</a>
+        <a href="#why-guru" data-i18n="navWhyGuru">Pourquoi Guru</a>
+        <a href="#process" data-i18n="navProcess">Process</a>
+        <a href="#faq" data-i18n="navFaq">FAQ</a>
+        <button class="lang-btn" id="langToggle">EN</button>
+        <a href="#devis" class="btn-cta-header" data-i18n="navCta">Demander un devis</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ===== HERO ===== -->
+  <section class="hero" id="hero">
+    <div class="hero-bg">
+      <img src="images/hero-buffet.jpg" alt="Buffet traiteur premium" class="hero-image">
+      <div class="hero-overlay"></div>
+    </div>
+    <div class="container">
+      <div class="hero-content fade-up">
+        <div class="hero-badge">
+          <span class="badge-dot"></span>
+          <span data-i18n="heroBadge">Traiteur événementiel 360°</span>
+        </div>
+        <h1 data-i18n-html="heroTitle1,heroHighlight,heroTitle2">
+          Le traiteur des événements <span class="highlight">sous pression</span>, geek-food &amp; premium, partout en France.
+        </h1>
+        <p class="subtitle" data-i18n="heroSubtitle">
+          Traiteur 360 pour entreprises et agences : buffets, bars et staff pour vos séminaires, lancements produits, festivals et events gaming – sans le côté guindé.
+        </p>
+        <div class="hero-stats">
+          <div class="stat">
+            <div class="stat-number" data-i18n="stat1Num">100 000+</div>
+            <div class="stat-label" data-i18n="stat1Label">convives en 2025</div>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat">
+            <div class="stat-number" data-i18n="stat2Num">80+</div>
+            <div class="stat-label" data-i18n="stat2Label">collaborateurs</div>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat">
+            <div class="stat-number" data-i18n="stat3Num">100+</div>
+            <div class="stat-label" data-i18n="stat3Label">entreprises clientes</div>
+          </div>
+        </div>
+        <a href="#devis" class="btn-cta" data-i18n="heroCta">Demander un devis</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOR WHO ===== -->
+  <section id="for-who" class="section-dark">
+    <div class="container">
+      <div class="section-header fade-up">
+        <span class="section-tag" data-i18n="forWhoTag">Notre cible</span>
+        <h2 class="section-title" data-i18n-html="forWhoTitle,forWhoHighlight,forWhoTitle2">
+          Pour quels <span class="highlight">événements</span> ?
+        </h2>
+        <p class="section-subtitle" data-i18n="forWhoSubtitle">
+          Nous intervenons sur deux grandes catégories d'événements B2B.
+        </p>
+      </div>
+      <div class="for-who-grid fade-up">
+        <div class="for-who-card">
+          <div class="card-image">
+            <img src="images/zevent-case.jpg" alt="Événement gaming">
+            <div class="card-image-overlay"></div>
+          </div>
+          <div class="card-content">
+            <div class="card-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+              </svg>
+            </div>
+            <h3 data-i18n="forWho1Title">Événements sous forte pression</h3>
+            <p data-i18n="forWho1Desc">Esport, festivals, shows en live, gros événements tech / gaming, grandes conférences. Des contextes où la logistique doit être irréprochable et les volumes maîtrisés.</p>
+          </div>
+        </div>
+        <div class="for-who-card">
+          <div class="card-image">
+            <img src="images/repas-assis.jpg" alt="Soirée premium">
+            <div class="card-image-overlay"></div>
+          </div>
+          <div class="card-content">
+            <div class="card-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+              </svg>
+            </div>
+            <h3 data-i18n="forWho2Title">Soirées clients & moments premium geek-chic</h3>
+            <p data-i18n="forWho2Desc">Lancements produits, soirées clients, events marque, séminaires haut de gamme. L'excellence culinaire au service de votre image.</p>
+          </div>
+        </div>
+      </div>
+      <div class="for-who-note fade-up" data-i18n="forWhoNote">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="8" x2="12" y2="12"></line>
+          <line x1="12" y1="16" x2="12.01" y2="16"></line>
+        </svg>
+        Nous ne faisons pas de petits événements privés / micro-budgets.
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SERVICES 360 ===== -->
+  <section id="services" class="section-light">
+    <div class="container">
+      <div class="section-header fade-up">
+        <span class="section-tag" data-i18n="servicesTag">Nos prestations</span>
+        <h2 class="section-title" data-i18n-html="servicesTitle,servicesHighlight">
+          Ce que nous <span class="highlight">faisons</span>
+        </h2>
+        <p class="section-subtitle" data-i18n="servicesSubtitle">
+          Une capacité 360 pour couvrir l'intégralité de vos besoins événementiels.
+        </p>
+      </div>
+      <div class="cards-grid fade-up">
+        <div class="card card-featured">
+          <div class="card-image-wrap">
+            <img src="images/buffet-service.jpg" alt="Buffets et cocktails">
+          </div>
+          <div class="card-body">
+            <div class="card-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 3h18v18H3zM9 3v18M15 3v18M3 9h18M3 15h18"></path>
+              </svg>
+            </div>
+            <h3 data-i18n="svc1Title">Buffets & cocktails dînatoires</h3>
+            <p data-i18n="svc1Desc">Formats modulables, cuisine créative et qualitative, adaptés aux gros volumes avec une fluidité logistique totale.</p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-image-wrap">
+            <img src="images/bar-cocktails.jpg" alt="Bar et cocktails">
+          </div>
+          <div class="card-body">
+            <div class="card-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M8 21h8M12 21v-10M7 3h10l-2 8H9L7 3z"></path>
+              </svg>
+            </div>
+            <h3 data-i18n="svc2Title">Bars & cocktails</h3>
+            <p data-i18n="svc2Desc">Mixologie, open bar, softs premium. Des bars qui marquent les esprits, avec ou sans alcool.</p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-image-wrap">
+            <img src="images/petit-dejeuner.jpg" alt="Petit-déjeuner">
+          </div>
+          <div class="card-body">
+            <div class="card-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M18 8h1a4 4 0 0 1 0 8h-1M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8zM6 1v3M10 1v3M14 1v3"></path>
+              </svg>
+            </div>
+            <h3 data-i18n="svc3Title">Petit-déjeuners & pauses café</h3>
+            <p data-i18n="svc3Desc">Séminaires, conférences, journées de travail : des pauses gourmandes qui rechargent vos équipes.</p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-image-wrap">
+            <img src="images/repas-assis.jpg" alt="Repas assis">
+          </div>
+          <div class="card-body">
+            <div class="card-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 2a10 10 0 1 0 10 10 4 4 0 0 1-5-5 4 4 0 0 1-5-5"></path>
+                <path d="M8.5 8.5v.01M16 15.5v.01M10 16v.01M13.5 10.5v.01"></path>
+              </svg>
+            </div>
+            <h3 data-i18n="svc4Title">Repas assis / formats premium</h3>
+            <p data-i18n="svc4Desc">Service à table haut de gamme pour vos dîners de gala, soirées VIP et moments d'exception.</p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-image-wrap">
+            <img src="images/staff-service.jpg" alt="Staff et service">
+          </div>
+          <div class="card-body">
+            <div class="card-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"></path>
+              </svg>
+            </div>
+            <h3 data-i18n="svc5Title">Staff & mise en scène</h3>
+            <p data-i18n="svc5Desc">Service, scénographie culinaire, foodtrucks si besoin. Une équipe dédiée et formée à vos exigences.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== COMPARISON ===== -->
+  <section id="why-guru" class="section-dark">
+    <div class="container">
+      <div class="section-header fade-up">
+        <span class="section-tag" data-i18n="compTag">Notre différence</span>
+        <h2 class="section-title" data-i18n-html="compTitle,compHighlight,compTitle2">
+          Pourquoi Guru plutôt qu'un <span class="highlight">traiteur classique</span> ?
+        </h2>
+        <p class="section-subtitle" data-i18n="compSubtitle">
+          Une comparaison factuelle de ce qui nous différencie.
+        </p>
+      </div>
+      <div class="comparison-wrapper fade-up">
+        <div class="comparison-header">
+          <div class="comp-col comp-criteria" data-i18n="compHeader1">Critère</div>
+          <div class="comp-col comp-guru" data-i18n="compHeader2">Guru</div>
+          <div class="comp-col comp-classic" data-i18n="compHeader3">Traiteur classique</div>
+        </div>
+        <div class="comparison-row">
+          <div class="comp-col comp-criteria" data-i18n="compRow1">Gestion des events sous pression (esport, live, gros volumes)</div>
+          <div class="comp-col comp-guru" data-i18n="compRow1Guru">
+            <span class="check-icon">✓</span> Oui, cœur de métier
+          </div>
+          <div class="comp-col comp-classic" data-i18n="compRow1Classic">Occasionnel / non spécialisé</div>
+        </div>
+        <div class="comparison-row">
+          <div class="comp-col comp-criteria" data-i18n="compRow2">ADN geek-food premium (gaming × luxe/tech)</div>
+          <div class="comp-col comp-guru" data-i18n="compRow2Guru">
+            <span class="check-icon">✓</span> Clair et assumé
+          </div>
+          <div class="comp-col comp-classic" data-i18n="compRow2Classic">Généraliste</div>
+        </div>
+        <div class="comparison-row">
+          <div class="comp-col comp-criteria" data-i18n="compRow3">Capacité 360 (food, bar, staff, scénographie)</div>
+          <div class="comp-col comp-guru" data-i18n="compRow3Guru">
+            <span class="check-icon">✓</span> Intégrée
+          </div>
+          <div class="comp-col comp-classic" data-i18n="compRow3Classic">Souvent morcelée / sous-traitée</div>
+        </div>
+        <div class="comparison-row">
+          <div class="comp-col comp-criteria" data-i18n="compRow4">Rapport qualité / prix sur gros volumes</div>
+          <div class="comp-col comp-guru" data-i18n="compRow4Guru">
+            <span class="check-icon">✓</span> Optimisé
+          </div>
+          <div class="comp-col comp-classic" data-i18n="compRow4Classic">Plus variable</div>
+        </div>
+        <div class="comparison-row">
+          <div class="comp-col comp-criteria" data-i18n="compRow5">Engagement éco (local, saisonnalité, anti-gaspi, zéro plastique)</div>
+          <div class="comp-col comp-guru" data-i18n="compRow5Guru">
+            <span class="check-icon">✓</span> Structuré
+          </div>
+          <div class="comp-col comp-classic" data-i18n="compRow5Classic">Accessoire</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CASE STUDY Z EVENT ===== -->
+  <section id="case-study" class="section-accent">
+    <div class="container">
+      <div class="case-study-wrapper fade-up">
+        <div class="case-study-image">
+          <img src="images/zevent-case.jpg" alt="Z Event">
+          <div class="case-study-badge">
+            <span class="badge-pulse"></span>
+            Case Study
+          </div>
+        </div>
+        <div class="case-study-content">
+          <h3 data-i18n="csTitle">Ils nous ont confié le Z Event</h3>
+          <p class="cs-subtitle" data-i18n="csSubtitle">Un événement gaming sous très haute pression, géré de bout en bout par Guru.</p>
+          <div class="cs-grid">
+            <div class="cs-item">
+              <div class="cs-item-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+              </div>
+              <h4 data-i18n="csCtxTitle">Contexte</h4>
+              <p data-i18n="csCtxDesc">Event de plusieurs jours, milliers de repas, invités / talents / staff à servir en continu dans un environnement live permanent.</p>
+            </div>
+            <div class="cs-item">
+              <div class="cs-item-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                  <line x1="12" y1="9" x2="12" y2="13"></line>
+                  <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                </svg>
+              </div>
+              <h4 data-i18n="csChalTitle">Défi</h4>
+              <p data-i18n="csChalDesc">Contraintes horaires extrêmes, volumes massifs, régimes spéciaux multiples, coordination avec la production en direct.</p>
+            </div>
+            <div class="cs-item">
+              <div class="cs-item-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                  <polyline points="2 17 12 22 22 17"></polyline>
+                  <polyline points="2 12 12 17 22 12"></polyline>
+                </svg>
+              </div>
+              <h4 data-i18n="csSolTitle">Solution</h4>
+              <p data-i18n="csSolDesc">Organisation d'une équipe de 15–20 personnes, cuisine sur place, bar, logistique complète, coordination avec la prod.</p>
+            </div>
+            <div class="cs-item">
+              <div class="cs-item-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                  <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                </svg>
+              </div>
+              <h4 data-i18n="csResTitle">Résultats</h4>
+              <p data-i18n="csResDesc">Plusieurs jours de prestation, milliers de repas servis, zéro rupture, satisfaction maximale des organisateurs.</p>
+            </div>
+          </div>
+          <div class="cs-quote">
+            <svg class="quote-icon" width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/>
+            </svg>
+            <p data-i18n="csQuote">"Guru a géré l'intégralité de la restauration du Z Event avec une maîtrise impressionnante. Zéro stress côté orga."</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== TRUST / LOGOS ===== -->
+  <section id="trust" class="section-light">
+    <div class="container">
+      <div class="section-header center fade-up">
+        <span class="section-tag" data-i18n="trustTag">Nos références</span>
+        <h2 class="section-title" data-i18n-html="trustTitle,trustHighlight">
+          Ils nous font <span class="highlight">confiance</span>
+        </h2>
+        <p class="section-subtitle" data-i18n="trustSubtitle">
+          Des marques et événements de référence nous font confiance chaque année.
+        </p>
+      </div>
+      <div class="logos-band fade-up">
+        <div class="logo-item">FISE</div>
+        <div class="logo-item">Fortnite Worlds</div>
+        <div class="logo-item">PlayStation</div>
+        <div class="logo-item">Red Bull</div>
+        <div class="logo-item">Lancôme</div>
+        <div class="logo-item">FDJ</div>
+        <div class="logo-item">FNAC</div>
+        <div class="logo-item">R6</div>
+      </div>
+      <div class="stats-row fade-up">
+        <div class="stat-card">
+          <div class="stat-number" data-i18n="trustStat1Num">100+</div>
+          <div class="stat-label" data-i18n="trustStat1Label">entreprises clientes</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" data-i18n="trustStat2Num">100 000+</div>
+          <div class="stat-label" data-i18n="trustStat2Label">convives servis en 2025</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" data-i18n="trustStat3Num">80+</div>
+          <div class="stat-label" data-i18n="trustStat3Label">collaborateurs mobilisables</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" data-i18n="trustStat4Num">France entière</div>
+          <div class="stat-label" data-i18n="trustStat4Label">couverture nationale</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PROCESS ===== -->
+  <section id="process" class="section-dark">
+    <div class="container">
+      <div class="section-header fade-up">
+        <span class="section-tag" data-i18n="procTag">Méthodologie</span>
+        <h2 class="section-title" data-i18n-html="procTitle,procHighlight">
+          Notre manière de <span class="highlight">travailler</span>
+        </h2>
+        <p class="section-subtitle" data-i18n="procSubtitle">
+          Un process rodé pour que vous n'ayez plus à stresser.
+        </p>
+      </div>
+      <div class="process-steps fade-up">
+        <div class="process-step">
+          <div class="step-number">01</div>
+          <div class="step-line"></div>
+          <h3 data-i18n="proc1Title">Brief & vision</h3>
+          <p data-i18n="proc1Desc">Contexte, objectifs, invités, contraintes : on comprend votre événement dans les moindres détails.</p>
+        </div>
+        <div class="process-step">
+          <div class="step-number">02</div>
+          <div class="step-line"></div>
+          <h3 data-i18n="proc2Title">Proposition sur-mesure</h3>
+          <p data-i18n="proc2Desc">Formats buffets / bar / staff, budget optimisé, scénographie adaptée à votre univers.</p>
+        </div>
+        <div class="process-step">
+          <div class="step-number">03</div>
+          <div class="step-line"></div>
+          <h3 data-i18n="proc3Title">Production & logistique</h3>
+          <p data-i18n="proc3Desc">Coordination lieu, timings, livraisons, gestion anti-stress. Tout est calé en amont.</p>
+        </div>
+        <div class="process-step">
+          <div class="step-number">04</div>
+          <h3 data-i18n="proc4Title">Jour J & débrief</h3>
+          <p data-i18n="proc4Desc">Équipe dédiée sur place, gestion des imprévus, feedback post-event pour s'améliorer.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== COMMITMENTS ===== -->
+  <section id="commitments" class="section-light">
+    <div class="container">
+      <div class="commitments-wrapper">
+        <div class="commitments-image fade-up">
+          <img src="images/produits-locaux.jpg" alt="Produits locaux et de saison">
+          <div class="image-caption">
+            <span class="caption-tag">Engagement</span>
+            <span class="caption-text">Responsable & local</span>
+          </div>
+        </div>
+        <div class="commitments-content fade-up">
+          <span class="section-tag" data-i18n="commitTag">Nos valeurs</span>
+          <h2 class="section-title" data-i18n-html="commitTitle,commitHighlight">
+            Engagements & <span class="highlight">valeurs</span>
+          </h2>
+          <p class="section-subtitle" data-i18n="commitSubtitle">
+            Notre responsabilité environnementale, intégrée à chaque prestation.
+          </p>
+          <div class="commitments-grid">
+            <div class="commitment">
+              <div class="commitment-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path>
+                </svg>
+              </div>
+              <div>
+                <h4 data-i18n="commit1Title">Produits locaux & de saison</h4>
+                <p data-i18n="commit1Desc">Approvisionnement en circuits courts, produits frais et de saison pour une qualité optimale.</p>
+              </div>
+            </div>
+            <div class="commitment">
+              <div class="commitment-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                  <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                  <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                </svg>
+              </div>
+              <div>
+                <h4 data-i18n="commit2Title">Anti-gaspi & dons</h4>
+                <p data-i18n="commit2Desc">Réduction des déchets, compost, don des invendus à des associations partenaires.</p>
+              </div>
+            </div>
+            <div class="commitment">
+              <div class="commitment-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                  <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                </svg>
+              </div>
+              <div>
+                <h4 data-i18n="commit3Title">Zéro plastique jetable</h4>
+                <p data-i18n="commit3Desc">Emballages recyclables, vaisselle réutilisable, suppression totale du plastique à usage unique.</p>
+              </div>
+            </div>
+            <div class="commitment">
+              <div class="commitment-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="1" y="3" width="15" height="13"></rect>
+                  <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
+                  <circle cx="5.5" cy="18.5" r="2.5"></circle>
+                  <circle cx="18.5" cy="18.5" r="2.5"></circle>
+                </svg>
+              </div>
+              <div>
+                <h4 data-i18n="commit4Title">Livraison responsable</h4>
+                <p data-i18n="commit4Desc">Livraisons organisées et mutualisées pour réduire notre empreinte carbone.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FAQ ===== -->
+  <section id="faq" class="section-dark">
+    <div class="container">
+      <div class="section-header center fade-up">
+        <span class="section-tag" data-i18n="faqTag">Informations</span>
+        <h2 class="section-title" data-i18n-html="faqTitle,faqHighlight">
+          Questions <span class="highlight">fréquentes</span>
+        </h2>
+        <p class="section-subtitle" data-i18n="faqSubtitle">
+          Les réponses aux questions que vous vous posez sûrement.
+        </p>
+      </div>
+      <div class="faq-list fade-up">
+        <div class="faq-item">
+          <button class="faq-question">
+            <span data-i18n="faq1Q">Dans quelles régions intervenez-vous ?</span>
+            <span class="faq-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+            </span>
+          </button>
+          <div class="faq-answer"><p data-i18n="faq1A">Nous intervenons sur toute la France, et ponctuellement à l'international pour des événements d'envergure.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">
+            <span data-i18n="faq2Q">Pour quel type d'événements êtes-vous le mieux adaptés ?</span>
+            <span class="faq-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+            </span>
+          </button>
+          <div class="faq-answer"><p data-i18n="faq2A">Gros volumes, événements sous pression (esport, festivals, live), soirées clients premium, séminaires et lancements produits.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">
+            <span data-i18n="faq3Q">Gérez-vous les régimes spéciaux (vegan, halal, allergies) ?</span>
+            <span class="faq-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+            </span>
+          </button>
+          <div class="faq-answer"><p data-i18n="faq3A">Absolument. Nous adaptons systématiquement nos menus aux contraintes alimentaires de vos convives.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">
+            <span data-i18n="faq4Q">Quels sont vos délais minimum pour une demande ?</span>
+            <span class="faq-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+            </span>
+          </button>
+          <div class="faq-answer"><p data-i18n="faq4A">Idéalement 2 à 4 semaines, mais nous sommes habitués à réagir vite. Contactez-nous pour en discuter.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">
+            <span data-i18n="faq5Q">Pouvez-vous travailler avec une agence événementielle ?</span>
+            <span class="faq-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+            </span>
+          </button>
+          <div class="faq-answer"><p data-i18n="faq5A">Oui, c'est même courant. Nous collaborons régulièrement avec des agences et nous intégrons parfaitement à leurs process.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">
+            <span data-i18n="faq6Q">Proposez-vous aussi le bar, le staff, la déco ?</span>
+            <span class="faq-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+            </span>
+          </button>
+          <div class="faq-answer"><p data-i18n="faq6A">Oui, c'est notre capacité 360 : food, bar, staff de service et scénographie culinaire, tout est intégré.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FORM SECTION ===== -->
+  <section id="devis" class="section-form">
+    <div class="container">
+      <div class="form-wrapper fade-up">
+        <div class="form-header">
+          <span class="section-tag light" data-i18n="formTag">Contact</span>
+          <h2 class="section-title" data-i18n-html="formTitle,formHighlight">
+            Demander un <span class="highlight">devis</span>
+          </h2>
+          <p class="section-subtitle" data-i18n="formSubtitle">
+            Remplissez ce formulaire et nous vous recontactons sous 24h.
+          </p>
+        </div>
+        <form action="https://formsubmit.co/tony@metagora.tech" method="POST">
+          <input type="hidden" name="_subject" value="Nouvelle demande de devis – Guru">
+          <input type="hidden" name="_captcha" value="false">
+          <input type="hidden" name="_template" value="table">
+          <input type="hidden" name="_next" value="">
+          <input type="text" name="_honey" style="display:none">
+
+          <div class="form-grid">
+            <div class="form-group">
+              <label data-i18n="formLastname">Nom</label>
+              <input type="text" name="nom" required>
+            </div>
+            <div class="form-group">
+              <label data-i18n="formFirstname">Prénom</label>
+              <input type="text" name="prenom" required>
+            </div>
+            <div class="form-group">
+              <label data-i18n="formCompany">Société</label>
+              <input type="text" name="societe" required>
+            </div>
+            <div class="form-group">
+              <label data-i18n="formEmail">Email professionnel</label>
+              <input type="email" name="email" required>
+            </div>
+            <div class="form-group">
+              <label data-i18n="formPhone">Téléphone</label>
+              <input type="tel" name="telephone">
+            </div>
+            <div class="form-group">
+              <label data-i18n="formEventType">Type d'événement</label>
+              <select name="type_evenement" required>
+                <option value="" data-i18n="selectPlaceholder">Sélectionner…</option>
+                <option value="pression" data-i18n="formEventOpt1">Événement sous pression</option>
+                <option value="soiree" data-i18n="formEventOpt2">Soirée clients / lancement</option>
+                <option value="seminaire" data-i18n="formEventOpt3">Séminaire / conférence</option>
+                <option value="autre" data-i18n="formEventOpt4">Autre (préciser)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label data-i18n="formDate">Date(s) envisagée(s)</label>
+              <input type="text" name="dates">
+            </div>
+            <div class="form-group">
+              <label data-i18n="formLocation">Lieu (ville, salle si connue)</label>
+              <input type="text" name="lieu">
+            </div>
+            <div class="form-group">
+              <label data-i18n="formGuests">Nombre estimé de convives</label>
+              <select name="nombre_convives">
+                <option value="" data-i18n="selectPlaceholder">Sélectionner…</option>
+                <option value="<50" data-i18n="formGuestsOpt1">Moins de 50</option>
+                <option value="50-150" data-i18n="formGuestsOpt2">50 – 150</option>
+                <option value="150-500" data-i18n="formGuestsOpt3">150 – 500</option>
+                <option value="500-1000" data-i18n="formGuestsOpt4">500 – 1 000</option>
+                <option value=">1000" data-i18n="formGuestsOpt5">Plus de 1 000</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label data-i18n="formBudget">Budget estimé</label>
+              <select name="budget">
+                <option value="" data-i18n="selectPlaceholder">Sélectionner…</option>
+                <option value="<5k" data-i18n="formBudgetOpt1">Moins de 5 000 €</option>
+                <option value="5k-15k" data-i18n="formBudgetOpt2">5 000 – 15 000 €</option>
+                <option value="15k-50k" data-i18n="formBudgetOpt3">15 000 – 50 000 €</option>
+                <option value="50k-100k" data-i18n="formBudgetOpt4">50 000 – 100 000 €</option>
+                <option value=">100k" data-i18n="formBudgetOpt5">Plus de 100 000 €</option>
+              </select>
+            </div>
+            <div class="form-group full">
+              <label data-i18n="formServices">Services souhaités</label>
+              <div class="checkbox-group">
+                <label><input type="checkbox" name="services" value="buffet"> <span data-i18n="formSvcBuffet">Buffet</span></label>
+                <label><input type="checkbox" name="services" value="cocktail"> <span data-i18n="formSvcCocktail">Cocktail dînatoire</span></label>
+                <label><input type="checkbox" name="services" value="bar"> <span data-i18n="formSvcBar">Bar / cocktails</span></label>
+                <label><input type="checkbox" name="services" value="breakfast"> <span data-i18n="formSvcBreakfast">Petit-déjeuner / pauses</span></label>
+                <label><input type="checkbox" name="services" value="seated"> <span data-i18n="formSvcSeated">Repas assis</span></label>
+                <label><input type="checkbox" name="services" value="staff"> <span data-i18n="formSvcStaff">Staff</span></label>
+                <label><input type="checkbox" name="services" value="sceno"> <span data-i18n="formSvcSceno">Scénographie</span></label>
+              </div>
+            </div>
+            <div class="form-group full">
+              <label data-i18n="formContext">Contexte & objectifs de votre événement</label>
+              <textarea name="contexte" rows="4"></textarea>
+            </div>
+          </div>
+          <button type="submit" class="btn-submit" data-i18n="formSubmit">Envoyer ma demande de devis</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <a href="#" class="footer-logo">
+          <span class="logo-icon">◈</span>
+          <span class="logo-text">GURU</span>
+        </a>
+        <p class="footer-text" data-i18n="footerText">© 2025 Guru – Traiteur événementiel premium. Tous droits réservés.</p>
+        <div class="footer-links">
+          <a href="#for-who" data-i18n="navForWho">Pour qui ?</a>
+          <a href="#services" data-i18n="navServices">Services</a>
+          <a href="#why-guru" data-i18n="navWhyGuru">Pourquoi Guru</a>
+          <a href="#process" data-i18n="navProcess">Process</a>
+          <a href="#faq" data-i18n="navFaq">FAQ</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ===== STICKY MOBILE CTA ===== -->
+  <div class="sticky-cta">
+    <a href="#devis" class="btn-cta" data-i18n="heroCta">Demander un devis</a>
+  </div>
+
+  <!-- ===== FLOATING BUBBLE - QUESTIONS EN SUSPENS ===== -->
+  <a href="questions.html" class="floating-bubble" title="Questions en suspens">
+    <span class="floating-bubble-icon">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="10"></circle>
+        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+        <line x1="12" y1="17" x2="12.01" y2="17"></line>
+      </svg>
+    </span>
+    <span class="floating-bubble-text">
+      <strong>Site en développement</strong>
+      Cliquez ici pour répondre aux questions en suspens
+    </span>
+    <span class="floating-bubble-arrow">→</span>
+  </a>
+
+  <script src="script.js"></script>
+</body>
+</html>
