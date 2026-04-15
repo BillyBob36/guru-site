@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Guru — Gestion Photos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="admin.css">
+  <link rel="icon" type="image/svg+xml" href="images/logo-guru-icone.svg">
+</head>
+<body>
+
+  <!-- ===== LOGIN OVERLAY ===== -->
+  <div class="login-overlay" id="loginOverlay">
+    <form class="login-box" id="loginForm" autocomplete="off">
+      <h2>Accès admin Guru</h2>
+      <p>Entrez le mot de passe pour gérer la galerie.</p>
+      <input type="password" id="loginPassword" placeholder="Mot de passe" autofocus required>
+      <button type="submit" id="loginSubmit">Se connecter</button>
+      <div class="login-error" id="loginError" hidden></div>
+    </form>
+  </div>
+
+  <!-- ===== HEADER ===== -->
+  <header class="admin-header">
+    <h1><span>Guru</span> — Gestion Photos</h1>
+    <div class="header-actions">
+      <span class="sync-indicator" id="syncIndicator" title="Sauvegarde automatique">&#128274; Sauvegarde auto</span>
+      <button class="btn-logout" id="btnLogout" type="button">Déconnexion</button>
+    </div>
+  </header>
+
+  <!-- ===== TABS ===== -->
+  <nav class="tabs">
+    <button class="tab-btn active" data-tab="tabGallery">Galerie existante</button>
+    <button class="tab-btn" data-tab="tabUpload">Ajouter des photos</button>
+    <button class="tab-btn" data-tab="tabTags">Gérer les tags</button>
+  </nav>
+
+  <!-- ===== TAB 1: GALERIE ===== -->
+  <section class="tab-panel active" id="tabGallery">
+    <div class="toolbar">
+      <input type="text" id="searchInput" placeholder="Rechercher par nom de fichier...">
+      <select id="filterTag">
+        <option value="">Tous les tags</option>
+      </select>
+    </div>
+    <div class="photo-grid" id="galleryGrid">
+      <div class="empty-state" style="grid-column:1/-1">
+        <p>Chargement...</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== TAB 2: UPLOAD ===== -->
+  <section class="tab-panel" id="tabUpload">
+    <div class="dropzone" id="dropzone">
+      <div class="dropzone-icon">&#128247;</div>
+      <p><strong>Glissez vos photos ici</strong> ou cliquez pour parcourir</p>
+      <p style="font-size:0.8rem;margin-top:6px;opacity:0.5">Formats acceptés : JPEG, PNG, WebP</p>
+      <input type="file" id="fileInput" multiple accept="image/*">
+    </div>
+    <div class="upload-grid" id="uploadGrid"></div>
+  </section>
+
+  <!-- ===== TAB 3: TAGS ===== -->
+  <section class="tab-panel" id="tabTags">
+    <div class="tags-header">
+      <h2>Liste des tags</h2>
+      <p class="tags-subtitle">Ces tags apparaissent comme filtres dans la galerie du site.</p>
+    </div>
+
+    <div class="tags-add">
+      <input type="text" id="tagAddInput" placeholder="Nouveau tag (ex : Végétalien, Cocktail dînatoire…)">
+      <button type="button" id="tagAddBtn">+ Ajouter le tag</button>
+    </div>
+
+    <div class="tags-list" id="tagsList">
+      <div class="empty-state"><p>Chargement...</p></div>
+    </div>
+  </section>
+
+  <!-- ===== MODAL (edit tags / confirm) ===== -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal">
+      <h2 id="modalTitle">Modifier les tags</h2>
+      <p class="modal-subtitle" id="modalSubtitle"></p>
+      <div class="modal-tag-list" id="modalTagList"></div>
+      <div class="modal-new-tag" id="modalNewTagRow">
+        <input type="text" id="modalNewTagInput" placeholder="Nouveau tag...">
+        <button type="button" id="modalAddTag">+ Ajouter</button>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-cancel" id="modalCancel">Annuler</button>
+        <button class="btn-save" id="modalSave">Enregistrer</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== LIGHTBOX ===== -->
+  <div class="admin-lightbox" id="adminLightbox">
+    <button class="admin-lightbox-close" aria-label="Fermer">&times;</button>
+    <img src="" alt="">
+  </div>
+
+  <!-- ===== TOAST ===== -->
+  <div class="toast" id="toast"></div>
+
+  <script src="admin.js"></script>
+</body>
+</html>

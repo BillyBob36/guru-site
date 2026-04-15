@@ -3,9 +3,8 @@ const translations = {
   fr: {
     // Nav
     navForWho: "Pour qui ?",
-    navServices: "Services",
     navWhyGuru: "Pourquoi Guru",
-    navProcess: "Process",
+    navGallery: "Galerie",
     navFaq: "FAQ",
     navCta: "Demander un devis",
     langBtn: "EN",
@@ -13,15 +12,15 @@ const translations = {
     // Hero
     heroBadge: "Traiteur événementiel 360°",
     heroTitle1: "Le traiteur des événements ",
-    heroHighlight: "sous pression",
-    heroTitle2: ", geek-food & premium, partout en France.",
-    heroSubtitle: "Traiteur 360 pour entreprises et agences : buffets, bars et staff pour vos séminaires, lancements produits, festivals et events gaming – sans le côté guindé.",
-    stat1Num: "100 000+",
-    stat1Label: "convives en 2025",
-    stat2Num: "80+",
-    stat2Label: "collaborateurs",
-    stat3Num: "100+",
-    stat3Label: "entreprises clientes",
+    heroHighlight: "sous haute pression",
+    heroTitle2: ", partout dans le monde.",
+    heroSubtitle: "Traiteur 360 pour entreprises et agences : buffets, bars et staff pour vos séminaires, lancements produits et festivals — réactivité, qualité, flexibilité.",
+    stat1Num: "250 000+",
+    stat1Label: "repas servis par an",
+    stat2Num: "15 ans",
+    stat2Label: "d'expertise",
+    stat3Num: "4 pays",
+    stat3Label: "15+ villes",
     heroCta: "Demander un devis",
 
     // For Who
@@ -29,57 +28,47 @@ const translations = {
     forWhoTitle: "Pour quels ",
     forWhoHighlight: "événements",
     forWhoTitle2: " ?",
-    forWhoSubtitle: "Nous intervenons sur deux grandes catégories d'événements B2B.",
+    forWhoSubtitle: "Nous intervenons sur trois grandes catégories d'événements B2B.",
     forWho1Title: "Événements sous forte pression",
-    forWho1Desc: "Esport, festivals, shows en live, gros événements tech / gaming, grandes conférences. Des contextes où la logistique doit être irréprochable et les volumes maîtrisés.",
-    forWho2Title: "Soirées clients & moments premium geek-chic",
+    forWho1Desc: "Festivals, shows en live, grandes conférences, événements à volumes massifs. Des contextes où la logistique doit être irréprochable et les volumes parfaitement maîtrisés.",
+    forWho2Title: "Soirées clients & moments premium",
     forWho2Desc: "Lancements produits, soirées clients, events marque, séminaires haut de gamme. L'excellence culinaire au service de votre image.",
     forWhoNote: "Nous ne faisons pas de petits événements privés / micro-budgets.",
 
     // Services 360
-    servicesTag: "Nos prestations",
-    servicesTitle: "Ce que nous ",
-    servicesHighlight: "faisons",
-    servicesSubtitle: "Une capacité 360 pour couvrir l'intégralité de vos besoins événementiels.",
-    svc1Title: "Buffets & cocktails dînatoires",
-    svc1Desc: "Formats modulables, cuisine créative et qualitative, adaptés aux gros volumes avec une fluidité logistique totale.",
-    svc2Title: "Bars & cocktails",
-    svc2Desc: "Mixologie, open bar, softs premium. Des bars qui marquent les esprits, avec ou sans alcool.",
-    svc3Title: "Petit-déjeuners & pauses café",
-    svc3Desc: "Séminaires, conférences, journées de travail : des pauses gourmandes qui rechargent vos équipes.",
-    svc4Title: "Repas assis / formats premium",
-    svc4Desc: "Service à table haut de gamme pour vos dîners de gala, soirées VIP et moments d'exception.",
-    svc5Title: "Staff & mise en scène",
-    svc5Desc: "Service, scénographie culinaire, foodtrucks si besoin. Une équipe dédiée et formée à vos exigences.",
 
-    // Comparison
+    // Gallery
+    galleryTag: "Nos réalisations",
+    galleryTitle: "Notre ",
+    galleryHighlight: "savoir-faire",
+    gallerySubtitle: "Découvrez nos créations culinaires à travers notre galerie.",
+    filterAll: "Tout",
+    galleryLoadMore: "Voir plus",
+    ctaReminderGallery: "Un projet en tête ? Nos chefs s'en occupent.",
+    ctaReminderTrust: "Rejoignez les marques qui nous confient leurs événements.",
+
+    // Why Guru (replaces old comparison table)
     compTag: "Notre différence",
     compTitle: "Pourquoi Guru plutôt qu'un ",
     compHighlight: "traiteur classique",
     compTitle2: " ?",
-    compSubtitle: "Une comparaison factuelle de ce qui nous différencie.",
-    compHeader1: "Critère",
-    compHeader2: "Guru",
-    compHeader3: "Traiteur classique",
-    compRow1: "Gestion des events sous pression (esport, live, gros volumes)",
-    compRow1Guru: "Oui, cœur de métier",
-    compRow1Classic: "Occasionnel / non spécialisé",
-    compRow2: "ADN geek-food premium (gaming × luxe/tech)",
-    compRow2Guru: "Clair et assumé",
-    compRow2Classic: "Généraliste",
-    compRow3: "Capacité 360 (food, bar, staff, scénographie)",
-    compRow3Guru: "Intégrée",
-    compRow3Classic: "Souvent morcelée / sous-traitée",
-    compRow4: "Rapport qualité / prix sur gros volumes",
-    compRow4Guru: "Optimisé",
-    compRow4Classic: "Plus variable",
-    compRow5: "Engagement éco (local, saisonnalité, anti-gaspi, zéro plastique)",
-    compRow5Guru: "Structuré",
-    compRow5Classic: "Accessoire",
+    compSubtitle: "Ce qui nous différencie, en quelques points.",
+    why1Title: "Solution 360°",
+    why1Desc: "Traiteur, bar, staff, scénographie : tout est intégré, rien n'est sous-traité.",
+    why2Title: "Inclusion alimentaire",
+    why2Desc: "Végan, halal, sans gluten, toutes cuisines du monde — chaque convive est pris en compte.",
+    why3Title: "Éco-responsable",
+    why3Desc: "Produits locaux, anti-gaspi, zéro plastique jetable — la responsabilité au cœur de chaque prestation.",
+    why4Title: "Capacité volume",
+    why4Desc: "De 20 à 20 000 repas par événement — la montée en charge est notre cœur de métier.",
+    why5Title: "Réactivité extrême",
+    why5Desc: "Lancement possible en 48h — mais plus vous nous prévenez tôt, plus la qualité est au rendez-vous.",
+    why6Title: "100% fait maison",
+    why6Desc: "Chaque plat est cuisiné par nos chefs — pas d'industriel, pas de sous-traitance alimentaire.",
 
     // Case Study
     csTitle: "Ils nous ont confié le Z Event",
-    csSubtitle: "Un événement gaming sous très haute pression, géré de bout en bout par Guru.",
+    csSubtitle: "Un événement sous très haute pression opérationnelle, géré de bout en bout par Guru.",
     csCtxTitle: "Contexte",
     csCtxDesc: "Event de plusieurs jours, milliers de repas, invités / talents / staff à servir en continu dans un environnement live permanent.",
     csChalTitle: "Défi",
@@ -95,60 +84,36 @@ const translations = {
     trustTitle: "Ils nous font ",
     trustHighlight: "confiance",
     trustSubtitle: "Des marques et événements de référence nous font confiance chaque année.",
-    trustStat1Num: "100+",
-    trustStat1Label: "entreprises clientes",
-    trustStat2Num: "100 000+",
-    trustStat2Label: "convives servis en 2025",
-    trustStat3Num: "80+",
-    trustStat3Label: "collaborateurs mobilisables",
-    trustStat4Num: "France entière",
-    trustStat4Label: "couverture nationale",
-
-    // Process
-    procTag: "Méthodologie",
-    procTitle: "Notre manière de ",
-    procHighlight: "travailler",
-    procSubtitle: "Un process rodé pour que vous n'ayez plus à stresser.",
-    proc1Title: "Brief & vision",
-    proc1Desc: "Contexte, objectifs, invités, contraintes : on comprend votre événement dans les moindres détails.",
-    proc2Title: "Proposition sur-mesure",
-    proc2Desc: "Formats buffets / bar / staff, budget optimisé, scénographie adaptée à votre univers.",
-    proc3Title: "Production & logistique",
-    proc3Desc: "Coordination lieu, timings, livraisons, gestion anti-stress. Tout est calé en amont.",
-    proc4Title: "Jour J & débrief",
-    proc4Desc: "Équipe dédiée sur place, gestion des imprévus, feedback post-event pour s'améliorer.",
-
-    // Commitments
-    commitTag: "Nos valeurs",
-    commitTitle: "Engagements & ",
-    commitHighlight: "valeurs",
-    commitSubtitle: "Notre responsabilité environnementale, intégrée à chaque prestation.",
-    commit1Title: "Produits locaux & de saison",
-    commit1Desc: "Approvisionnement en circuits courts, produits frais et de saison pour une qualité optimale.",
-    commit2Title: "Anti-gaspi & dons",
-    commit2Desc: "Réduction des déchets, compost, don des invendus à des associations partenaires.",
-    commit3Title: "Zéro plastique jetable",
-    commit3Desc: "Emballages recyclables, vaisselle réutilisable, suppression totale du plastique à usage unique.",
-    commit4Title: "Livraison responsable",
-    commit4Desc: "Livraisons organisées et mutualisées pour réduire notre empreinte carbone.",
+    trustStat1Num: "500+",
+    trustStat1Label: "recettes adaptées",
+    trustStat2Num: "250 000+",
+    trustStat2Label: "repas servis par an",
+    trustStat3Num: "15 ans",
+    trustStat3Label: "d'expertise",
+    trustStat4Num: "4 pays",
+    trustStat4Label: "couverture internationale",
 
     // FAQ
     faqTag: "Informations",
     faqTitle: "Questions ",
     faqHighlight: "fréquentes",
     faqSubtitle: "Les réponses aux questions que vous vous posez sûrement.",
-    faq1Q: "Dans quelles régions intervenez-vous ?",
-    faq1A: "Nous intervenons sur toute la France, et ponctuellement à l'international pour des événements d'envergure.",
-    faq2Q: "Pour quel type d'événements êtes-vous le mieux adaptés ?",
-    faq2A: "Gros volumes, événements sous pression (esport, festivals, live), soirées clients premium, séminaires et lancements produits.",
-    faq3Q: "Gérez-vous les régimes spéciaux (vegan, halal, allergies) ?",
-    faq3A: "Absolument. Nous adaptons systématiquement nos menus aux contraintes alimentaires de vos convives.",
-    faq4Q: "Quels sont vos délais minimum pour une demande ?",
-    faq4A: "Idéalement 2 à 4 semaines, mais nous sommes habitués à réagir vite. Contactez-nous pour en discuter.",
-    faq5Q: "Pouvez-vous travailler avec une agence événementielle ?",
-    faq5A: "Oui, c'est même courant. Nous collaborons régulièrement avec des agences et nous intégrons parfaitement à leurs process.",
-    faq6Q: "Proposez-vous aussi le bar, le staff, la déco ?",
-    faq6A: "Oui, c'est notre capacité 360 : food, bar, staff de service et scénographie culinaire, tout est intégré.",
+    faq1Q: "Quels types de prestations proposez-vous ?",
+    faq1A: "Buffet, cocktail dînatoire, repas assis, livraison seule — tous les formats sont disponibles sur devis personnalisé.",
+    faq2Q: "Quelle taille de groupe pouvez-vous gérer ?",
+    faq2A: "De dîners privés intimes à des événements internationaux de plusieurs centaines de personnes — nous adaptons notre organisation à chaque échelle.",
+    faq3Q: "Gérez-vous les régimes spéciaux ?",
+    faq3A: "Végétarien, végan, sans gluten, allergies — nos chefs sont formés aux techniques modernes pour adapter chaque menu sans compromis sur le goût.",
+    faq4Q: "Le personnel et le matériel sont-ils inclus ?",
+    faq4A: "Selon vos besoins : nous pouvons inclure le staff de service, le matériel et la scénographie, ou proposer une prestation traiteur seule.",
+    faq5Q: "Quelle est votre couverture géographique ?",
+    faq5A: "Nous intervenons dans le monde entier, avec des accords visa quand nécessaire. Les frais de déplacement sont évalués au cas par cas.",
+    faq6Q: "Quels sont vos délais ?",
+    faq6A: "Nous pouvons lancer une prestation en 48h, mais plus le délai est long, plus la qualité et la personnalisation sont garanties.",
+    faq7Q: "Les menus sont-ils personnalisables ?",
+    faq7A: "Tous nos menus sont entièrement personnalisables. Des dégustations sont disponibles sur demande pour valider vos choix.",
+    faq8Q: "Quelles sont vos conditions de paiement ?",
+    faq8A: "Un acompte de 50% minimum est demandé 2 semaines avant l'événement, le solde le jour J. L'acompte est conservé en cas d'annulation.",
 
     // Form
     formTag: "Contact",
@@ -200,9 +165,8 @@ const translations = {
   en: {
     // Nav
     navForWho: "For whom?",
-    navServices: "Services",
     navWhyGuru: "Why Guru",
-    navProcess: "Process",
+    navGallery: "Gallery",
     navFaq: "FAQ",
     navCta: "Request a quote",
     langBtn: "FR",
@@ -211,14 +175,14 @@ const translations = {
     heroBadge: "360° Event Catering",
     heroTitle1: "The caterer for ",
     heroHighlight: "high-pressure",
-    heroTitle2: " events, geek-food & premium, all across France.",
-    heroSubtitle: "Full-service caterer for businesses and agencies: buffets, bars and staff for your seminars, product launches, festivals and gaming events – without the stuffy vibe.",
-    stat1Num: "100,000+",
-    stat1Label: "guests in 2025",
-    stat2Num: "80+",
-    stat2Label: "team members",
-    stat3Num: "100+",
-    stat3Label: "corporate clients",
+    heroTitle2: " events, all around the world.",
+    heroSubtitle: "Full-service caterer for businesses and agencies: buffets, bars and staff for your seminars, product launches and festivals — responsiveness, quality, flexibility.",
+    stat1Num: "250,000+",
+    stat1Label: "meals served per year",
+    stat2Num: "15 years",
+    stat2Label: "of expertise",
+    stat3Num: "4 countries",
+    stat3Label: "15+ cities",
     heroCta: "Request a quote",
 
     // For Who
@@ -226,57 +190,47 @@ const translations = {
     forWhoTitle: "For which ",
     forWhoHighlight: "events",
     forWhoTitle2: "?",
-    forWhoSubtitle: "We serve two main categories of B2B events.",
+    forWhoSubtitle: "We serve three main categories of B2B events.",
     forWho1Title: "High-pressure events",
-    forWho1Desc: "Esports, festivals, live shows, major tech/gaming events, large conferences. Contexts where logistics must be flawless and volumes mastered.",
-    forWho2Title: "Client events & premium geek-chic moments",
+    forWho1Desc: "Festivals, live shows, large conferences, massive-volume events. Contexts where logistics must be flawless and volumes perfectly mastered.",
+    forWho2Title: "Client events & premium moments",
     forWho2Desc: "Product launches, client evenings, brand events, high-end seminars. Culinary excellence at the service of your image.",
     forWhoNote: "We do not cater small private events or micro-budgets.",
 
     // Services 360
-    servicesTag: "Our services",
-    servicesTitle: "What we ",
-    servicesHighlight: "do",
-    servicesSubtitle: "A full 360 capability to cover all your event catering needs.",
-    svc1Title: "Buffets & cocktail receptions",
-    svc1Desc: "Flexible formats, creative and quality cuisine, adapted to large volumes with seamless logistics.",
-    svc2Title: "Bars & cocktails",
-    svc2Desc: "Mixology, open bar, premium soft drinks. Bars that leave a lasting impression, with or without alcohol.",
-    svc3Title: "Breakfasts & coffee breaks",
-    svc3Desc: "Seminars, conferences, work days: gourmet breaks that recharge your teams.",
-    svc4Title: "Seated meals / premium formats",
-    svc4Desc: "High-end table service for your gala dinners, VIP evenings and exceptional moments.",
-    svc5Title: "Staff & staging",
-    svc5Desc: "Service, culinary scenography, food trucks if needed. A dedicated team trained to your standards.",
 
-    // Comparison
+    // Gallery
+    galleryTag: "Our creations",
+    galleryTitle: "Our ",
+    galleryHighlight: "expertise",
+    gallerySubtitle: "Discover our culinary creations through our gallery.",
+    filterAll: "All",
+    galleryLoadMore: "Load more",
+    ctaReminderGallery: "Got a project in mind? Our chefs are on it.",
+    ctaReminderTrust: "Join the brands that trust us with their events.",
+
+    // Why Guru (replaces old comparison table)
     compTag: "Our difference",
     compTitle: "Why Guru over a ",
     compHighlight: "traditional caterer",
     compTitle2: "?",
-    compSubtitle: "A factual comparison of what sets us apart.",
-    compHeader1: "Criteria",
-    compHeader2: "Guru",
-    compHeader3: "Traditional caterer",
-    compRow1: "High-pressure event management (esports, live, large volumes)",
-    compRow1Guru: "Yes, our core expertise",
-    compRow1Classic: "Occasional / not specialized",
-    compRow2: "Geek-food premium DNA (gaming × luxury/tech)",
-    compRow2Guru: "Clear and intentional",
-    compRow2Classic: "Generalist",
-    compRow3: "360 capability (food, bar, staff, scenography)",
-    compRow3Guru: "Fully integrated",
-    compRow3Classic: "Often fragmented / outsourced",
-    compRow4: "Value for money on large volumes",
-    compRow4Guru: "Optimized",
-    compRow4Classic: "More variable",
-    compRow5: "Eco commitment (local, seasonal, anti-waste, zero single-use plastic)",
-    compRow5Guru: "Structured",
-    compRow5Classic: "Secondary",
+    compSubtitle: "What sets us apart, in a few key points.",
+    why1Title: "360° Solution",
+    why1Desc: "Catering, bar, staff, scenography: everything is integrated, nothing is outsourced.",
+    why2Title: "Dietary inclusion",
+    why2Desc: "Vegan, halal, gluten-free, world cuisines — every guest is taken into account.",
+    why3Title: "Eco-responsible",
+    why3Desc: "Local products, anti-waste, zero single-use plastic — responsibility at the heart of every service.",
+    why4Title: "Volume capacity",
+    why4Desc: "From 20 to 20,000 meals per event — scaling up is our core expertise.",
+    why5Title: "Extreme responsiveness",
+    why5Desc: "Launch possible in 48h — but the more notice you give us, the higher the quality.",
+    why6Title: "100% homemade",
+    why6Desc: "Every dish is cooked by our chefs — no industrial food, no outsourced catering.",
 
     // Case Study
     csTitle: "They trusted us with the Z Event",
-    csSubtitle: "A gaming event under extreme pressure, managed end-to-end by Guru.",
+    csSubtitle: "An event under extreme operational pressure, managed end-to-end by Guru.",
     csCtxTitle: "Context",
     csCtxDesc: "Multi-day event, thousands of meals, guests / talents / staff to serve continuously in a permanent live environment.",
     csChalTitle: "Challenge",
@@ -292,60 +246,36 @@ const translations = {
     trustTitle: "They ",
     trustHighlight: "trust us",
     trustSubtitle: "Leading brands and events trust us year after year.",
-    trustStat1Num: "100+",
-    trustStat1Label: "corporate clients",
-    trustStat2Num: "100,000+",
-    trustStat2Label: "guests served in 2025",
-    trustStat3Num: "80+",
-    trustStat3Label: "team members available",
-    trustStat4Num: "All of France",
-    trustStat4Label: "nationwide coverage",
-
-    // Process
-    procTag: "Methodology",
-    procTitle: "How we ",
-    procHighlight: "work",
-    procSubtitle: "A proven process so you can stop stressing.",
-    proc1Title: "Brief & vision",
-    proc1Desc: "Context, goals, guests, constraints: we understand your event down to the smallest detail.",
-    proc2Title: "Custom proposal",
-    proc2Desc: "Buffet / bar / staff formats, optimized budget, scenography tailored to your universe.",
-    proc3Title: "Production & logistics",
-    proc3Desc: "Venue coordination, timings, deliveries, stress-free management. Everything is locked in advance.",
-    proc4Title: "D-Day & debrief",
-    proc4Desc: "Dedicated on-site team, contingency management, post-event feedback for continuous improvement.",
-
-    // Commitments
-    commitTag: "Our values",
-    commitTitle: "Commitments & ",
-    commitHighlight: "values",
-    commitSubtitle: "Our environmental responsibility, integrated into every service.",
-    commit1Title: "Local & seasonal products",
-    commit1Desc: "Short supply chains, fresh and seasonal products for optimal quality.",
-    commit2Title: "Anti-waste & donations",
-    commit2Desc: "Waste reduction, composting, donating unsold food to partner associations.",
-    commit3Title: "Zero single-use plastic",
-    commit3Desc: "Recyclable packaging, reusable tableware, complete elimination of single-use plastic.",
-    commit4Title: "Responsible delivery",
-    commit4Desc: "Organized and pooled deliveries to reduce our carbon footprint.",
+    trustStat1Num: "500+",
+    trustStat1Label: "adapted recipes",
+    trustStat2Num: "250,000+",
+    trustStat2Label: "meals served per year",
+    trustStat3Num: "15 years",
+    trustStat3Label: "of expertise",
+    trustStat4Num: "4 countries",
+    trustStat4Label: "international coverage",
 
     // FAQ
     faqTag: "Information",
     faqTitle: "Frequently asked ",
     faqHighlight: "questions",
     faqSubtitle: "Answers to the questions you're probably asking yourself.",
-    faq1Q: "Which regions do you cover?",
-    faq1A: "We operate throughout France, and occasionally internationally for major events.",
-    faq2Q: "What type of events are you best suited for?",
-    faq2A: "Large volumes, high-pressure events (esports, festivals, live), premium client evenings, seminars and product launches.",
-    faq3Q: "Do you handle special diets (vegan, halal, allergies)?",
-    faq3A: "Absolutely. We systematically adapt our menus to your guests' dietary requirements.",
-    faq4Q: "What is your minimum lead time for a request?",
-    faq4A: "Ideally 2 to 4 weeks, but we're used to reacting fast. Contact us to discuss.",
-    faq5Q: "Can you work with an event agency?",
-    faq5A: "Yes, it's quite common. We regularly collaborate with agencies and integrate seamlessly into their processes.",
-    faq6Q: "Do you also offer bar, staff and decoration services?",
-    faq6A: "Yes, that's our 360 capability: food, bar, service staff and culinary scenography, all integrated.",
+    faq1Q: "What types of services do you offer?",
+    faq1A: "Buffet, cocktail reception, seated meal, delivery only — all formats are available with a custom quote.",
+    faq2Q: "What group size can you handle?",
+    faq2A: "From intimate private dinners to international events with hundreds of guests — we adapt our organization to every scale.",
+    faq3Q: "Do you handle special diets?",
+    faq3A: "Vegetarian, vegan, gluten-free, allergies — our chefs are trained in modern techniques to adapt every menu without compromising on taste.",
+    faq4Q: "Are staff and equipment included?",
+    faq4A: "Depending on your needs: we can include service staff, equipment and scenography, or offer a catering-only service.",
+    faq5Q: "What is your geographic coverage?",
+    faq5A: "We operate worldwide, with visa arrangements when necessary. Travel costs are assessed on a case-by-case basis.",
+    faq6Q: "What are your lead times?",
+    faq6A: "We can launch a service in 48h, but the longer the lead time, the more quality and customization are guaranteed.",
+    faq7Q: "Are menus customizable?",
+    faq7A: "All our menus are fully customizable. Tastings are available on request to validate your choices.",
+    faq8Q: "What are your payment terms?",
+    faq8A: "A minimum 50% deposit is required 2 weeks before the event, with the balance due on the day. The deposit is retained in case of cancellation.",
 
     // Form
     formTag: "Contact",
@@ -464,18 +394,45 @@ function initMobileMenu() {
   const hamburger = document.getElementById('hamburger');
   const nav = document.getElementById('mainNav');
 
+  const closeMenu = () => {
+    nav.classList.remove('open');
+    hamburger.classList.remove('open');
+    hamburger.classList.remove('active');
+    document.body.classList.remove('menu-open');
+  };
+
   hamburger.addEventListener('click', () => {
-    nav.classList.toggle('open');
-    hamburger.classList.toggle('active');
+    const willOpen = !nav.classList.contains('open');
+    nav.classList.toggle('open', willOpen);
+    hamburger.classList.toggle('open', willOpen);
+    hamburger.classList.toggle('active', willOpen);
+    document.body.classList.toggle('menu-open', willOpen);
   });
 
   // Close on link click
   nav.querySelectorAll('a').forEach(link => {
-    link.addEventListener('click', () => {
-      nav.classList.remove('open');
-      hamburger.classList.remove('active');
-    });
+    link.addEventListener('click', closeMenu);
   });
+
+  // Close on Escape
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && nav.classList.contains('open')) closeMenu();
+  });
+}
+
+// ===== STICKY CTA : masqué quand on survole/scrolle sur la section devis =====
+function initStickyCta() {
+  const sticky = document.querySelector('.sticky-cta');
+  const devis  = document.getElementById('devis');
+  if (!sticky || !devis) return;
+
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      sticky.classList.toggle('hidden', entry.isIntersecting);
+    });
+  }, { threshold: 0.08 });
+
+  io.observe(devis);
 }
 
 // ===== SCROLL ANIMATIONS =====
@@ -501,7 +458,7 @@ function initSmoothScroll() {
         const headerOffset = 80;
         const elementPosition = target.getBoundingClientRect().top;
         const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-        
+
         window.scrollTo({
           top: offsetPosition,
           behavior: 'smooth'
@@ -515,27 +472,244 @@ function initSmoothScroll() {
 function initHeaderScroll() {
   const header = document.querySelector('.header');
   let lastScroll = 0;
-  
+
   window.addEventListener('scroll', () => {
     const currentScroll = window.pageYOffset;
-    
+
     if (currentScroll > 100) {
       header.style.background = 'rgba(15, 15, 18, 0.95)';
     } else {
       header.style.background = 'rgba(15, 15, 18, 0.85)';
     }
-    
+
     lastScroll = currentScroll;
   });
+}
+
+// ===== GALLERY =====
+let galleryData = [];
+let currentFilter = 'all';
+let visibleCount = 12;
+const PHOTOS_PER_LOAD = 12;
+const PHOTOS_BASE_PATH = 'gallery/';
+
+async function loadGallery() {
+  try {
+    // Cache-buster pour que les mises à jour de tags.json (via admin-photos)
+    // soient visibles immédiatement, sans nettoyer le cache du navigateur.
+    const res = await fetch('gallery/tags.json?v=' + Date.now(), { cache: 'no-store' });
+    galleryData = await res.json();
+    // La sélection qualité est faite en amont (tags.json ne contient que
+    // les photos validées : 7/10 et + ; 5/10 et + pour le tag Evénement).
+    renderFilters();
+    renderGallery();
+  } catch (e) {
+    console.warn('Gallery: could not load tags.json', e);
+  }
+}
+
+function renderFilters() {
+  const allTags = new Set();
+  galleryData.forEach(item => item.tags.forEach(t => allTags.add(t)));
+  const container = document.getElementById('galleryFilters');
+  if (!container) return;
+  // Keep "Tout" button
+  const sortedTags = [...allTags].sort((a, b) => a.localeCompare(b, 'fr'));
+  sortedTags.forEach(tag => {
+    const btn = document.createElement('button');
+    btn.className = 'filter-btn';
+    btn.dataset.filter = tag;
+    btn.textContent = tag;
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentFilter = tag;
+      visibleCount = PHOTOS_PER_LOAD;
+      renderGallery();
+    });
+    container.appendChild(btn);
+  });
+  // "Tout" button click
+  container.querySelector('[data-filter="all"]').addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    container.querySelector('[data-filter="all"]').classList.add('active');
+    currentFilter = 'all';
+    visibleCount = PHOTOS_PER_LOAD;
+    renderGallery();
+  });
+}
+
+function buildGalleryItemHTML(item) {
+  return `
+    <div class="gallery-item" onclick="openLightbox('${PHOTOS_BASE_PATH}${item.photo}')">
+      <img src="${PHOTOS_BASE_PATH}${item.photo}" alt="${item.tags.join(', ')}" loading="lazy">
+      <div class="gallery-tags">
+        ${item.tags.map(t => `<span class="gallery-tag">${t}</span>`).join('')}
+      </div>
+    </div>`;
+}
+
+function animateIn(elements) {
+  // Applique la classe d'apparition avec un léger stagger pour fluidifier
+  elements.forEach((el, i) => {
+    el.classList.add('gallery-item-enter');
+    // stagger court : 40ms entre chaque image, plafonné pour ne pas traîner
+    const delay = Math.min(i * 40, 320);
+    el.style.animationDelay = delay + 'ms';
+  });
+}
+
+// Re-render complet (changement de filtre / premier rendu)
+function renderGallery() {
+  const grid = document.getElementById('galleryGrid');
+  const loadMoreBtn = document.getElementById('loadMoreBtn');
+  if (!grid) return;
+
+  const filtered = currentFilter === 'all'
+    ? galleryData
+    : galleryData.filter(item => item.tags.includes(currentFilter));
+
+  const toShow = filtered.slice(0, visibleCount);
+
+  grid.innerHTML = toShow.map(buildGalleryItemHTML).join('');
+  animateIn([...grid.querySelectorAll('.gallery-item')]);
+
+  if (loadMoreBtn) {
+    loadMoreBtn.style.display = visibleCount >= filtered.length ? 'none' : 'inline-block';
+  }
+}
+
+// Append : ajoute uniquement les nouvelles images et anime leur apparition
+function appendMoreGallery() {
+  const grid = document.getElementById('galleryGrid');
+  const loadMoreBtn = document.getElementById('loadMoreBtn');
+  if (!grid) return;
+
+  const filtered = currentFilter === 'all'
+    ? galleryData
+    : galleryData.filter(item => item.tags.includes(currentFilter));
+
+  const previousCount = grid.children.length;
+  const nextCount = Math.min(visibleCount, filtered.length);
+  const newItems = filtered.slice(previousCount, nextCount);
+  if (newItems.length === 0) return;
+
+  const frag = document.createDocumentFragment();
+  const newEls = [];
+  newItems.forEach(item => {
+    const wrapper = document.createElement('div');
+    wrapper.innerHTML = buildGalleryItemHTML(item).trim();
+    const el = wrapper.firstElementChild;
+    newEls.push(el);
+    frag.appendChild(el);
+  });
+  grid.appendChild(frag);
+  animateIn(newEls);
+
+  if (loadMoreBtn) {
+    loadMoreBtn.style.display = nextCount >= filtered.length ? 'none' : 'inline-block';
+  }
+}
+
+function initLoadMore() {
+  const btn = document.getElementById('loadMoreBtn');
+  if (btn) {
+    btn.addEventListener('click', () => {
+      visibleCount += PHOTOS_PER_LOAD;
+      appendMoreGallery();
+    });
+  }
+}
+
+// ===== LIGHTBOX =====
+function openLightbox(src) {
+  let lightbox = document.getElementById('lightbox');
+  if (!lightbox) {
+    lightbox = document.createElement('div');
+    lightbox.id = 'lightbox';
+    lightbox.className = 'lightbox';
+    lightbox.innerHTML = '<button class="lightbox-close">&times;</button><img src="" alt="Photo">';
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox || e.target.classList.contains('lightbox-close')) {
+        lightbox.classList.remove('active');
+      }
+    });
+    document.body.appendChild(lightbox);
+  }
+  lightbox.querySelector('img').src = src;
+  lightbox.classList.add('active');
+}
+
+// Close lightbox on Escape
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    const lb = document.getElementById('lightbox');
+    if (lb) lb.classList.remove('active');
+  }
+});
+
+// ===== FONT SWITCHER (DEV) =====
+function initFontSwitcher() {
+  const toggle = document.getElementById('fontSwitcherToggle');
+  const panel = document.getElementById('fontSwitcherPanel');
+  const close = document.getElementById('fontSwitcherClose');
+  const select = document.getElementById('fontSelect');
+  const current = document.getElementById('fontSwitcherCurrent');
+
+  if (!toggle || !panel) return;
+
+  toggle.addEventListener('click', () => panel.classList.toggle('open'));
+  close.addEventListener('click', () => panel.classList.remove('open'));
+
+  // Liste des fonts custom (pour activer la classe body.custom-heading-font)
+  const customFonts = ['Arsenica','Birds and Home','Brown Sugar','Palmore','Rattani','Sailing Club','Selga','Tritone','Zafrada'];
+
+  select.addEventListener('change', () => {
+    document.documentElement.style.setProperty('--font-heading', select.value);
+    current.textContent = select.options[select.selectedIndex].text;
+    // Si la value contient une des 9 typos Valentin, on active la classe qui
+    // neutralise le faux-bold et ouvre le tracking sur les titres.
+    const isCustom = customFonts.some(f => select.value.includes(`'${f}'`) || select.value.includes(f));
+    document.body.classList.toggle('custom-heading-font', isCustom);
+  });
+
+  // Keyboard shortcut: Ctrl+Shift+F
+  document.addEventListener('keydown', (e) => {
+    if (e.ctrlKey && e.shiftKey && e.key === 'F') {
+      e.preventDefault();
+      panel.classList.toggle('open');
+    }
+  });
+
+  // Disposition galerie : grille uniforme (défaut) ou masonry
+  const gallerySelect = document.getElementById('gallerySelect');
+  const galleryGrid = document.getElementById('galleryGrid');
+  if (gallerySelect && galleryGrid) {
+    // Restaurer le choix éventuellement sauvegardé
+    const saved = localStorage.getItem('guru-gallery-layout');
+    if (saved === 'masonry') {
+      gallerySelect.value = 'masonry';
+      galleryGrid.classList.add('layout-masonry');
+    }
+    gallerySelect.addEventListener('change', () => {
+      const isMasonry = gallerySelect.value === 'masonry';
+      galleryGrid.classList.toggle('layout-masonry', isMasonry);
+      localStorage.setItem('guru-gallery-layout', gallerySelect.value);
+    });
+  }
 }
 
 // ===== INIT =====
 document.addEventListener('DOMContentLoaded', () => {
   initFaq();
   initMobileMenu();
+  initStickyCta();
   initScrollAnimations();
   initSmoothScroll();
   initHeaderScroll();
+  loadGallery();
+  initLoadMore();
+  initFontSwitcher();
 
   // Lang toggle
   document.getElementById('langToggle').addEventListener('click', () => {
