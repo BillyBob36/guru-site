@@ -1,0 +1,14 @@
+# Guru — Traiteur événementiel premium
+# https://guru-demo.lamidetlm.com
+
+User-agent: *
+Allow: /
+
+# Bloquer l'admin (pas besoin d'indexer)
+Disallow: /admin-photos.html
+Disallow: /admin.js
+Disallow: /admin.css
+Disallow: /api/
+
+# Sitemap
+Sitemap: https://guru-demo.lamidetlm.com/sitemap.xml
