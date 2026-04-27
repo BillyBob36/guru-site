@@ -38,40 +38,286 @@ body.custom-heading-font .stat-number {
   --bg-light: #f8f7f4;
   --bg-card: #1a1a1f;
   --bg-card-hover: #222229;
-  
+
   /* Accent - Warm Amber/Gold for food elegance */
   --accent: #d4a853;
   --accent-light: #e8c87a;
   --accent-dark: #b8923f;
   --accent-glow: rgba(212, 168, 83, 0.25);
-  
+  --accent-rgb: 212, 168, 83;
+
   /* Secondary accent - Deep teal */
   --secondary: #2d6b6b;
   --secondary-light: #3d8a8a;
-  
+
   /* Text colors */
   --text: #f5f5f0;
   --text-muted: #9a9a95;
   --text-dark: #2a2a2a;
   --text-dark-muted: #6a6a6a;
-  
+
   /* Borders */
   --border: rgba(255, 255, 255, 0.08);
   --border-light: rgba(0, 0, 0, 0.08);
-  
+
+  /* Hero overlay (gradients depend on theme) */
+  --hero-overlay-from: rgba(15, 15, 18, 0.3);
+  --hero-overlay-mid:  rgba(15, 15, 18, 0.6);
+  --hero-overlay-to:   rgba(15, 15, 18, 0.9);
+
   /* Typography */
   --font-heading: 'Space Grotesk', system-ui, sans-serif;
   --font-body: 'Inter', system-ui, sans-serif;
-  
+
   /* Spacing */
   --radius: 16px;
   --radius-sm: 8px;
   --radius-lg: 24px;
-  
+
   /* Transitions */
   --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   --transition-slow: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
+
+/* ===== ALTERNATE COLOR-TEMPLATE — "Crème & Bleu marine" =====
+   Inspiré du DA Valentin (#142F8A + #FBEFDF) :
+   - fond crème dominant, accent bleu marine profond
+   - inversion des sections "light" (deviennent bleu marine) pour conserver
+     le contraste fond/figure d'origine
+   - les valeurs sont mappées sur les *mêmes* variables que le thème par défaut,
+     donc la totalité du site s'adapte sans toucher aux classes existantes. */
+body.theme-cream {
+  /* Bases */
+  --bg-dark: #FBEFDF;            /* "fond" principal devient crème */
+  --bg-dark-secondary: #F4E5D2;  /* nuance plus chaude pour les bandeaux */
+  --bg-light: #142F8A;           /* "fond clair" devient bleu marine (inversion) */
+  --bg-card: #FFF7EA;            /* cartes : crème très clair (proche blanc) */
+  --bg-card-hover: #F4E5D2;
+
+  /* Accent : bleu marine profond */
+  --accent: #142F8A;
+  --accent-light: #2A4BB8;
+  --accent-dark: #0E2266;
+  --accent-glow: rgba(20, 47, 138, 0.22);
+  --accent-rgb: 20, 47, 138;
+
+  /* Secondary : un bleu un peu plus clair pour les dégradés */
+  --secondary: #2A4BB8;
+  --secondary-light: #4664D1;
+
+  /* Texte : on inverse — les zones "sombres" affichent du bleu marine */
+  --text: #142F8A;               /* texte principal sur fond crème */
+  --text-muted: #4A5A8E;          /* bleu désaturé pour les sous-titres */
+  --text-dark: #FBEFDF;          /* texte "sur fond clair" → crème (sur bleu) */
+  --text-dark-muted: #E6D8C2;
+
+  /* Bordures */
+  --border: rgba(20, 47, 138, 0.14);
+  --border-light: rgba(251, 239, 223, 0.20);
+
+  /* Hero overlay : crème translucide pour laisser respirer la photo */
+  --hero-overlay-from: rgba(251, 239, 223, 0.55);
+  --hero-overlay-mid:  rgba(251, 239, 223, 0.78);
+  --hero-overlay-to:   rgba(251, 239, 223, 0.95);
+}
+
+/* Logos : on bascule en mode "bleu" sur fond crème, "crème" sur fond bleu.
+   On garde les <img> originaux et on les remplace dynamiquement via JS — voir
+   script.js. Le filtre ci-dessous protège le rendu si l'image n'a pas pu être
+   remplacée (failsafe — passe le SVG blanc en bleu marine via colorisation). */
+body.theme-cream .header {
+  background: rgba(251, 239, 223, 0.88);
+  border-bottom-color: rgba(20, 47, 138, 0.10);
+}
+body.theme-cream .nav a:hover,
+body.theme-cream .nav a.active {
+  background: rgba(20, 47, 138, 0.06);
+}
+body.theme-cream .lang-btn {
+  border-color: rgba(20, 47, 138, 0.20);
+  color: var(--accent);
+}
+/* === CTA en thème crème — état de repos =====
+   Bleu gradient + texte crème. On NE change PAS ces valeurs au :hover
+   (la règle générique `.btn-cta:hover` les écrasait avec `background: #000`
+   qui n'est pas interpolable depuis un gradient — le bouton clignotait sur
+   bandeau bleu marine et devenait illisible).
+   Animation hover : sobre — un très léger agrandissement + une ombre
+   portée qui apparaît, rien de plus. */
+body.theme-cream .btn-cta,
+body.theme-cream .btn-cta-header,
+body.theme-cream .btn-submit {
+  color: #FBEFDF !important;
+  /* propriétés ciblées : pas de `all` → pas de risque de flash gradient↔solide */
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* HOVER — léger scale + ombre douce, identique pour tous les CTA */
+body.theme-cream .btn-cta:hover,
+body.theme-cream .btn-cta-header:hover,
+body.theme-cream .btn-submit:hover {
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
+  color: #FBEFDF !important;
+  transform: scale(1.03);
+  box-shadow: 0 12px 28px rgba(20, 47, 138, 0.28);
+}
+
+/* CLICK — micro-retour à la taille initiale, ombre réduite */
+body.theme-cream .btn-cta:active,
+body.theme-cream .btn-cta-header:active,
+body.theme-cream .btn-submit:active {
+  transform: scale(1);
+  box-shadow: 0 4px 10px rgba(20, 47, 138, 0.20);
+  transition: transform 80ms ease, box-shadow 80ms ease;
+}
+
+/* Focus accessible (clavier) — anneau crème pour rester lisible sur bleu */
+body.theme-cream .btn-cta:focus-visible,
+body.theme-cream .btn-cta-header:focus-visible,
+body.theme-cream .btn-submit:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(251, 239, 223, 0.85);
+}
+body.theme-cream .filter-btn {
+  background: rgba(20, 47, 138, 0.04);
+  color: var(--accent);
+}
+body.theme-cream .filter-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent-dark);
+}
+body.theme-cream .filter-btn.active {
+  color: #FBEFDF; background: var(--accent); border-color: var(--accent);
+}
+body.theme-cream .gallery-tag { color: var(--accent); background: rgba(20, 47, 138, 0.10); }
+body.theme-cream .gallery-tags { background: linear-gradient(transparent, rgba(251, 239, 223, 0.96)); }
+body.theme-cream .gallery-tag,
+body.theme-cream .gallery-tags { backdrop-filter: blur(2px); }
+body.theme-cream .btn-load-more:hover { color: #FBEFDF; }
+body.theme-cream .case-study-badge {
+  background: rgba(251, 239, 223, 0.95);
+  color: var(--accent);
+}
+body.theme-cream .image-caption {
+  background: rgba(251, 239, 223, 0.92);
+  color: var(--accent);
+}
+body.theme-cream .image-caption .caption-text { color: var(--accent); }
+body.theme-cream .footer { background: var(--bg-dark-secondary); }
+body.theme-cream .sticky-cta { background: rgba(251, 239, 223, 0.96); }
+body.theme-cream .hero-image { filter: brightness(0.85) sepia(0.15); }
+
+/* La galerie / vignettes restent lisibles : on garde l'image, juste un léger
+   filtre pour réduire l'effet "tâche" sur fond crème. */
+body.theme-cream .for-who-card,
+body.theme-cream .why-card,
+body.theme-cream .process-step {
+  background: var(--bg-card);
+  border-color: var(--border);
+}
+body.theme-cream .case-study-wrapper { background: var(--bg-card); border-color: var(--border); }
+body.theme-cream .cs-quote { background: rgba(20, 47, 138, 0.05); }
+
+/* Section "light" inversée : devient un bandeau bleu marine */
+body.theme-cream .section-light { background: var(--bg-light); color: var(--text-dark); }
+body.theme-cream .section-light .section-title { color: var(--text-dark); }
+body.theme-cream .section-light .section-subtitle { color: var(--text-dark-muted); }
+body.theme-cream .section-light .section-tag { color: var(--text-dark-muted); }
+body.theme-cream .section-light .highlight {
+  /* sur bandeau bleu marine, le highlight passe en crème pour rester lisible */
+  background: linear-gradient(135deg, #FBEFDF 0%, #E6D8C2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+body.theme-cream .section-light .card { background: rgba(251, 239, 223, 0.95); border-color: rgba(251, 239, 223, 0.3); }
+body.theme-cream .section-light .card h3 { color: var(--accent); }
+body.theme-cream .section-light .card p { color: var(--accent-dark); }
+body.theme-cream .section-light .card-icon { color: var(--accent); background: rgba(20, 47, 138, 0.10); }
+body.theme-cream .section-light .commitment { background: rgba(251, 239, 223, 0.95); border-color: transparent; }
+body.theme-cream .section-light .commitment h4 { color: var(--accent); }
+body.theme-cream .section-light .commitment p { color: var(--accent-dark); }
+body.theme-cream .section-light .commitment-icon { color: var(--accent); background: rgba(20, 47, 138, 0.10); }
+body.theme-cream .section-light .stat-card { background: rgba(251, 239, 223, 0.95); border-color: transparent; }
+body.theme-cream .section-light .stat-card .stat-label { color: var(--accent-dark); }
+body.theme-cream .section-light .stat-card .stat-number {
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+  -webkit-background-clip: text; background-clip: text;
+}
+body.theme-cream .section-light .logo-item { background: rgba(251, 239, 223, 0.95); color: var(--accent-dark); border-color: transparent; }
+body.theme-cream .section-light .for-who-note {
+  background: rgba(251, 239, 223, 0.10);
+  border-color: rgba(251, 239, 223, 0.25);
+  color: var(--text-dark);
+}
+body.theme-cream .section-light .for-who-note svg { color: var(--text-dark); }
+
+/* Section sombre = principale (crème) en mode crème */
+body.theme-cream .section-dark { background: var(--bg-dark); color: var(--text); }
+body.theme-cream .section-dark .section-title,
+body.theme-cream .section-dark h3 { color: var(--text); }
+body.theme-cream .section-dark .section-subtitle,
+body.theme-cream .section-dark p { color: var(--text-muted); }
+body.theme-cream .section-accent {
+  background: linear-gradient(135deg, var(--bg-dark-secondary) 0%, var(--bg-dark) 100%);
+  border-color: var(--border);
+}
+body.theme-cream .section-form {
+  background: linear-gradient(180deg, var(--bg-dark) 0%, var(--bg-dark-secondary) 100%);
+}
+
+/* FAQ : pictos & textes lisibles sur crème */
+body.theme-cream .faq-question { color: var(--accent); }
+body.theme-cream .faq-question .faq-icon { background: rgba(20, 47, 138, 0.10); color: var(--accent); }
+body.theme-cream .faq-item.open .faq-icon { background: var(--accent); color: #FBEFDF; }
+body.theme-cream .faq-answer p { color: var(--text-muted); }
+body.theme-cream .faq-item { border-bottom-color: var(--border); }
+
+/* Form (page questions / devis) sur fond crème */
+body.theme-cream .form-wrapper { background: var(--bg-card); border-color: var(--border); }
+body.theme-cream .form-group input,
+body.theme-cream .form-group select,
+body.theme-cream .form-group textarea {
+  background: rgba(20, 47, 138, 0.04);
+  border-color: var(--border);
+  color: var(--text);
+}
+body.theme-cream .form-group input:focus,
+body.theme-cream .form-group select:focus,
+body.theme-cream .form-group textarea:focus {
+  background: rgba(20, 47, 138, 0.07);
+  border-color: var(--accent);
+}
+body.theme-cream .form-group label { color: var(--text); }
+body.theme-cream .form-hint { color: var(--text-muted); }
+
+/* Hero : badge & dot adaptés */
+body.theme-cream .hero-badge {
+  background: rgba(20, 47, 138, 0.08);
+  border-color: rgba(20, 47, 138, 0.30);
+  color: var(--accent);
+}
+body.theme-cream .badge-dot { background: var(--accent); }
+
+/* Scrollbars + selection en mode crème */
+body.theme-cream ::-webkit-scrollbar-track { background: var(--bg-dark); }
+body.theme-cream ::-webkit-scrollbar-thumb { background: rgba(20, 47, 138, 0.25); }
+body.theme-cream ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+body.theme-cream ::selection { background: var(--accent); color: #FBEFDF; }
+
+/* Step number reste lisible en mode crème */
+body.theme-cream .step-number { opacity: 0.85; color: var(--accent); }
+body.theme-cream .step-line {
+  background: linear-gradient(90deg, var(--accent) 0%, transparent 100%);
+}
+
+/* Boutons load more en mode crème */
+body.theme-cream .btn-load-more { color: var(--accent); border-color: var(--accent); }
+body.theme-cream .btn-load-more:hover { background: var(--accent); color: #FBEFDF; }
+
+/* Lightbox : voile crème pour rester cohérent */
+body.theme-cream .lightbox { background: rgba(20, 47, 138, 0.92); }
 
 html { scroll-behavior: smooth; font-size: 16px; }
 
@@ -98,8 +344,10 @@ img { max-width: 100%; display: block; }
   background: rgba(15, 15, 18, 0.85);
   backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--border);
-  transition: var(--transition);
+  transition: background 0.3s ease, border-color 0.3s ease;
 }
+.header.scrolled { background: rgba(15, 15, 18, 0.95); }
+body.theme-cream .header.scrolled { background: rgba(251, 239, 223, 0.96); }
 
 .header-inner {
   display: flex; align-items: center; justify-content: space-between;
@@ -170,9 +418,14 @@ img { max-width: 100%; display: block; }
   border: none; cursor: pointer; transition: var(--transition);
   margin-left: 16px;
 }
-.btn-cta-header:hover { 
-  transform: translateY(-2px); 
-  box-shadow: 0 8px 24px var(--accent-glow);
+/* Le hover du CTA header reprend EXACTEMENT le même comportement que .btn-cta
+   (élévation, ombre, inversion bg/color). Avant les valeurs étaient légèrement
+   différentes (translateY -2px vs -3px, ombre plus petite) — l'animation
+   semblait "moins prononcée" sur le header. Maintenant les 3 CTA partagent
+   une seule règle de hover, identique pour tous. */
+.btn-cta-header:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 32px var(--accent-glow);
   background: #000;
   color: #fff !important;
 }
@@ -249,9 +502,9 @@ img { max-width: 100%; display: block; }
   position: absolute; inset: 0;
   background: linear-gradient(
     180deg,
-    rgba(15, 15, 18, 0.3) 0%,
-    rgba(15, 15, 18, 0.6) 50%,
-    rgba(15, 15, 18, 0.9) 100%
+    var(--hero-overlay-from) 0%,
+    var(--hero-overlay-mid) 50%,
+    var(--hero-overlay-to) 100%
   );
 }
 
@@ -892,6 +1145,58 @@ img { max-width: 100%; display: block; }
   align-items: center; gap: 20px; margin-bottom: 64px;
 }
 
+/* === Bandeau déroulant infini ===
+   - 2 pistes identiques côte-à-côte (la 2e est aria-hidden)
+   - on translate l'ensemble de -50% via CSS animation : la 2e piste prend
+     instantanément la place de la 1re, donc la boucle est invisible
+   - on fade les bords gauche/droit avec un mask-image pour un effet "défile
+     dans le brouillard" plus élégant que des cartes qui apparaissent net
+   - hover du bandeau = pause (UX standard pour donner le temps de lire)
+   - sur prefers-reduced-motion : on stoppe l'animation et on aligne en
+     wrap (les utilisateurs sensibles au mouvement voient une grille statique) */
+.logos-marquee {
+  position: relative;
+  width: 100%;
+  margin-bottom: 64px;
+  overflow: hidden;
+  /* fade edges left/right pour atténuer l'apparition/disparition des items */
+  -webkit-mask-image: linear-gradient(90deg,
+    transparent 0%,
+    #000 8%,
+    #000 92%,
+    transparent 100%);
+  mask-image: linear-gradient(90deg,
+    transparent 0%,
+    #000 8%,
+    #000 92%,
+    transparent 100%);
+}
+.logos-marquee-track {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-shrink: 0;
+  width: max-content;
+  animation: logos-marquee-scroll 60s linear infinite;
+}
+.logos-marquee:hover .logos-marquee-track {
+  animation-play-state: paused;
+}
+.logos-marquee-track + .logos-marquee-track {
+  margin-left: 20px; /* même gap que entre items, pour ne pas avoir de saut */
+}
+@keyframes logos-marquee-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(calc(-100% - 20px)); } /* -100% du track + le gap inter-track */
+}
+@media (prefers-reduced-motion: reduce) {
+  .logos-marquee {
+    -webkit-mask-image: none; mask-image: none;
+  }
+  .logos-marquee-track { animation: none; flex-wrap: wrap; justify-content: center; }
+  .logos-marquee-track + .logos-marquee-track { display: none; } /* on garde une seule passe */
+}
+
 .logo-item {
   font-size: 0.9rem; font-weight: 600; color: var(--text-dark-muted);
   letter-spacing: 1px; text-transform: uppercase;
@@ -900,12 +1205,39 @@ img { max-width: 100%; display: block; }
   border: 1px solid var(--border-light);
   border-radius: var(--radius-sm);
   transition: var(--transition);
+  flex-shrink: 0; /* important : pas de compression dans le track scrollant */
+  white-space: nowrap;
 }
 
 .logo-item:hover {
   border-color: var(--accent);
   color: var(--accent-dark);
   transform: translateY(-2px);
+}
+
+/* Slot pour le futur swap vers de vrais SVG : <img class="logo-img"> à
+   l'intérieur du .logo-item remplacera proprement le texte. */
+.logo-item .logo-img {
+  height: 24px;
+  width: auto;
+  display: block;
+  filter: brightness(0) saturate(100%) opacity(0.55);  /* uniformise les marques en niveau de gris doux */
+  transition: filter 0.25s ease, transform 0.25s ease;
+}
+.logo-item:hover .logo-img {
+  filter: brightness(0) saturate(100%) opacity(1);
+}
+
+/* En thème crème, la pastille reste blanche (cohérent avec une "carte d'identité
+   marque" sur bandeau crème), juste l'ombre douce passe en bleu marine. */
+body.theme-cream .logo-item {
+  border-color: rgba(20, 47, 138, 0.10);
+  color: #4A5A8E;
+  box-shadow: 0 2px 8px rgba(20, 47, 138, 0.06);
+}
+body.theme-cream .logo-item:hover {
+  border-color: var(--accent);
+  color: var(--accent);
 }
 
 .stats-row {
@@ -1332,6 +1664,15 @@ img { max-width: 100%; display: block; }
   box-shadow: 0 4px 16px rgba(0,0,0,0.3);
   transition: var(--transition);
 }
+body.theme-cream .font-switcher-toggle { color: #FBEFDF; }
+body.theme-cream #fontSelect,
+body.theme-cream #gallerySelect,
+body.theme-cream #colorTemplateSelect,
+body.theme-cream .assets-toggle {
+  background: rgba(20, 47, 138, 0.05);
+}
+body.theme-cream .assets-toggle-track { background: rgba(20, 47, 138, 0.12); }
+body.theme-cream .assets-toggle[aria-pressed="true"] .assets-toggle-thumb { background: #FBEFDF; }
 .font-switcher-toggle:hover { transform: scale(1.1); }
 .font-switcher-panel {
   display: none; position: absolute; bottom: 60px; right: 0;
@@ -1364,14 +1705,126 @@ img { max-width: 100%; display: block; }
   color: var(--text-muted);
   margin-bottom: 8px;
 }
-#fontSelect, #gallerySelect {
+#fontSelect, #gallerySelect, #colorTemplateSelect {
   width: 100%; padding: 12px 16px;
   background: rgba(255,255,255,0.05); border: 1px solid var(--border);
   border-radius: var(--radius-sm); color: var(--text);
   font-family: var(--font-body); font-size: 0.9rem;
   cursor: pointer;
 }
-#fontSelect option, #gallerySelect option { background: var(--bg-card); color: var(--text); }
+#fontSelect option, #gallerySelect option, #colorTemplateSelect option { background: var(--bg-card); color: var(--text); }
+
+/* Toggle "assets décoratifs" */
+.assets-toggle {
+  display: flex; align-items: center; gap: 12px;
+  width: 100%; padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); cursor: pointer;
+  font-family: var(--font-body); font-size: 0.9rem;
+  color: var(--text-muted);
+  transition: var(--transition);
+}
+.assets-toggle:hover { border-color: var(--accent); color: var(--text); }
+.assets-toggle-track {
+  position: relative; width: 36px; height: 20px;
+  background: rgba(255, 255, 255, 0.10);
+  border-radius: 10px; flex-shrink: 0;
+  transition: var(--transition);
+}
+.assets-toggle-thumb {
+  position: absolute; top: 2px; left: 2px;
+  width: 16px; height: 16px;
+  background: var(--text-muted);
+  border-radius: 50%;
+  transition: var(--transition);
+}
+.assets-toggle[aria-pressed="true"] .assets-toggle-track { background: var(--accent); }
+.assets-toggle[aria-pressed="true"] .assets-toggle-thumb {
+  left: 18px; background: var(--bg-dark);
+}
+.assets-toggle[aria-pressed="true"] { color: var(--accent); border-color: var(--accent); }
+.switcher-hint {
+  margin-top: 8px;
+  font-size: 0.72rem; color: var(--text-muted);
+  line-height: 1.5; opacity: 0.85;
+}
+
+/* ===== OVERLAY ASSETS (fork + chopsticks décoratifs) =====
+   Bonnes pratiques retenues :
+   - calque global pointer-events:none (jamais bloquant pour l'UX)
+   - parallaxe légère via transform (GPU) — pas de reflow scroll
+   - chaque asset a un "ancrage" % (top de section) + un translateY animé
+   - apparition progressive en `IntersectionObserver` (.is-visible)
+   - rotation/échelle légèrement aléatoire pour casser la symétrie
+   - drop-shadow douce pour intégrer aux fonds clairs ET sombres
+   - cachés par défaut, activés via body.assets-on */
+.overlay-assets {
+  position: fixed; inset: 0;
+  pointer-events: none;
+  z-index: 5; /* sous le header (1000) et le sticky-cta (999), au-dessus du contenu */
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+body.assets-on .overlay-assets { opacity: 1; }
+
+.overlay-asset {
+  position: absolute;
+  width: auto;                      /* la hauteur pilote — les assets sont très verticaux */
+  height: clamp(180px, 32vh, 360px);
+  pointer-events: none;
+  user-select: none;
+  opacity: 0;
+  filter: drop-shadow(0 14px 30px rgba(0, 0, 0, 0.35));
+  transform: translate3d(0, 30px, 0) rotate(var(--rot, 0deg));
+  transition:
+    opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform, opacity;
+  animation: asset-drift 9s ease-in-out infinite alternate;
+}
+.overlay-asset.is-visible {
+  opacity: 0.95;
+  transform: translate3d(0, 0, 0) rotate(var(--rot, 0deg));
+}
+
+/* Léger flottement perpétuel — donne vie au calque sans agresser */
+@keyframes asset-drift {
+  from { translate: 0 0; }
+  to   { translate: 0 -10px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .overlay-asset { animation: none; }
+}
+
+/* Positions : 3 paliers verticaux (haut / milieu / bas du flux) avec
+   alternance droite/gauche et angles différents pour briser la régularité.
+   Le calque étant `position: fixed`, on translate via JS en fonction du
+   scroll Y pour donner l'illusion qu'ils accompagnent le défilement. */
+/* Hauteurs propres à chaque "palier" (haut/milieu/bas) pour briser la régularité */
+.asset-fork.asset-pos-1       { top: 18vh;  left: -3vw;  --rot: -22deg; transform-origin: top left; height: clamp(220px, 36vh, 380px); }
+.asset-chopsticks.asset-pos-1 { top: 26vh;  right: -3vw; --rot: 14deg;  transform-origin: top right; height: clamp(220px, 36vh, 380px); }
+
+.asset-fork.asset-pos-2       { top: 95vh;  right: 2vw;  --rot: 38deg;  transform-origin: top right; height: clamp(160px, 26vh, 280px); }
+.asset-chopsticks.asset-pos-2 { top: 110vh; left: 4vw;   --rot: -28deg; transform-origin: top left;  height: clamp(180px, 28vh, 300px); }
+
+.asset-fork.asset-pos-3       { top: 175vh; left: 6vw;   --rot: -10deg; height: clamp(150px, 24vh, 260px); }
+.asset-chopsticks.asset-pos-3 { top: 190vh; right: 8vw;  --rot: 22deg;  height: clamp(150px, 24vh, 260px); }
+
+/* Sur fond crème → drop-shadow plus douce (l'image est déjà colorée bois/or) */
+body.theme-cream .overlay-asset {
+  filter: drop-shadow(0 12px 22px rgba(20, 47, 138, 0.18));
+}
+
+/* Sur petit écran : on garde la fourchette/baguette mais plus discrètes
+   (positions extrêmes peuvent dépasser, c'est voulu, mais on aère la lecture) */
+@media (max-width: 768px) {
+  .overlay-asset { height: clamp(120px, 22vh, 200px); opacity: 0.85; }
+  .asset-fork.asset-pos-1       { height: clamp(160px, 26vh, 240px); }
+  .asset-chopsticks.asset-pos-1 { height: clamp(160px, 26vh, 240px); }
+  .asset-fork.asset-pos-2,
+  .asset-chopsticks.asset-pos-3 { display: none; } /* aération */
+}
 
 @media (max-width: 1024px) {
   .font-switcher { bottom: 90px; }
@@ -1504,6 +1957,134 @@ img { max-width: 100%; display: block; }
 
 /* --- section-tag sur fond clair : accent foncé pour lisibilité --- */
 .section-light .section-tag { color: var(--accent-dark); }
+
+/* ============================================================
+   THEME CRÈME — overrides de lisibilité des sections inversées
+   En thème crème, .section-light devient un bandeau bleu marine.
+   Les overrides ci-dessus (pensés pour texte sombre sur carte blanche)
+   font apparaître du crème sur du blanc — illisible. On rebascule ici. */
+
+/* Cards for-who & why : fond crème pur (#FBEFDF — palette Valentin), titre +
+   texte en bleu marine. On NE passe PAS par var(--bg-card) ici, parce que cette
+   variable doit rester en crème "très clair" (#FFF7EA) pour les autres composants
+   (form-wrapper, etc.). Seuls ces 2 blocs basculent en crème pur.
+   On supprime aussi le contour 1px (trop visible/pixelisé sur bandeau bleu) —
+   l'ombre douce suffit à détacher la carte du fond. */
+body.theme-cream .section-light .for-who-card,
+body.theme-cream .section-light .why-card {
+  background: #FBEFDF;
+  border-color: transparent;
+  box-shadow: 0 4px 18px rgba(20, 47, 138, 0.10);
+}
+body.theme-cream .section-light .for-who-card:hover,
+body.theme-cream .section-light .why-card:hover {
+  border-color: transparent;                        /* on garde la suppression au hover aussi */
+  box-shadow: 0 22px 44px rgba(20, 47, 138, 0.20);
+}
+body.theme-cream .section-light .for-who-card h3,
+body.theme-cream .section-light .why-card h3 { color: var(--accent); }
+body.theme-cream .section-light .for-who-card p,
+body.theme-cream .section-light .why-card p   { color: var(--text-muted); }
+
+/* Le card-image-overlay fade vers le bg de la carte — qu'il faut suivre,
+   sinon on voit une coupure entre l'image et la zone texte.
+   On rend le bas du gradient PLEINEMENT solide (de 80% à 100%) pour masquer
+   la ligne 1px qui apparaissait au bord pendant l'animation scale.
+   Couleur explicite (#FBEFDF) pour rester aligné avec le bg crème pur des cartes
+   et NON la variable --bg-card (qui reste en #FFF7EA pour les autres composants). */
+body.theme-cream .section-light .for-who-card .card-image-overlay,
+body.theme-cream .section-light .why-card .card-image-overlay {
+  background: linear-gradient(180deg,
+    transparent 0%,
+    transparent 45%,
+    #FBEFDF 80%,
+    #FBEFDF 100%);
+}
+
+/* Bridge entre l'image et la partie texte : la gradient overlay vit DANS
+   .card-image (clippée à height:220px), donc pendant le `scale(1.05)` de l'image
+   il pouvait subsister 1-2px d'image visibles au bord — le temps que le navigateur
+   recompose. On fait chevaucher .card-content sur les 10 derniers pixels de
+   .card-image avec un fond crème opaque : peu importe le micro-décalage de
+   l'animation, il y a toujours 10px de masque solide qui couvrent la jonction.
+   Couleur explicite (#FBEFDF) pour rester alignée avec le bg crème pur des cartes. */
+body.theme-cream .section-light .for-who-card .card-content,
+body.theme-cream .section-light .why-card .card-content {
+  position: relative;
+  z-index: 2;
+  background: #FBEFDF;
+  margin-top: -10px;
+  padding-top: 42px;            /* 32px d'origine + 10px pour conserver l'espacement interne */
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg); /* on respecte les coins arrondis */
+}
+
+/* Pastilles d'icônes : bleu translucide + glyphe bleu marine */
+body.theme-cream .section-light .for-who-card .card-icon,
+body.theme-cream .section-light .why-icon {
+  background: rgba(20, 47, 138, 0.10);
+  border-color: rgba(20, 47, 138, 0.22);
+  color: var(--accent);
+}
+
+/* "Nous ne faisons pas de petits événements" : note crème sur bandeau bleu */
+body.theme-cream .section-light .for-who-note {
+  background: rgba(251, 239, 223, 0.08);
+  border-color: rgba(251, 239, 223, 0.22);
+  color: var(--text-dark);
+}
+body.theme-cream .section-light .for-who-note svg { color: var(--text-dark); }
+
+/* FAQ sur bandeau bleu : titre/sous-titre déjà en crème via section-light.
+   Ici on force les éléments interactifs à rester lisibles. */
+body.theme-cream .section-light .faq-item { border-bottom-color: rgba(251, 239, 223, 0.18); }
+body.theme-cream .section-light .faq-question { color: var(--text-dark); }              /* crème */
+body.theme-cream .section-light .faq-question:hover { color: #ffffff; }
+body.theme-cream .section-light .faq-answer p { color: var(--text-dark-muted); }        /* crème désaturé */
+body.theme-cream .section-light .faq-question .faq-icon {
+  background: rgba(251, 239, 223, 0.14);
+  color: var(--text-dark);                                                              /* crème */
+}
+body.theme-cream .section-light .faq-item.open .faq-icon {
+  background: var(--text-dark);                                                         /* crème */
+  color: var(--accent);                                                                 /* bleu marine */
+}
+
+/* section-tag (label "INFORMATIONS" / "POURQUOI GURU") sur bandeau bleu */
+body.theme-cream .section-light .section-tag { color: var(--text-dark-muted); }
+
+/* Watermark logo en thème crème : on bascule sur le SVG bleu pour le contraste,
+   et on réduit l'opacité (sinon le bleu sur crème devient trop "tâche") */
+body.theme-cream .has-logo-watermark::before {
+  background-image: url('images/logo-icone-bleu.svg');
+  opacity: 0.05;
+  filter: drop-shadow(0 0 40px rgba(20, 47, 138, 0.04));
+}
+
+/* Fix anti-aliasing : la ligne ténue qui apparaissait au bas de l'image
+   pendant le hover de la carte (scale 1.05) venait du sub-pixel rendering
+   au bord du conteneur overflow:hidden. On force un layer GPU + on étend
+   légèrement le clip pour éviter le bord visible. */
+.for-who-card .card-image,
+.why-card .card-image {
+  background: var(--bg-card); /* fallback derrière l'image scalée */
+}
+/* En thème crème : on aligne le fallback sur le crème pur des cartes
+   (#FBEFDF) au lieu du var(--bg-card) qui reste en #FFF7EA pour les autres
+   composants. */
+body.theme-cream .for-who-card .card-image,
+body.theme-cream .why-card .card-image {
+  background: #FBEFDF;
+}
+.for-who-card .card-image img,
+.why-card .card-image img {
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+.for-who-card:hover .card-image img,
+.why-card:hover .card-image img {
+  transform: translate3d(0, 0, 0) scale(1.05);
+}
 
 /* --- TRUST sur fond sombre : inverser logos + cartes stats --- */
 #trust.section-dark .logo-item {

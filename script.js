@@ -11,8 +11,8 @@ const translations = {
 
     // Hero
     heroBadge: "Traiteur événementiel 360°",
-    heroTitle1: "Le traiteur des événements ",
-    heroHighlight: "sous haute pression",
+    heroTitle1: "Gourmandise et ",
+    heroHighlight: "efficacité",
     heroTitle2: ", partout dans le monde.",
     heroSubtitle: "Traiteur 360 pour entreprises et agences : buffets, bars et staff pour vos séminaires, lancements produits et festivals — réactivité, qualité, flexibilité.",
     stat1Num: "250 000+",
@@ -33,7 +33,6 @@ const translations = {
     forWho1Desc: "Festivals, shows en live, grandes conférences, événements à volumes massifs. Des contextes où la logistique doit être irréprochable et les volumes parfaitement maîtrisés.",
     forWho2Title: "Soirées clients & moments premium",
     forWho2Desc: "Lancements produits, soirées clients, events marque, séminaires haut de gamme. L'excellence culinaire au service de votre image.",
-    forWhoNote: "Nous ne faisons pas de petits événements privés / micro-budgets.",
 
     // Services 360
 
@@ -173,9 +172,9 @@ const translations = {
 
     // Hero
     heroBadge: "360° Event Catering",
-    heroTitle1: "The caterer for ",
-    heroHighlight: "high-pressure",
-    heroTitle2: " events, all around the world.",
+    heroTitle1: "Indulgence and ",
+    heroHighlight: "efficiency",
+    heroTitle2: ", everywhere in the world.",
     heroSubtitle: "Full-service caterer for businesses and agencies: buffets, bars and staff for your seminars, product launches and festivals — responsiveness, quality, flexibility.",
     stat1Num: "250,000+",
     stat1Label: "meals served per year",
@@ -195,7 +194,6 @@ const translations = {
     forWho1Desc: "Festivals, live shows, large conferences, massive-volume events. Contexts where logistics must be flawless and volumes perfectly mastered.",
     forWho2Title: "Client events & premium moments",
     forWho2Desc: "Product launches, client evenings, brand events, high-end seminars. Culinary excellence at the service of your image.",
-    forWhoNote: "We do not cater small private events or micro-budgets.",
 
     // Services 360
 
@@ -469,21 +467,14 @@ function initSmoothScroll() {
 }
 
 // ===== HEADER SCROLL EFFECT =====
+// On bascule juste une classe ; les couleurs viennent du CSS pour rester
+// compatibles avec le thème actif (sombre ou crème).
 function initHeaderScroll() {
   const header = document.querySelector('.header');
-  let lastScroll = 0;
-
+  if (!header) return;
   window.addEventListener('scroll', () => {
-    const currentScroll = window.pageYOffset;
-
-    if (currentScroll > 100) {
-      header.style.background = 'rgba(15, 15, 18, 0.95)';
-    } else {
-      header.style.background = 'rgba(15, 15, 18, 0.85)';
-    }
-
-    lastScroll = currentScroll;
-  });
+    header.classList.toggle('scrolled', window.pageYOffset > 100);
+  }, { passive: true });
 }
 
 // ===== GALLERY =====
@@ -695,6 +686,130 @@ function initFontSwitcher() {
       const isMasonry = gallerySelect.value === 'masonry';
       galleryGrid.classList.toggle('layout-masonry', isMasonry);
       localStorage.setItem('guru-gallery-layout', gallerySelect.value);
+    });
+  }
+
+  // ===== Code couleur (thème) =====
+  // Deux templates : "dark" (premium sombre, identique à l'actuel) et "cream"
+  // (DA Valentin — crème + bleu marine #142F8A / #FBEFDF). On bascule via une
+  // classe sur <body> et on swap les SVG des logos pour préserver le contraste.
+  const colorSelect = document.getElementById('colorTemplateSelect');
+  const logoIcone = document.querySelector('.logo .logo-icone');
+  const logoTypo  = document.querySelector('.logo .logo-typo');
+  const LOGO_BLANC = { icone: 'images/logo-icone-blanc.svg', typo: 'images/logo-typo-blanc.svg' };
+  const LOGO_BLEU  = { icone: 'images/logo-icone-bleu.svg',  typo: 'images/logo-typo-bleu.svg'  };
+
+  function applyColorTemplate(theme) {
+    const isCream = theme === 'cream';
+    document.body.classList.toggle('theme-cream', isCream);
+    const set = isCream ? LOGO_BLEU : LOGO_BLANC;
+    if (logoIcone) logoIcone.setAttribute('src', set.icone);
+    if (logoTypo)  logoTypo.setAttribute('src',  set.typo);
+  }
+
+  if (colorSelect) {
+    const savedTheme = localStorage.getItem('guru-color-template') || 'dark';
+    colorSelect.value = savedTheme;
+    applyColorTemplate(savedTheme);
+    colorSelect.addEventListener('change', () => {
+      const theme = colorSelect.value;
+      localStorage.setItem('guru-color-template', theme);
+      applyColorTemplate(theme);
+    });
+  }
+
+  // ===== Assets décoratifs (fourchette + baguettes) =====
+  // Bonnes pratiques :
+  // - on n'allume jamais sans le consentement utilisateur (toggle off par défaut)
+  // - apparition progressive via IntersectionObserver (pas de "pop" brutal)
+  // - parallaxe légère synchronisée au scroll via requestAnimationFrame
+  // - on respecte prefers-reduced-motion (CSS désactive l'anim, JS le mouvement)
+  const assetsToggle = document.getElementById('assetsToggle');
+  const assetsToggleText = assetsToggle?.querySelector('.assets-toggle-text');
+  const overlayLayer = document.getElementById('overlayAssets');
+
+  function setAssetsState(on) {
+    document.body.classList.toggle('assets-on', on);
+    if (assetsToggle) {
+      assetsToggle.setAttribute('aria-pressed', on ? 'true' : 'false');
+      if (assetsToggleText) assetsToggleText.textContent = on ? 'Activés' : 'Désactivés';
+    }
+    if (on) {
+      revealAssetsInView();
+      bindAssetsParallax();
+    } else {
+      unbindAssetsParallax();
+    }
+  }
+
+  // Apparition au scroll — observer les assets via IntersectionObserver virtuel
+  // (le calque est `position: fixed`, donc on déclenche `is-visible` quand
+  // la section qui leur sert d'ancre verticale entre dans le viewport).
+  function revealAssetsInView() {
+    if (!overlayLayer) return;
+    const items = overlayLayer.querySelectorAll('.overlay-asset');
+    items.forEach((el, i) => {
+      // petit décalage pour que l'apparition soit chorégraphiée et pas synchrone
+      setTimeout(() => el.classList.add('is-visible'), 120 * i);
+    });
+  }
+
+  // Parallaxe — chaque asset a un coefficient (vitesse) différent pour donner
+  // de la profondeur. On stocke la fonction handler pour pouvoir la retirer.
+  let parallaxHandler = null;
+  let parallaxTicking = false;
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function bindAssetsParallax() {
+    if (parallaxHandler || !overlayLayer || reduceMotion) return;
+    const items = Array.from(overlayLayer.querySelectorAll('.overlay-asset'));
+    // coefficients : positifs = descend plus lentement que la page, négatifs = remonte
+    const coeffs = items.map((el, i) => {
+      // alternance + variation entre -0.18 et 0.18
+      return ((i % 2 === 0) ? -1 : 1) * (0.08 + (i * 0.025));
+    });
+
+    const update = () => {
+      const y = window.scrollY || window.pageYOffset;
+      items.forEach((el, i) => {
+        const offset = y * coeffs[i];
+        // on conserve la rotation depuis --rot (lue via CSS custom prop)
+        const rot = getComputedStyle(el).getPropertyValue('--rot') || '0deg';
+        el.style.transform = `translate3d(0, ${offset.toFixed(1)}px, 0) rotate(${rot.trim()})`;
+      });
+      parallaxTicking = false;
+    };
+
+    parallaxHandler = () => {
+      if (!parallaxTicking) {
+        window.requestAnimationFrame(update);
+        parallaxTicking = true;
+      }
+    };
+    window.addEventListener('scroll', parallaxHandler, { passive: true });
+    update(); // état initial
+  }
+
+  function unbindAssetsParallax() {
+    if (!parallaxHandler) return;
+    window.removeEventListener('scroll', parallaxHandler);
+    parallaxHandler = null;
+    // reset transforms (laisse l'anim drift CSS reprendre la main)
+    if (overlayLayer) {
+      overlayLayer.querySelectorAll('.overlay-asset').forEach(el => {
+        el.style.transform = '';
+        el.classList.remove('is-visible');
+      });
+    }
+  }
+
+  if (assetsToggle) {
+    const savedAssets = localStorage.getItem('guru-assets-on') === '1';
+    setAssetsState(savedAssets);
+    assetsToggle.addEventListener('click', () => {
+      const next = !document.body.classList.contains('assets-on');
+      localStorage.setItem('guru-assets-on', next ? '1' : '0');
+      setAssetsState(next);
     });
   }
 }

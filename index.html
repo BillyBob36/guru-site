@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Guru – Traiteur événementiel premium | Buffets, cocktails & staff pour vos événements</title>
-  <meta name="description" content="Guru, traiteur 360° pour événements sous haute pression. Buffets, cocktails dînatoires, bars, staff et scénographie pour séminaires, festivals et lancements produits. 250 000+ repas/an, 15 ans d'expertise, 4 pays. Devis gratuit en 48h.">
+  <meta name="description" content="Guru, traiteur 360° gourmandise et efficacité pour vos événements. Buffets, cocktails dînatoires, bars, staff et scénographie pour séminaires, festivals et lancements produits. 250 000+ repas/an, 15 ans d'expertise, 4 pays. Devis gratuit en 48h.">
   <meta name="keywords" content="traiteur événementiel, traiteur premium, cocktail dînatoire, traiteur séminaire, traiteur festival, traiteur corporate, traiteur végétarien, traiteur végan, traiteur halal, traiteur international, buffet entreprise, plateaux repas, livraison repas événement, traiteur France, traiteur Paris, traiteur gros volume, traiteur écologique, traiteur fait maison, traiteur sans gluten, catering événementiel">
   <meta name="author" content="Guru">
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
@@ -17,7 +17,7 @@
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Guru — Traiteur événementiel">
   <meta property="og:title" content="Guru – Traiteur événementiel premium | Buffets, cocktails & staff">
-  <meta property="og:description" content="Traiteur 360° pour événements sous haute pression. Buffets, bars, staff et scénographie. 250 000+ repas/an, 15 ans d'expertise, 4 pays. Devis gratuit en 48h.">
+  <meta property="og:description" content="Traiteur 360° — gourmandise et efficacité pour vos événements. Buffets, bars, staff et scénographie. 250 000+ repas/an, 15 ans d'expertise, 4 pays. Devis gratuit en 48h.">
   <meta property="og:image" content="https://guru-demo.lamidetlm.com/images/hero-buffet.jpg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
@@ -27,7 +27,7 @@
   <meta property="og:locale:alternate" content="en_US">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Guru – Traiteur événementiel premium">
-  <meta name="twitter:description" content="Traiteur 360° pour événements sous haute pression. Buffets, bars, staff et scénographie. Devis gratuit en 48h.">
+  <meta name="twitter:description" content="Traiteur 360° — gourmandise et efficacité pour vos événements. Buffets, bars, staff et scénographie. Devis gratuit en 48h.">
   <meta name="twitter:image" content="https://guru-demo.lamidetlm.com/images/hero-buffet.jpg">
   <meta name="twitter:image:alt" content="Buffet traiteur Guru pour événement premium">
   <!-- Schema.org — Organisation / FoodService -->
@@ -54,7 +54,7 @@
       "@type": "QuantitativeValue",
       "minValue": 80
     },
-    "slogan": "Traiteur 360° pour événements sous haute pression",
+    "slogan": "Gourmandise et efficacité pour vos événements",
     "hasOfferCatalog": {
       "@type": "OfferCatalog",
       "name": "Prestations traiteur",
@@ -185,7 +185,7 @@
           <span data-i18n="heroBadge">Traiteur événementiel 360°</span>
         </div>
         <h1 data-i18n-html="heroTitle1,heroHighlight,heroTitle2">
-          Le traiteur des événements <span class="highlight">sous haute pression</span>, partout dans le monde.
+          Gourmandise et <span class="highlight">efficacité</span>, partout dans le monde.
         </h1>
         <p class="subtitle" data-i18n="heroSubtitle">
           Traiteur 360 pour entreprises et agences : buffets, bars et staff pour vos séminaires, lancements produits et festivals — réactivité, qualité, flexibilité.
@@ -270,14 +270,6 @@
             <p>Comités de direction, conventions d'entreprise, événements internes sur-mesure. Une offre sans limite de format, pensée pour les organisations qui exigent rigueur et discrétion.</p>
           </div>
         </div>
-      </div>
-      <div class="for-who-note fade-up" data-i18n="forWhoNote">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <circle cx="12" cy="12" r="10"></circle>
-          <line x1="12" y1="8" x2="12" y2="12"></line>
-          <line x1="12" y1="16" x2="12.01" y2="16"></line>
-        </svg>
-        Nous ne faisons pas de petits événements privés / micro-budgets.
       </div>
     </div>
   </section>
@@ -390,15 +382,50 @@
           Des marques et événements de référence nous font confiance chaque année.
         </p>
       </div>
-      <div class="logos-band fade-up">
-        <div class="logo-item">FISE</div>
-        <div class="logo-item">Fortnite Worlds</div>
-        <div class="logo-item">PlayStation</div>
-        <div class="logo-item">Red Bull</div>
-        <div class="logo-item">Lancôme</div>
-        <div class="logo-item">FDJ</div>
-        <div class="logo-item">FNAC</div>
-        <div class="logo-item">R6</div>
+      <!-- Bandeau déroulant infini : la liste est dupliquée (aria-hidden sur la
+           copie) pour que l'animation translateX(-50%) reboucle sans saut.
+           Tant qu'on n'a pas les SVG officiels, on affiche le nom en text-pill ;
+           pour basculer sur un vrai logo, remplacer le contenu d'un .logo-item
+           par <img src="images/logos/<brand>.svg" alt="<brand>" class="logo-img">. -->
+      <div class="logos-marquee fade-up" aria-label="Marques et partenaires">
+        <div class="logos-marquee-track">
+          <div class="logo-item">FISE</div>
+          <div class="logo-item">Epic Games</div>
+          <div class="logo-item">Riot Games</div>
+          <div class="logo-item">PlayStation</div>
+          <div class="logo-item">Ubisoft</div>
+          <div class="logo-item">Red Bull</div>
+          <div class="logo-item">Asus ROG</div>
+          <div class="logo-item">Karmine Corp</div>
+          <div class="logo-item">Blast</div>
+          <div class="logo-item">Speedons</div>
+          <div class="logo-item">Starladder</div>
+          <div class="logo-item">EVA</div>
+          <div class="logo-item">Lancôme</div>
+          <div class="logo-item">FDJ</div>
+          <div class="logo-item">FNAC</div>
+          <div class="logo-item">École des Mines</div>
+          <div class="logo-item">La Chaîne Parlementaire</div>
+        </div>
+        <div class="logos-marquee-track" aria-hidden="true">
+          <div class="logo-item">FISE</div>
+          <div class="logo-item">Epic Games</div>
+          <div class="logo-item">Riot Games</div>
+          <div class="logo-item">PlayStation</div>
+          <div class="logo-item">Ubisoft</div>
+          <div class="logo-item">Red Bull</div>
+          <div class="logo-item">Asus ROG</div>
+          <div class="logo-item">Karmine Corp</div>
+          <div class="logo-item">Blast</div>
+          <div class="logo-item">Speedons</div>
+          <div class="logo-item">Starladder</div>
+          <div class="logo-item">EVA</div>
+          <div class="logo-item">Lancôme</div>
+          <div class="logo-item">FDJ</div>
+          <div class="logo-item">FNAC</div>
+          <div class="logo-item">École des Mines</div>
+          <div class="logo-item">La Chaîne Parlementaire</div>
+        </div>
       </div>
       <div class="stats-row fade-up">
         <div class="stat-card">
@@ -706,7 +733,34 @@
           <option value="masonry">Masonry (ratios d'origine)</option>
         </select>
       </div>
+
+      <div class="switcher-group">
+        <label class="switcher-label">Code couleur</label>
+        <select id="colorTemplateSelect">
+          <option value="dark">Premium sombre (actuelle)</option>
+          <option value="cream">Crème &amp; Bleu marine</option>
+        </select>
+      </div>
+
+      <div class="switcher-group">
+        <label class="switcher-label">Assets décoratifs</label>
+        <button type="button" class="assets-toggle" id="assetsToggle" aria-pressed="false">
+          <span class="assets-toggle-track"><span class="assets-toggle-thumb"></span></span>
+          <span class="assets-toggle-text">Désactivés</span>
+        </button>
+        <p class="switcher-hint">Fourchette &amp; baguettes apparaissent en surimpression au fil du scroll.</p>
+      </div>
     </div>
+  </div>
+
+  <!-- ===== OVERLAY ASSETS (fork + chopsticks décoratifs) ===== -->
+  <div class="overlay-assets" id="overlayAssets" aria-hidden="true">
+    <img src="images/asset-fork.png" alt="" class="overlay-asset asset-fork asset-pos-1" data-asset="fork-1">
+    <img src="images/asset-chopsticks.png" alt="" class="overlay-asset asset-chopsticks asset-pos-1" data-asset="chopsticks-1">
+    <img src="images/asset-fork.png" alt="" class="overlay-asset asset-fork asset-pos-2" data-asset="fork-2">
+    <img src="images/asset-chopsticks.png" alt="" class="overlay-asset asset-chopsticks asset-pos-2" data-asset="chopsticks-2">
+    <img src="images/asset-fork.png" alt="" class="overlay-asset asset-fork asset-pos-3" data-asset="fork-3">
+    <img src="images/asset-chopsticks.png" alt="" class="overlay-asset asset-chopsticks asset-pos-3" data-asset="chopsticks-3">
   </div>
 
   <!-- Schema.org FAQ Structured Data -->
