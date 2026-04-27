@@ -1172,7 +1172,14 @@ body.theme-cream .header.scrolled { background: rgba(251, 239, 223, 0.96); }
 .logos-marquee {
   position: relative;
   width: 100%;
-  overflow: hidden;
+  /* `overflow: clip` au lieu de `overflow: hidden` : ça permet d'ajouter
+     `overflow-clip-margin` qui autorise un débordement contrôlé sans
+     impacter le layout. On donne 6px → ça absorbe le translateY(-2px) du
+     hover + la bordure 1px de la pastille, donc la bordure du haut reste
+     visible quand on survole une pastille en bord du bandeau. PAS de
+     padding ajouté → le gap inter-bandeaux reste exactement à 20px. */
+  overflow: clip;
+  overflow-clip-margin: 6px;
   /* IMPORTANT : flex pour aligner les 2 pistes côte-à-côte (sans flex elles
      s'empilaient verticalement → on voyait 2 lignes de logos qui ne bouclaient
      pas). Avec flex, les 2 pistes occupent une bande horizontale unique, et
@@ -1180,11 +1187,6 @@ body.theme-cream .header.scrolled { background: rgba(251, 239, 223, 0.96); }
      (-100% - gap), la 2e arrive exactement à sa place → boucle invisible. */
   display: flex;
   flex-wrap: nowrap;
-  /* PAS de padding vertical : tout padding s'ajoute au gap perçu entre les 2
-     bandeaux (M1.padding-bottom + margin-top + M2.padding-top → cumul). On
-     garde le rectangle au plus serré autour des pastilles. La box-shadow
-     douce des pastilles (~8px) sera très légèrement clippée mais c'est un
-     trade-off acceptable pour un gap inter-bandeaux propre. */
   padding: 0;
   /* fade edges left/right pour atténuer l'apparition/disparition des items */
   -webkit-mask-image: linear-gradient(90deg,
@@ -1224,6 +1226,13 @@ body.theme-cream .header.scrolled { background: rgba(251, 239, 223, 0.96); }
      est l'unique distance entre la dernière pastille du 1er bandeau et la
      première pastille du 2nd. */
   margin-top: 20px;
+  /* Espace entre le 2e bandeau et la stats-row qui suit. La règle
+     `.logos-marquee:last-of-type` était bugguée parce que ce sélecteur
+     s'applique au DERNIER div de type div parmi ses frères — or après
+     les marquees viennent .stats-row et .cta-reminder qui sont aussi
+     des div, donc aucun marquee n'était "last-of-type". On pose la
+     marge directement sur le bandeau miroir (qui est toujours le 2nd). */
+  margin-bottom: 64px;
 }
 .logos-marquee--reverse .logos-marquee-track {
   /* Inverse le sens de défilement : translation va de -100% vers 0%
@@ -1233,13 +1242,6 @@ body.theme-cream .header.scrolled { background: rgba(251, 239, 223, 0.96); }
      demi-boucle au chargement, donc le 2e bandeau ne montre pas exactement
      les mêmes marques au-dessus que le 1er à un instant donné. */
   animation-delay: -30s;
-}
-
-/* Marge sous l'ENSEMBLE des 2 bandeaux (avant la stats-row qui suit) :
-   on déplace l'ancien margin-bottom de .logos-marquee vers le dernier
-   bandeau de la liste pour ne pas créer un trou entre les 2 bandeaux. */
-.logos-marquee:last-of-type {
-  margin-bottom: 64px;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1319,18 +1321,10 @@ body.theme-cream .header.scrolled { background: rgba(251, 239, 223, 0.96); }
 .logo-starladder     { --logo-src: url('images/logos/starladder.svg');   --logo-w: 45px; }
 .logo-ubisoft        { --logo-src: url('images/logos/ubisoft.svg');     --logo-w: 75px; }
 
-/* === Désolidarisation : agrandissement VISUEL UNIQUEMENT, sans changer
-   les dimensions du conteneur. `transform: scale()` opère après le layout
-   donc le silhouette grossit visuellement (et déborde la pastille) mais
-   la box du `.logo-img` (et donc la grille parente) reste à la taille
-   de référence — la pastille garde la même hauteur que les autres.
-   Ratios cumulés v6+v8 :
-   - Red Bull : x1.32 (deux passes de +15%)
-   - Asus ROG : x1.32 (idem)
-   - Mines    : x1.20 (+20%) */
-.logo-redbull   { transform: scale(1.32); }
-.logo-asus-rog  { transform: scale(1.32); }
-.logo-mines     { transform: scale(1.20); }
+/* Note : les transform: scale() de désolidarisation pour Red Bull / Asus /
+   Mines sont définies plus bas dans .logo-item--svg > .logo-img.logo-<brand>
+   parce qu'on a besoin de combiner le translate(-50%,-50%) de centrage
+   absolute avec le scale() de grossissement. */
 
 /* Logos "image" (silhouette SVG) : padding plus serré pour rester équilibrés
    avec les pastilles texte (qui ont 16px 28px).
@@ -1339,18 +1333,36 @@ body.theme-cream .header.scrolled { background: rgba(251, 239, 223, 0.96); }
    entre les deux → pas de saut, pas de redimensionnement de pastille,
    et le nom complet reste lisible quel que soit l'item. */
 .logo-item--svg {
-  padding: 14px 22px;
+  /* DIMENSIONS UNIFORMES : tous les cadres font exactement la même taille,
+     peu importe la marque. Les silhouettes (de tailles différentes selon
+     les SVG) sont CENTRÉES dans cette boîte fixe — leurs dimensions
+     visuelles d'origine sont conservées (cf. retour client : "ne pas
+     resizer les logos, désolidariser la taille des logos de la taille
+     de leur cadre"). */
+  width: 170px;
+  height: 56px;
+  box-sizing: border-box;
+  padding: 0;                 /* on utilise width/height fixes au lieu de padding */
   /* Important : la silhouette utilise currentColor → on contrôle la couleur
      ici, par thème. */
   color: var(--text-dark-muted);  /* dark theme par défaut sur fond blanc pur */
-  display: grid;
-  grid-template-areas: 'media';
+  /* Position relative : ancre pour les enfants .logo-img / .logo-name
+     positionnés en absolute → ils ne participent pas au sizing du cadre. */
+  position: relative;
+  display: flex;
   align-items: center;
-  justify-items: center;
+  justify-content: center;
 }
 .logo-item--svg > .logo-img,
 .logo-item--svg > .logo-name {
-  grid-area: media;
+  /* Positionnés en absolute (centrés dans la pastille) → ils n'imposent
+     plus leur taille au conteneur. Le nom complet peut donc être plus
+     large que le cadre sans l'agrandir : il déborde visuellement, ce
+     qui est OK puisqu'on a `overflow: clip; overflow-clip-margin` au
+     niveau du marquee qui autorise un débordement contrôlé. */
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
   transition: opacity 0.25s ease;
 }
 .logo-item--svg > .logo-name {
@@ -1366,8 +1378,21 @@ body.theme-cream .header.scrolled { background: rgba(251, 239, 223, 0.96); }
 }
 .logo-item--svg:hover > .logo-img { opacity: 0; }
 .logo-item--svg:hover > .logo-name { opacity: 1; }
+
+/* Combinaison transform: translate(-50%,-50%) + scale() pour les 3 logos
+   à agrandir visuellement (Red Bull / Asus ROG / Mines). On REPLACE le
+   transform de centrage car CSS transforms ne se cumulent pas — on doit
+   réécrire avec translate puis scale. */
+.logo-item--svg > .logo-img.logo-redbull   { transform: translate(-50%, -50%) scale(1.32); }
+.logo-item--svg > .logo-img.logo-asus-rog  { transform: translate(-50%, -50%) scale(1.32); }
+.logo-item--svg > .logo-img.logo-mines     { transform: translate(-50%, -50%) scale(1.20); }
+
 @media (max-width: 768px) {
-  .logo-item--svg > .logo-name { font-size: 0.68rem; letter-spacing: 0.6px; }
+  .logo-item--svg { width: 140px; height: 48px; padding: 0; }
+  .logo-item--svg > .logo-name { font-size: 0.66rem; letter-spacing: 0.5px; }
+}
+@media (max-width: 480px) {
+  .logo-item--svg { width: 120px; height: 42px; padding: 0; }
 }
 /* Sur prefers-reduced-motion : pas de fade, on garde juste la silhouette
    (le client peut toujours lire le nom dans l'aria-label / tooltip natif) */
