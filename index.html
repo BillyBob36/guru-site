@@ -289,7 +289,14 @@
       <div class="gallery-filters fade-up" id="galleryFilters">
         <button class="filter-btn active" data-filter="all" data-i18n="filterAll">Tout</button>
       </div>
-      <div class="gallery-grid fade-up" id="galleryGrid">
+      <!-- Le grid n'a PLUS la classe `fade-up` : c'est le conteneur des photos
+           injectées par JS, et chaque photo a sa propre animation .gallery-item-enter
+           (CSS keyframe `gallery-item-appear`). Garder fade-up sur le grid faisait
+           que tant que l'IntersectionObserver n'avait pas vu le grid (par ex.
+           après un scroll-jump qui pose le viewport sur les filtres au-dessus),
+           tout le grid restait opacity:0 — d'où l'impression que la galerie
+           attendait un scroll ou un clic de filtre pour apparaître. -->
+      <div class="gallery-grid" id="galleryGrid">
         <!-- Photos will be injected by JS from tags.json -->
       </div>
       <div class="gallery-load-more fade-up">
