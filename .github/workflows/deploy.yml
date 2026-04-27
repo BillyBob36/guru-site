@@ -1,0 +1,26 @@
+name: Deploy to Coolify
+
+# Trigger automatique à chaque push sur master.
+# Le job SSH dans le serveur Coolify et appelle l'API locale (le dashboard
+# Coolify n'est pas exposé publiquement → on passe par localhost:8000).
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch: {}     # permet aussi le déclenchement manuel depuis l'onglet Actions
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Coolify Deploy via SSH
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.COOLIFY_HOST }}
+          username: root
+          key: ${{ secrets.COOLIFY_SSH_KEY }}
+          script: |
+            curl --fail --silent --show-error \
+              'http://localhost:8000/api/v1/deploy?uuid=ygskwwos4o0kkkck8c4k4c8s&force=true' \
+              -H 'Authorization: Bearer ${{ secrets.COOLIFY_TOKEN }}' \
+              -H 'Accept: application/json'
