@@ -1250,25 +1250,74 @@ body.theme-cream .header.scrolled { background: rgba(251, 239, 223, 0.96); }
 
 /* Per-brand : src + largeur calibrée pour préserver le rythme visuel du bandeau */
 .logo-asus-rog       { --logo-src: url('images/logos/asus-rog.svg');     --logo-w: 36px; }
+.logo-blast          { --logo-src: url('images/logos/blast.svg');       --logo-w: 90px; }
 .logo-epicgames      { --logo-src: url('images/logos/epicgames.svg');    --logo-w: 90px; }
-.logo-fdj            { --logo-src: url('images/logos/fdj.svg');          --logo-w: 70px; }
+.logo-eva            { --logo-src: url('images/logos/eva.svg');         --logo-w: 75px; }
+.logo-fdj            { --logo-src: url('images/logos/fdj.svg');          --logo-w: 80px; }
+.logo-fise           { --logo-src: url('images/logos/fise.svg');         --logo-w: 65px; }
 .logo-fnac           { --logo-src: url('images/logos/fnac.svg');         --logo-w: 70px; }
 .logo-karmine-corp   { --logo-src: url('images/logos/karmine-corp.svg'); --logo-w: 26px; }
 .logo-lancome        { --logo-src: url('images/logos/lancome.svg');     --logo-w: 110px; }
+.logo-lcp            { --logo-src: url('images/logos/lcp.svg');         --logo-w: 56px; }
+.logo-mines          { --logo-src: url('images/logos/mines.svg');        --logo-w: 30px; }
 .logo-playstation    { --logo-src: url('images/logos/playstation.svg'); --logo-w: 100px; }
 .logo-redbull        { --logo-src: url('images/logos/redbull.svg');     --logo-w: 90px; }
 .logo-riotgames      { --logo-src: url('images/logos/riotgames.svg');   --logo-w: 100px; }
+.logo-speedons       { --logo-src: url('images/logos/speedons.svg');     --logo-w: 60px; }
+.logo-starladder     { --logo-src: url('images/logos/starladder.svg');   --logo-w: 45px; }
 .logo-ubisoft        { --logo-src: url('images/logos/ubisoft.svg');     --logo-w: 75px; }
-.logo-blast          { --logo-src: url('images/logos/blast.svg');       --logo-w: 90px; }
-.logo-lcp            { --logo-src: url('images/logos/lcp.svg');         --logo-w: 56px; }
+
+/* FDJ : la SVG retravaillée a une bande noire + texte blanc par-dessus.
+   En mask-image alpha-mode (défaut), les deux contribuent → silhouette = bande
+   pleine. On force `mask-mode: luminance` UNIQUEMENT pour FDJ : noir = invisible,
+   blanc = visible → la silhouette se réduit aux LETTRES "fdj" en blanc. */
+.logo-fdj {
+  -webkit-mask-mode: luminance;
+  mask-mode: luminance;
+}
 
 /* Logos "image" (silhouette SVG) : padding plus serré pour rester équilibrés
-   avec les pastilles texte (qui ont 16px 28px) */
+   avec les pastilles texte (qui ont 16px 28px).
+   Layout en GRID monocellule : la silhouette et le nom de marque partagent
+   exactement la même cellule (grid-area: media). Au :hover on cross-fade
+   entre les deux → pas de saut, pas de redimensionnement de pastille,
+   et le nom complet reste lisible quel que soit l'item. */
 .logo-item--svg {
   padding: 14px 22px;
   /* Important : la silhouette utilise currentColor → on contrôle la couleur
      ici, par thème. */
   color: var(--text-dark-muted);  /* dark theme par défaut sur fond blanc pur */
+  display: grid;
+  grid-template-areas: 'media';
+  align-items: center;
+  justify-items: center;
+}
+.logo-item--svg > .logo-img,
+.logo-item--svg > .logo-name {
+  grid-area: media;
+  transition: opacity 0.25s ease;
+}
+.logo-item--svg > .logo-name {
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: currentColor;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+}
+.logo-item--svg:hover > .logo-img { opacity: 0; }
+.logo-item--svg:hover > .logo-name { opacity: 1; }
+@media (max-width: 768px) {
+  .logo-item--svg > .logo-name { font-size: 0.68rem; letter-spacing: 0.6px; }
+}
+/* Sur prefers-reduced-motion : pas de fade, on garde juste la silhouette
+   (le client peut toujours lire le nom dans l'aria-label / tooltip natif) */
+@media (prefers-reduced-motion: reduce) {
+  .logo-item--svg > .logo-img,
+  .logo-item--svg > .logo-name { transition: none; }
 }
 
 /* La règle "color: var(--text)" pour les silhouettes sur trust en thème
@@ -1301,17 +1350,22 @@ body.theme-cream .logo-item--svg:hover {
   .logo-item .logo-img { height: 20px; }
   .logo-item--svg { padding: 10px 16px; }
   .logo-asus-rog       { --logo-w: 28px; }
+  .logo-blast          { --logo-w: 72px; }
   .logo-epicgames      { --logo-w: 70px; }
-  .logo-fdj            { --logo-w: 56px; }
+  .logo-eva            { --logo-w: 60px; }
+  .logo-fdj            { --logo-w: 64px; }
+  .logo-fise           { --logo-w: 52px; }
   .logo-fnac           { --logo-w: 56px; }
   .logo-karmine-corp   { --logo-w: 22px; }
   .logo-lancome        { --logo-w: 86px; }
+  .logo-lcp            { --logo-w: 46px; }
+  .logo-mines          { --logo-w: 24px; }
   .logo-playstation    { --logo-w: 78px; }
   .logo-redbull        { --logo-w: 72px; }
   .logo-riotgames      { --logo-w: 80px; }
+  .logo-speedons       { --logo-w: 48px; }
+  .logo-starladder     { --logo-w: 36px; }
   .logo-ubisoft        { --logo-w: 60px; }
-  .logo-blast          { --logo-w: 72px; }
-  .logo-lcp            { --logo-w: 46px; }
 }
 @media (max-width: 480px) {
   .logo-item .logo-img { height: 18px; }

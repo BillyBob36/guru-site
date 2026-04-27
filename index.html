@@ -380,48 +380,48 @@
       </div>
       <!-- Bandeau déroulant infini : la liste est dupliquée (aria-hidden sur la
            copie) pour que l'animation translateX reboucle sans saut.
-           Brands avec SVG → .logo-item--svg + .logo-<brand> (silhouette monochrome
-           rendue via mask-image, couleur pilotée par color du parent).
-           Brands sans SVG (FISE, Speedons, Starladder, EVA, Mines) → texte
-           en pastille classique, en attente que le client fournisse les SVG. -->
+           Chaque pastille = .logo-item--svg + .logo-<brand> qui pose la
+           silhouette monochrome (couleur pilotée par color du parent) +
+           un .logo-name qui apparaît en cross-fade au survol pour révéler
+           le nom complet de la marque. -->
       <div class="logos-marquee fade-up" aria-label="Marques et partenaires">
         <div class="logos-marquee-track">
-          <div class="logo-item">FISE</div>
-          <div class="logo-item logo-item--svg" aria-label="Epic Games"><span class="logo-img logo-epicgames"></span></div>
-          <div class="logo-item logo-item--svg" aria-label="Riot Games"><span class="logo-img logo-riotgames"></span></div>
-          <div class="logo-item logo-item--svg" aria-label="PlayStation"><span class="logo-img logo-playstation"></span></div>
-          <div class="logo-item logo-item--svg" aria-label="Ubisoft"><span class="logo-img logo-ubisoft"></span></div>
-          <div class="logo-item logo-item--svg" aria-label="Red Bull"><span class="logo-img logo-redbull"></span></div>
-          <div class="logo-item logo-item--svg" aria-label="Asus ROG"><span class="logo-img logo-asus-rog"></span></div>
-          <div class="logo-item logo-item--svg" aria-label="Karmine Corp"><span class="logo-img logo-karmine-corp"></span></div>
-          <div class="logo-item logo-item--svg" aria-label="BLAST"><span class="logo-img logo-blast"></span></div>
-          <div class="logo-item">Speedons</div>
-          <div class="logo-item">Starladder</div>
-          <div class="logo-item">EVA</div>
-          <div class="logo-item logo-item--svg" aria-label="Lancôme"><span class="logo-img logo-lancome"></span></div>
-          <div class="logo-item">FDJ</div>
-          <div class="logo-item logo-item--svg" aria-label="FNAC"><span class="logo-img logo-fnac"></span></div>
-          <div class="logo-item">École des Mines</div>
-          <div class="logo-item logo-item--svg" aria-label="La Chaîne Parlementaire"><span class="logo-img logo-lcp"></span></div>
+          <div class="logo-item logo-item--svg" aria-label="FISE"><span class="logo-img logo-fise"></span><span class="logo-name">FISE</span></div>
+          <div class="logo-item logo-item--svg" aria-label="Epic Games"><span class="logo-img logo-epicgames"></span><span class="logo-name">Epic Games</span></div>
+          <div class="logo-item logo-item--svg" aria-label="Riot Games"><span class="logo-img logo-riotgames"></span><span class="logo-name">Riot Games</span></div>
+          <div class="logo-item logo-item--svg" aria-label="PlayStation"><span class="logo-img logo-playstation"></span><span class="logo-name">PlayStation</span></div>
+          <div class="logo-item logo-item--svg" aria-label="Ubisoft"><span class="logo-img logo-ubisoft"></span><span class="logo-name">Ubisoft</span></div>
+          <div class="logo-item logo-item--svg" aria-label="Red Bull"><span class="logo-img logo-redbull"></span><span class="logo-name">Red Bull</span></div>
+          <div class="logo-item logo-item--svg" aria-label="Asus ROG"><span class="logo-img logo-asus-rog"></span><span class="logo-name">Asus ROG</span></div>
+          <div class="logo-item logo-item--svg" aria-label="Karmine Corp"><span class="logo-img logo-karmine-corp"></span><span class="logo-name">Karmine Corp</span></div>
+          <div class="logo-item logo-item--svg" aria-label="BLAST"><span class="logo-img logo-blast"></span><span class="logo-name">BLAST</span></div>
+          <div class="logo-item logo-item--svg" aria-label="Speedons"><span class="logo-img logo-speedons"></span><span class="logo-name">Speedons</span></div>
+          <div class="logo-item logo-item--svg" aria-label="Starladder"><span class="logo-img logo-starladder"></span><span class="logo-name">Starladder</span></div>
+          <div class="logo-item logo-item--svg" aria-label="EVA"><span class="logo-img logo-eva"></span><span class="logo-name">EVA</span></div>
+          <div class="logo-item logo-item--svg" aria-label="Lancôme"><span class="logo-img logo-lancome"></span><span class="logo-name">Lancôme</span></div>
+          <div class="logo-item logo-item--svg" aria-label="FDJ"><span class="logo-img logo-fdj"></span><span class="logo-name">FDJ</span></div>
+          <div class="logo-item logo-item--svg" aria-label="FNAC"><span class="logo-img logo-fnac"></span><span class="logo-name">FNAC</span></div>
+          <div class="logo-item logo-item--svg" aria-label="École des Mines"><span class="logo-img logo-mines"></span><span class="logo-name">École des Mines</span></div>
+          <div class="logo-item logo-item--svg" aria-label="La Chaîne Parlementaire"><span class="logo-img logo-lcp"></span><span class="logo-name">La Chaîne Parlementaire</span></div>
         </div>
         <div class="logos-marquee-track" aria-hidden="true">
-          <div class="logo-item">FISE</div>
-          <div class="logo-item logo-item--svg"><span class="logo-img logo-epicgames"></span></div>
-          <div class="logo-item logo-item--svg"><span class="logo-img logo-riotgames"></span></div>
-          <div class="logo-item logo-item--svg"><span class="logo-img logo-playstation"></span></div>
-          <div class="logo-item logo-item--svg"><span class="logo-img logo-ubisoft"></span></div>
-          <div class="logo-item logo-item--svg"><span class="logo-img logo-redbull"></span></div>
-          <div class="logo-item logo-item--svg"><span class="logo-img logo-asus-rog"></span></div>
-          <div class="logo-item logo-item--svg"><span class="logo-img logo-karmine-corp"></span></div>
-          <div class="logo-item logo-item--svg"><span class="logo-img logo-blast"></span></div>
-          <div class="logo-item">Speedons</div>
-          <div class="logo-item">Starladder</div>
-          <div class="logo-item">EVA</div>
-          <div class="logo-item logo-item--svg"><span class="logo-img logo-lancome"></span></div>
-          <div class="logo-item">FDJ</div>
-          <div class="logo-item logo-item--svg"><span class="logo-img logo-fnac"></span></div>
-          <div class="logo-item">École des Mines</div>
-          <div class="logo-item logo-item--svg"><span class="logo-img logo-lcp"></span></div>
+          <div class="logo-item logo-item--svg"><span class="logo-img logo-fise"></span><span class="logo-name">FISE</span></div>
+          <div class="logo-item logo-item--svg"><span class="logo-img logo-epicgames"></span><span class="logo-name">Epic Games</span></div>
+          <div class="logo-item logo-item--svg"><span class="logo-img logo-riotgames"></span><span class="logo-name">Riot Games</span></div>
+          <div class="logo-item logo-item--svg"><span class="logo-img logo-playstation"></span><span class="logo-name">PlayStation</span></div>
+          <div class="logo-item logo-item--svg"><span class="logo-img logo-ubisoft"></span><span class="logo-name">Ubisoft</span></div>
+          <div class="logo-item logo-item--svg"><span class="logo-img logo-redbull"></span><span class="logo-name">Red Bull</span></div>
+          <div class="logo-item logo-item--svg"><span class="logo-img logo-asus-rog"></span><span class="logo-name">Asus ROG</span></div>
+          <div class="logo-item logo-item--svg"><span class="logo-img logo-karmine-corp"></span><span class="logo-name">Karmine Corp</span></div>
+          <div class="logo-item logo-item--svg"><span class="logo-img logo-blast"></span><span class="logo-name">BLAST</span></div>
+          <div class="logo-item logo-item--svg"><span class="logo-img logo-speedons"></span><span class="logo-name">Speedons</span></div>
+          <div class="logo-item logo-item--svg"><span class="logo-img logo-starladder"></span><span class="logo-name">Starladder</span></div>
+          <div class="logo-item logo-item--svg"><span class="logo-img logo-eva"></span><span class="logo-name">EVA</span></div>
+          <div class="logo-item logo-item--svg"><span class="logo-img logo-lancome"></span><span class="logo-name">Lancôme</span></div>
+          <div class="logo-item logo-item--svg"><span class="logo-img logo-fdj"></span><span class="logo-name">FDJ</span></div>
+          <div class="logo-item logo-item--svg"><span class="logo-img logo-fnac"></span><span class="logo-name">FNAC</span></div>
+          <div class="logo-item logo-item--svg"><span class="logo-img logo-mines"></span><span class="logo-name">École des Mines</span></div>
+          <div class="logo-item logo-item--svg"><span class="logo-img logo-lcp"></span><span class="logo-name">La Chaîne Parlementaire</span></div>
         </div>
       </div>
       <div class="stats-row fade-up">
