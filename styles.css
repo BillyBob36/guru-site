@@ -137,36 +137,41 @@ body.theme-cream .lang-btn {
   border-color: rgba(20, 47, 138, 0.20);
   color: var(--accent);
 }
-/* === CTA en thème crème — état de repos =====
-   Bleu gradient + texte crème. On NE change PAS ces valeurs au :hover
-   (la règle générique `.btn-cta:hover` les écrasait avec `background: #000`
-   qui n'est pas interpolable depuis un gradient — le bouton clignotait sur
-   bandeau bleu marine et devenait illisible).
-   Animation hover : sobre — un très léger agrandissement + une ombre
-   portée qui apparaît, rien de plus. */
+/* === CTA en thème crème ============================================
+   Repos : bleu gradient + texte crème.
+   Hover : INVERSION → fond crème + texte bleu marine. Pour que la
+           transition entre les deux fonds gradient soit fluide (le
+           navigateur ne sait pas interpoler `linear-gradient → solide`),
+           on déclare aussi le hover comme un linear-gradient (avec deux
+           stops identiques crème) → ainsi gradient↔gradient s'animent
+           naturellement, plus aucun "flash". */
 body.theme-cream .btn-cta,
 body.theme-cream .btn-cta-header,
 body.theme-cream .btn-submit {
   color: #FBEFDF !important;
-  /* propriétés ciblées : pas de `all` → pas de risque de flash gradient↔solide */
-  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+  transition: background 0.30s ease,
+              color 0.30s ease,
+              transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
               box-shadow 0.25s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* HOVER — léger scale + ombre douce, identique pour tous les CTA */
+/* HOVER — inversion claire crème ↔ bleu, scale + ombre */
 body.theme-cream .btn-cta:hover,
 body.theme-cream .btn-cta-header:hover,
 body.theme-cream .btn-submit:hover {
-  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
-  color: #FBEFDF !important;
+  background: linear-gradient(135deg, #FBEFDF 0%, #FBEFDF 100%) !important;
+  color: var(--accent) !important;
   transform: scale(1.03);
   box-shadow: 0 12px 28px rgba(20, 47, 138, 0.28);
 }
 
-/* CLICK — micro-retour à la taille initiale, ombre réduite */
+/* CLICK — micro-retour à la taille initiale, ombre réduite, on garde
+   l'état hover (crème + bleu) pour ne pas faire clignoter à chaque clic */
 body.theme-cream .btn-cta:active,
 body.theme-cream .btn-cta-header:active,
 body.theme-cream .btn-submit:active {
+  background: linear-gradient(135deg, #FBEFDF 0%, #FBEFDF 100%) !important;
+  color: var(--accent) !important;
   transform: scale(1);
   box-shadow: 0 4px 10px rgba(20, 47, 138, 0.20);
   transition: transform 80ms ease, box-shadow 80ms ease;
@@ -1159,6 +1164,13 @@ body.theme-cream .header.scrolled { background: rgba(251, 239, 223, 0.96); }
   width: 100%;
   margin-bottom: 64px;
   overflow: hidden;
+  /* IMPORTANT : flex pour aligner les 2 pistes côte-à-côte (sans flex elles
+     s'empilaient verticalement → on voyait 2 lignes de logos qui ne bouclaient
+     pas). Avec flex, les 2 pistes occupent une bande horizontale unique, et
+     l'animation translate les DEUX simultanément. Quand la 1re sort à gauche
+     (-100% - gap), la 2e arrive exactement à sa place → boucle invisible. */
+  display: flex;
+  flex-wrap: nowrap;
   /* fade edges left/right pour atténuer l'apparition/disparition des items */
   -webkit-mask-image: linear-gradient(90deg,
     transparent 0%,
@@ -1175,25 +1187,25 @@ body.theme-cream .header.scrolled { background: rgba(251, 239, 223, 0.96); }
   display: flex;
   align-items: center;
   gap: 20px;
-  flex-shrink: 0;
-  width: max-content;
+  flex-shrink: 0;        /* jamais de compression : préserve la largeur naturelle */
+  min-width: max-content;
+  padding-right: 20px;   /* gap entre la fin de cette piste et le début de la suivante */
   animation: logos-marquee-scroll 60s linear infinite;
 }
 .logos-marquee:hover .logos-marquee-track {
   animation-play-state: paused;
 }
-.logos-marquee-track + .logos-marquee-track {
-  margin-left: 20px; /* même gap que entre items, pour ne pas avoir de saut */
-}
 @keyframes logos-marquee-scroll {
   from { transform: translateX(0); }
-  to   { transform: translateX(calc(-100% - 20px)); } /* -100% du track + le gap inter-track */
+  to   { transform: translateX(-100%); } /* -100% = largeur d'1 piste (incluant son padding-right) */
 }
 @media (prefers-reduced-motion: reduce) {
   .logos-marquee {
     -webkit-mask-image: none; mask-image: none;
+    flex-wrap: wrap;
+    justify-content: center;
   }
-  .logos-marquee-track { animation: none; flex-wrap: wrap; justify-content: center; }
+  .logos-marquee-track { animation: none; flex-wrap: wrap; justify-content: center; padding-right: 0; }
   .logos-marquee-track + .logos-marquee-track { display: none; } /* on garde une seule passe */
 }
 

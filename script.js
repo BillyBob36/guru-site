@@ -10,11 +10,10 @@ const translations = {
     langBtn: "EN",
 
     // Hero
-    heroBadge: "Traiteur événementiel 360°",
     heroTitle1: "Gourmandise et ",
     heroHighlight: "efficacité",
     heroTitle2: ", partout dans le monde.",
-    heroSubtitle: "Traiteur 360 pour entreprises et agences : buffets, bars et staff pour vos séminaires, lancements produits et festivals — réactivité, qualité, flexibilité.",
+    heroSubtitle: "Traiteur événementiel 360° pour entreprises et agences : buffets, bars et staff pour vos séminaires, lancements produits et festivals — réactivité, qualité, flexibilité.",
     stat1Num: "250 000+",
     stat1Label: "repas servis par an",
     stat2Num: "15 ans",
@@ -171,11 +170,10 @@ const translations = {
     langBtn: "FR",
 
     // Hero
-    heroBadge: "360° Event Catering",
     heroTitle1: "Indulgence and ",
     heroHighlight: "efficiency",
     heroTitle2: ", everywhere in the world.",
-    heroSubtitle: "Full-service caterer for businesses and agencies: buffets, bars and staff for your seminars, product launches and festivals — responsiveness, quality, flexibility.",
+    heroSubtitle: "Event catering 360° for businesses and agencies: buffets, bars and staff for your seminars, product launches and festivals — responsiveness, quality, flexibility.",
     stat1Num: "250,000+",
     stat1Label: "meals served per year",
     stat2Num: "15 years",
@@ -696,15 +694,25 @@ function initFontSwitcher() {
   const colorSelect = document.getElementById('colorTemplateSelect');
   const logoIcone = document.querySelector('.logo .logo-icone');
   const logoTypo  = document.querySelector('.logo .logo-typo');
-  const LOGO_BLANC = { icone: 'images/logo-icone-blanc.svg', typo: 'images/logo-typo-blanc.svg' };
-  const LOGO_BLEU  = { icone: 'images/logo-icone-bleu.svg',  typo: 'images/logo-typo-bleu.svg'  };
+  const logoFooter = document.querySelector('.footer-logo .logo-svg');
+  const LOGO_BLANC = {
+    icone:  'images/logo-icone-blanc.svg',
+    typo:   'images/logo-typo-blanc.svg',
+    footer: 'images/logo-entier-xl-blanc.svg'
+  };
+  const LOGO_BLEU = {
+    icone:  'images/logo-icone-bleu.svg',
+    typo:   'images/logo-typo-bleu.svg',
+    footer: 'images/logo-entier-xl-bleu.svg'
+  };
 
   function applyColorTemplate(theme) {
     const isCream = theme === 'cream';
     document.body.classList.toggle('theme-cream', isCream);
     const set = isCream ? LOGO_BLEU : LOGO_BLANC;
-    if (logoIcone) logoIcone.setAttribute('src', set.icone);
-    if (logoTypo)  logoTypo.setAttribute('src',  set.typo);
+    if (logoIcone)  logoIcone.setAttribute('src', set.icone);
+    if (logoTypo)   logoTypo.setAttribute('src',  set.typo);
+    if (logoFooter) logoFooter.setAttribute('src', set.footer);
   }
 
   if (colorSelect) {
@@ -718,99 +726,13 @@ function initFontSwitcher() {
     });
   }
 
-  // ===== Assets décoratifs (fourchette + baguettes) =====
-  // Bonnes pratiques :
-  // - on n'allume jamais sans le consentement utilisateur (toggle off par défaut)
-  // - apparition progressive via IntersectionObserver (pas de "pop" brutal)
-  // - parallaxe légère synchronisée au scroll via requestAnimationFrame
-  // - on respecte prefers-reduced-motion (CSS désactive l'anim, JS le mouvement)
-  const assetsToggle = document.getElementById('assetsToggle');
-  const assetsToggleText = assetsToggle?.querySelector('.assets-toggle-text');
-  const overlayLayer = document.getElementById('overlayAssets');
-
-  function setAssetsState(on) {
-    document.body.classList.toggle('assets-on', on);
-    if (assetsToggle) {
-      assetsToggle.setAttribute('aria-pressed', on ? 'true' : 'false');
-      if (assetsToggleText) assetsToggleText.textContent = on ? 'Activés' : 'Désactivés';
-    }
-    if (on) {
-      revealAssetsInView();
-      bindAssetsParallax();
-    } else {
-      unbindAssetsParallax();
-    }
-  }
-
-  // Apparition au scroll — observer les assets via IntersectionObserver virtuel
-  // (le calque est `position: fixed`, donc on déclenche `is-visible` quand
-  // la section qui leur sert d'ancre verticale entre dans le viewport).
-  function revealAssetsInView() {
-    if (!overlayLayer) return;
-    const items = overlayLayer.querySelectorAll('.overlay-asset');
-    items.forEach((el, i) => {
-      // petit décalage pour que l'apparition soit chorégraphiée et pas synchrone
-      setTimeout(() => el.classList.add('is-visible'), 120 * i);
-    });
-  }
-
-  // Parallaxe — chaque asset a un coefficient (vitesse) différent pour donner
-  // de la profondeur. On stocke la fonction handler pour pouvoir la retirer.
-  let parallaxHandler = null;
-  let parallaxTicking = false;
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  function bindAssetsParallax() {
-    if (parallaxHandler || !overlayLayer || reduceMotion) return;
-    const items = Array.from(overlayLayer.querySelectorAll('.overlay-asset'));
-    // coefficients : positifs = descend plus lentement que la page, négatifs = remonte
-    const coeffs = items.map((el, i) => {
-      // alternance + variation entre -0.18 et 0.18
-      return ((i % 2 === 0) ? -1 : 1) * (0.08 + (i * 0.025));
-    });
-
-    const update = () => {
-      const y = window.scrollY || window.pageYOffset;
-      items.forEach((el, i) => {
-        const offset = y * coeffs[i];
-        // on conserve la rotation depuis --rot (lue via CSS custom prop)
-        const rot = getComputedStyle(el).getPropertyValue('--rot') || '0deg';
-        el.style.transform = `translate3d(0, ${offset.toFixed(1)}px, 0) rotate(${rot.trim()})`;
-      });
-      parallaxTicking = false;
-    };
-
-    parallaxHandler = () => {
-      if (!parallaxTicking) {
-        window.requestAnimationFrame(update);
-        parallaxTicking = true;
-      }
-    };
-    window.addEventListener('scroll', parallaxHandler, { passive: true });
-    update(); // état initial
-  }
-
-  function unbindAssetsParallax() {
-    if (!parallaxHandler) return;
-    window.removeEventListener('scroll', parallaxHandler);
-    parallaxHandler = null;
-    // reset transforms (laisse l'anim drift CSS reprendre la main)
-    if (overlayLayer) {
-      overlayLayer.querySelectorAll('.overlay-asset').forEach(el => {
-        el.style.transform = '';
-        el.classList.remove('is-visible');
-      });
-    }
-  }
-
-  if (assetsToggle) {
-    const savedAssets = localStorage.getItem('guru-assets-on') === '1';
-    setAssetsState(savedAssets);
-    assetsToggle.addEventListener('click', () => {
-      const next = !document.body.classList.contains('assets-on');
-      localStorage.setItem('guru-assets-on', next ? '1' : '0');
-      setAssetsState(next);
-    });
+  // Note : le toggle "Assets décoratifs" et la parallaxe associée ont été
+  // retirés du panneau dev (cf. retours client). Le calque .overlay-assets
+  // reste dans le DOM mais n'est plus activable — body.assets-on n'est
+  // jamais mis, donc opacity:0 le garde invisible.
+  // On nettoie quand même un éventuel ancien localStorage hérité.
+  if (localStorage.getItem('guru-assets-on') !== null) {
+    localStorage.removeItem('guru-assets-on');
   }
 }
 
