@@ -1217,9 +1217,13 @@ body.theme-cream .header.scrolled { background: rgba(251, 239, 223, 0.96); }
    animation-delay pour démarrer en milieu de cycle → les marques restent
    désynchronisées entre les 2 bandeaux. =========================== */
 .logos-marquee--reverse {
-  /* Gap vertical entre les 2 bandeaux = 20px (même valeur que gap horizontal
-     entre items dans une piste). */
-  margin-top: 20px;
+  /* Gap vertical entre les 2 bandeaux. La valeur "littérale" 20px (= gap
+     horizontal entre items) parait trop grande visuellement parce que :
+     - les pastilles en thème crème ont une box-shadow qui mord dans le gap
+       horizontal → l'œil perçoit moins de 20px entre 2 pastilles
+     - le gap vertical n'a aucune ombre pour le combler → 20px paraît "plein"
+     On met une valeur plus serrée pour matcher la perception. */
+  margin-top: 10px;
 }
 .logos-marquee--reverse .logos-marquee-track {
   /* Inverse le sens de défilement : translation va de -100% vers 0%
@@ -1273,10 +1277,12 @@ body.theme-cream .header.scrolled { background: rgba(251, 239, 223, 0.96); }
    La SVG est utilisée comme MASQUE (mask-image), et la silhouette est remplie
    par background-color: currentColor — donc la couleur du logo suit la color
    du parent .logo-item, qui dépend du thème.
-   Sources et largeurs par marque définies dans des classes dédiées plus bas. */
+   Sources et largeurs/hauteurs par marque définies dans des classes dédiées
+   plus bas. La hauteur est paramétrée via `--logo-h` pour permettre des
+   logos visuellement plus grands sans que `mask-size: contain` les bride. */
 .logo-item .logo-img {
   display: block;
-  height: 26px;
+  height: var(--logo-h, 26px);
   width: var(--logo-w, 80px);
   background-color: currentColor;
   -webkit-mask: var(--logo-src) center / contain no-repeat;
@@ -1285,11 +1291,14 @@ body.theme-cream .header.scrolled { background: rgba(251, 239, 223, 0.96); }
 }
 .logo-item:hover .logo-img { transform: scale(1.04); }
 
-/* Per-brand : src + largeur calibrée pour préserver le rythme visuel du bandeau.
+/* Per-brand : src + largeur ET hauteur (pour les logos qui doivent être plus
+   grands que la hauteur par défaut du conteneur — sinon `mask-size: contain`
+   les bride à ~26px de haut, et augmenter la largeur seule ne change rien
+   visuellement quand la SVG est carrée ou plus haute que large).
    Historique tailles :
-   - Red Bull / Asus ROG agrandis de +15% (v6) puis encore +15% (v8) → cumul x1.32
-   - Mines agrandi de +20% (v8) */
-.logo-asus-rog       { --logo-src: url('images/logos/asus-rog.svg');     --logo-w: 47px; }
+   - Red Bull / Asus ROG : +15% (v6) puis +15% (v8) → on bump aussi --logo-h
+   - Mines : +20% (v8) → idem */
+.logo-asus-rog       { --logo-src: url('images/logos/asus-rog.svg');     --logo-w: 47px;  --logo-h: 34px; }
 .logo-blast          { --logo-src: url('images/logos/blast.svg');       --logo-w: 90px; }
 .logo-epicgames      { --logo-src: url('images/logos/epicgames.svg');    --logo-w: 90px; }
 .logo-eva            { --logo-src: url('images/logos/eva.svg');         --logo-w: 75px; }
@@ -1299,9 +1308,9 @@ body.theme-cream .header.scrolled { background: rgba(251, 239, 223, 0.96); }
 .logo-karmine-corp   { --logo-src: url('images/logos/karmine-corp.svg'); --logo-w: 26px; }
 .logo-lancome        { --logo-src: url('images/logos/lancome.svg');     --logo-w: 110px; }
 .logo-lcp            { --logo-src: url('images/logos/lcp.svg');         --logo-w: 56px; }
-.logo-mines          { --logo-src: url('images/logos/mines.svg');        --logo-w: 36px; }
+.logo-mines          { --logo-src: url('images/logos/mines.svg');        --logo-w: 50px;  --logo-h: 32px; }
 .logo-playstation    { --logo-src: url('images/logos/playstation.svg'); --logo-w: 100px; }
-.logo-redbull        { --logo-src: url('images/logos/redbull.svg');     --logo-w: 120px; }
+.logo-redbull        { --logo-src: url('images/logos/redbull.svg');     --logo-w: 120px; --logo-h: 34px; }
 .logo-riotgames      { --logo-src: url('images/logos/riotgames.svg');   --logo-w: 100px; }
 .logo-speedons       { --logo-src: url('images/logos/speedons.svg');     --logo-w: 60px; }
 .logo-starladder     { --logo-src: url('images/logos/starladder.svg');   --logo-w: 45px; }
@@ -1380,8 +1389,10 @@ body.theme-cream .logo-item--svg:hover {
 @media (max-width: 768px) {
   .logo-item .logo-img { height: 20px; }
   .logo-item--svg { padding: 10px 16px; }
-  /* Red Bull + Asus ROG cumul +15% +15%, Mines +20% — mêmes ratios sur mobile. */
-  .logo-asus-rog       { --logo-w: 37px; }
+  /* Red Bull + Asus ROG cumul +15% +15%, Mines +20% — mêmes ratios sur mobile.
+     On bump aussi --logo-h pour ces 3 marques afin que le silhouette ne soit
+     pas bridé par la hauteur du conteneur. */
+  .logo-asus-rog       { --logo-w: 37px;  --logo-h: 27px; }
   .logo-blast          { --logo-w: 72px; }
   .logo-epicgames      { --logo-w: 70px; }
   .logo-eva            { --logo-w: 60px; }
@@ -1391,9 +1402,9 @@ body.theme-cream .logo-item--svg:hover {
   .logo-karmine-corp   { --logo-w: 22px; }
   .logo-lancome        { --logo-w: 86px; }
   .logo-lcp            { --logo-w: 46px; }
-  .logo-mines          { --logo-w: 29px; }
+  .logo-mines          { --logo-w: 40px;  --logo-h: 26px; }
   .logo-playstation    { --logo-w: 78px; }
-  .logo-redbull        { --logo-w: 95px; }
+  .logo-redbull        { --logo-w: 95px;  --logo-h: 27px; }
   .logo-riotgames      { --logo-w: 80px; }
   .logo-speedons       { --logo-w: 48px; }
   .logo-starladder     { --logo-w: 36px; }
