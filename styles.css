@@ -1172,7 +1172,6 @@ body.theme-cream .header.scrolled { background: rgba(251, 239, 223, 0.96); }
 .logos-marquee {
   position: relative;
   width: 100%;
-  margin-bottom: 64px;
   overflow: hidden;
   /* IMPORTANT : flex pour aligner les 2 pistes côte-à-côte (sans flex elles
      s'empilaient verticalement → on voyait 2 lignes de logos qui ne bouclaient
@@ -1213,6 +1212,32 @@ body.theme-cream .header.scrolled { background: rgba(251, 239, 223, 0.96); }
   from { transform: translateX(0); }
   to   { transform: translateX(-100%); } /* -100% = largeur d'1 piste (incluant son padding-right) */
 }
+
+/* === Bandeau MIROIR : sens inverse + ordre d'items inversé en HTML +
+   animation-delay pour démarrer en milieu de cycle → les marques restent
+   désynchronisées entre les 2 bandeaux. =========================== */
+.logos-marquee--reverse {
+  /* Gap vertical entre les 2 bandeaux = 20px (même valeur que gap horizontal
+     entre items dans une piste). */
+  margin-top: 20px;
+}
+.logos-marquee--reverse .logos-marquee-track {
+  /* Inverse le sens de défilement : translation va de -100% vers 0%
+     (les items entrent par la gauche, sortent par la droite). */
+  animation-direction: reverse;
+  /* -30s = -50% du cycle 60s → l'animation paraît avoir déjà tourné une
+     demi-boucle au chargement, donc le 2e bandeau ne montre pas exactement
+     les mêmes marques au-dessus que le 1er à un instant donné. */
+  animation-delay: -30s;
+}
+
+/* Marge sous l'ENSEMBLE des 2 bandeaux (avant la stats-row qui suit) :
+   on déplace l'ancien margin-bottom de .logos-marquee vers le dernier
+   bandeau de la liste pour ne pas créer un trou entre les 2 bandeaux. */
+.logos-marquee:last-of-type {
+  margin-bottom: 64px;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .logos-marquee {
     -webkit-mask-image: none; mask-image: none;
@@ -1221,6 +1246,8 @@ body.theme-cream .header.scrolled { background: rgba(251, 239, 223, 0.96); }
   }
   .logos-marquee-track { animation: none; flex-wrap: wrap; justify-content: center; padding-right: 0; }
   .logos-marquee-track + .logos-marquee-track { display: none; } /* on garde une seule passe */
+  /* Sur reduced-motion, on n'affiche QU'UN seul bandeau (le 2e devient redondant). */
+  .logos-marquee--reverse { display: none; }
 }
 
 .logo-item {
@@ -1259,8 +1286,10 @@ body.theme-cream .header.scrolled { background: rgba(251, 239, 223, 0.96); }
 .logo-item:hover .logo-img { transform: scale(1.04); }
 
 /* Per-brand : src + largeur calibrée pour préserver le rythme visuel du bandeau.
-   Red Bull et Asus ROG ont été agrandis de 15 % (cf. retours client). */
-.logo-asus-rog       { --logo-src: url('images/logos/asus-rog.svg');     --logo-w: 41px; }
+   Historique tailles :
+   - Red Bull / Asus ROG agrandis de +15% (v6) puis encore +15% (v8) → cumul x1.32
+   - Mines agrandi de +20% (v8) */
+.logo-asus-rog       { --logo-src: url('images/logos/asus-rog.svg');     --logo-w: 47px; }
 .logo-blast          { --logo-src: url('images/logos/blast.svg');       --logo-w: 90px; }
 .logo-epicgames      { --logo-src: url('images/logos/epicgames.svg');    --logo-w: 90px; }
 .logo-eva            { --logo-src: url('images/logos/eva.svg');         --logo-w: 75px; }
@@ -1270,9 +1299,9 @@ body.theme-cream .header.scrolled { background: rgba(251, 239, 223, 0.96); }
 .logo-karmine-corp   { --logo-src: url('images/logos/karmine-corp.svg'); --logo-w: 26px; }
 .logo-lancome        { --logo-src: url('images/logos/lancome.svg');     --logo-w: 110px; }
 .logo-lcp            { --logo-src: url('images/logos/lcp.svg');         --logo-w: 56px; }
-.logo-mines          { --logo-src: url('images/logos/mines.svg');        --logo-w: 30px; }
+.logo-mines          { --logo-src: url('images/logos/mines.svg');        --logo-w: 36px; }
 .logo-playstation    { --logo-src: url('images/logos/playstation.svg'); --logo-w: 100px; }
-.logo-redbull        { --logo-src: url('images/logos/redbull.svg');     --logo-w: 104px; }
+.logo-redbull        { --logo-src: url('images/logos/redbull.svg');     --logo-w: 120px; }
 .logo-riotgames      { --logo-src: url('images/logos/riotgames.svg');   --logo-w: 100px; }
 .logo-speedons       { --logo-src: url('images/logos/speedons.svg');     --logo-w: 60px; }
 .logo-starladder     { --logo-src: url('images/logos/starladder.svg');   --logo-w: 45px; }
@@ -1351,8 +1380,8 @@ body.theme-cream .logo-item--svg:hover {
 @media (max-width: 768px) {
   .logo-item .logo-img { height: 20px; }
   .logo-item--svg { padding: 10px 16px; }
-  /* Red Bull + Asus ROG également agrandis de 15 % sur mobile. */
-  .logo-asus-rog       { --logo-w: 32px; }
+  /* Red Bull + Asus ROG cumul +15% +15%, Mines +20% — mêmes ratios sur mobile. */
+  .logo-asus-rog       { --logo-w: 37px; }
   .logo-blast          { --logo-w: 72px; }
   .logo-epicgames      { --logo-w: 70px; }
   .logo-eva            { --logo-w: 60px; }
@@ -1362,9 +1391,9 @@ body.theme-cream .logo-item--svg:hover {
   .logo-karmine-corp   { --logo-w: 22px; }
   .logo-lancome        { --logo-w: 86px; }
   .logo-lcp            { --logo-w: 46px; }
-  .logo-mines          { --logo-w: 24px; }
+  .logo-mines          { --logo-w: 29px; }
   .logo-playstation    { --logo-w: 78px; }
-  .logo-redbull        { --logo-w: 83px; }
+  .logo-redbull        { --logo-w: 95px; }
   .logo-riotgames      { --logo-w: 80px; }
   .logo-speedons       { --logo-w: 48px; }
   .logo-starladder     { --logo-w: 36px; }
