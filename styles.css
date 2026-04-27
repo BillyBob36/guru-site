@@ -1215,18 +1215,50 @@ body.theme-cream .header.scrolled { background: rgba(251, 239, 223, 0.96); }
   transform: translateY(-2px);
 }
 
-/* Slot pour le futur swap vers de vrais SVG : <img class="logo-img"> à
-   l'intérieur du .logo-item remplacera proprement le texte. */
+/* === Monochrome SVG logo silhouettes ===
+   Approche : un <span class="logo-img logo-<brand>"> à l'intérieur du .logo-item.
+   La SVG est utilisée comme MASQUE (mask-image), et la silhouette est remplie
+   par background-color: currentColor — donc la couleur du logo suit la color
+   du parent .logo-item, qui dépend du thème.
+   Sources et largeurs par marque définies dans des classes dédiées plus bas. */
 .logo-item .logo-img {
-  height: 24px;
-  width: auto;
   display: block;
-  filter: brightness(0) saturate(100%) opacity(0.55);  /* uniformise les marques en niveau de gris doux */
-  transition: filter 0.25s ease, transform 0.25s ease;
+  height: 26px;
+  width: var(--logo-w, 80px);
+  background-color: currentColor;
+  -webkit-mask: var(--logo-src) center / contain no-repeat;
+  mask: var(--logo-src) center / contain no-repeat;
+  transition: transform 0.25s ease;
 }
-.logo-item:hover .logo-img {
-  filter: brightness(0) saturate(100%) opacity(1);
+.logo-item:hover .logo-img { transform: scale(1.04); }
+
+/* Per-brand : src + largeur calibrée pour préserver le rythme visuel du bandeau */
+.logo-asus-rog       { --logo-src: url('images/logos/asus-rog.svg');     --logo-w: 36px; }
+.logo-epicgames      { --logo-src: url('images/logos/epicgames.svg');    --logo-w: 90px; }
+.logo-fdj            { --logo-src: url('images/logos/fdj.svg');          --logo-w: 70px; }
+.logo-fnac           { --logo-src: url('images/logos/fnac.svg');         --logo-w: 70px; }
+.logo-karmine-corp   { --logo-src: url('images/logos/karmine-corp.svg'); --logo-w: 26px; }
+.logo-lancome        { --logo-src: url('images/logos/lancome.svg');     --logo-w: 110px; }
+.logo-playstation    { --logo-src: url('images/logos/playstation.svg'); --logo-w: 100px; }
+.logo-redbull        { --logo-src: url('images/logos/redbull.svg');     --logo-w: 90px; }
+.logo-riotgames      { --logo-src: url('images/logos/riotgames.svg');   --logo-w: 100px; }
+.logo-ubisoft        { --logo-src: url('images/logos/ubisoft.svg');     --logo-w: 75px; }
+.logo-blast          { --logo-src: url('images/logos/blast.svg');       --logo-w: 90px; }
+.logo-lcp            { --logo-src: url('images/logos/lcp.svg');         --logo-w: 56px; }
+
+/* Logos "image" (silhouette SVG) : padding plus serré pour rester équilibrés
+   avec les pastilles texte (qui ont 16px 28px) */
+.logo-item--svg {
+  padding: 14px 22px;
+  /* Important : la silhouette utilise currentColor → on contrôle la couleur
+     ici, par thème. */
+  color: var(--text-dark-muted);  /* dark theme par défaut sur fond blanc pur */
 }
+
+/* La règle "color: var(--text)" pour les silhouettes sur trust en thème
+   sombre est définie plus bas, APRÈS l'override .logo-item dans le bloc
+   ALTERNANCE FOND CLAIR / FOND SOMBRE — c'est nécessaire pour gagner à
+   spécificité égale. */
 
 /* En thème crème, la pastille reste blanche (cohérent avec une "carte d'identité
    marque" sur bandeau crème), juste l'ombre douce passe en bleu marine. */
@@ -1238,6 +1270,36 @@ body.theme-cream .logo-item {
 body.theme-cream .logo-item:hover {
   border-color: var(--accent);
   color: var(--accent);
+}
+/* En thème crème : silhouette en bleu marine pour contraster avec le bandeau */
+body.theme-cream .logo-item--svg {
+  color: var(--accent);         /* #142F8A */
+}
+body.theme-cream .logo-item--svg:hover {
+  color: var(--accent-dark);    /* #0E2266 */
+}
+
+/* Mobile : réduit la taille des silhouettes ET des paddings pour préserver
+   un bandeau lisible et compact. La marquee reste fluide. */
+@media (max-width: 768px) {
+  .logo-item .logo-img { height: 20px; }
+  .logo-item--svg { padding: 10px 16px; }
+  .logo-asus-rog       { --logo-w: 28px; }
+  .logo-epicgames      { --logo-w: 70px; }
+  .logo-fdj            { --logo-w: 56px; }
+  .logo-fnac           { --logo-w: 56px; }
+  .logo-karmine-corp   { --logo-w: 22px; }
+  .logo-lancome        { --logo-w: 86px; }
+  .logo-playstation    { --logo-w: 78px; }
+  .logo-redbull        { --logo-w: 72px; }
+  .logo-riotgames      { --logo-w: 80px; }
+  .logo-ubisoft        { --logo-w: 60px; }
+  .logo-blast          { --logo-w: 72px; }
+  .logo-lcp            { --logo-w: 46px; }
+}
+@media (max-width: 480px) {
+  .logo-item .logo-img { height: 18px; }
+  .logo-item--svg { padding: 8px 14px; }
 }
 
 .stats-row {
@@ -2097,6 +2159,13 @@ body.theme-cream .why-card .card-image {
   color: var(--accent);
   background: rgba(255, 255, 255, 0.06);
 }
+/* Logos image (silhouette monochrome) sur trust en thème sombre :
+   on monte la couleur sur var(--text) (crème) — l'override sur .logo-item
+   plus haut imposait var(--text-muted) (gris) qui rendait les SVG ternes.
+   Cette règle DOIT venir APRÈS la règle .logo-item ci-dessus pour gagner
+   à spécificité égale (last-rule-wins). */
+#trust.section-dark .logo-item--svg { color: var(--text); }
+#trust.section-dark .logo-item--svg:hover { color: var(--accent); }
 #trust.section-dark .stat-card {
   background: var(--bg-card);
   border-color: var(--border);
