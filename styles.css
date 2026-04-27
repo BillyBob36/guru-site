@@ -155,14 +155,24 @@ body.theme-cream .btn-submit {
               box-shadow 0.25s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* HOVER — inversion claire crème ↔ bleu, scale + ombre */
-body.theme-cream .btn-cta:hover,
-body.theme-cream .btn-cta-header:hover,
-body.theme-cream .btn-submit:hover {
-  background: linear-gradient(135deg, #FBEFDF 0%, #FBEFDF 100%) !important;
-  color: var(--accent) !important;
-  transform: scale(1.03);
-  box-shadow: 0 12px 28px rgba(20, 47, 138, 0.28);
+/* HOVER — inversion claire crème ↔ bleu, scale + ombre.
+   IMPORTANT : on enferme dans `@media (hover: hover)` pour que la règle
+   ne s'applique QUE sur les appareils capables de survol (souris, trackpad).
+   Sur mobile/tactile, un tap déclenche techniquement `:hover` et le navigateur
+   le maintient jusqu'au prochain tap ailleurs — résultat : le bouton "demander
+   un devis" du sticky-cta restait figé en état hover (crème + bleu) après
+   qu'on l'ait tapé pour scroller vers le formulaire. Avec ce media query,
+   sur mobile on garde l'état initial (bleu + texte crème) et on n'utilise
+   que `:active` pour le feedback de pression. */
+@media (hover: hover) {
+  body.theme-cream .btn-cta:hover,
+  body.theme-cream .btn-cta-header:hover,
+  body.theme-cream .btn-submit:hover {
+    background: linear-gradient(135deg, #FBEFDF 0%, #FBEFDF 100%) !important;
+    color: var(--accent) !important;
+    transform: scale(1.03);
+    box-shadow: 0 12px 28px rgba(20, 47, 138, 0.28);
+  }
 }
 
 /* CLICK — micro-retour à la taille initiale, ombre réduite, on garde
