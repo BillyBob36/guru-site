@@ -653,14 +653,31 @@ function initFontSwitcher() {
   // Liste des fonts custom (pour activer la classe body.custom-heading-font)
   const customFonts = ['Arsenica','Birds and Home','Brown Sugar','Palmore','Rattani','Sailing Club','Selga','Tritone','Zafrada'];
 
-  select.addEventListener('change', () => {
-    document.documentElement.style.setProperty('--font-heading', select.value);
-    current.textContent = select.options[select.selectedIndex].text;
-    // Si la value contient une des 9 typos Valentin, on active la classe qui
-    // neutralise le faux-bold et ouvre le tracking sur les titres.
-    const isCustom = customFonts.some(f => select.value.includes(`'${f}'`) || select.value.includes(f));
+  // Applique la valeur de font sélectionnée et synchronise les classes/labels.
+  // Factorisé pour pouvoir l'utiliser à la fois dans `change` et au boot
+  // (pour appliquer le défaut "Birds and Home").
+  const applyFont = (value, label) => {
+    document.documentElement.style.setProperty('--font-heading', value);
+    if (current && label) current.textContent = label;
+    const isCustom = customFonts.some(f => value.includes(`'${f}'`) || value.includes(f));
     document.body.classList.toggle('custom-heading-font', isCustom);
+  };
+
+  select.addEventListener('change', () => {
+    applyFont(select.value, select.options[select.selectedIndex].text);
+    localStorage.setItem('guru-font', select.value);
   });
+
+  // Défaut au premier chargement : Birds and Home (cf. brief client)
+  // L'utilisateur peut toujours basculer manuellement, le choix est persisté.
+  const FONT_DEFAULT = "'Birds and Home', cursive";
+  const savedFont = localStorage.getItem('guru-font') || FONT_DEFAULT;
+  // On match dans le select pour récupérer le label affiché
+  const matchOpt = Array.from(select.options).find(o => o.value === savedFont);
+  if (matchOpt) {
+    select.value = savedFont;
+    applyFont(savedFont, matchOpt.text);
+  }
 
   // Keyboard shortcut: Ctrl+Shift+F
   document.addEventListener('keydown', (e) => {
@@ -670,16 +687,14 @@ function initFontSwitcher() {
     }
   });
 
-  // Disposition galerie : grille uniforme (défaut) ou masonry
+  // Disposition galerie : grille uniforme ou masonry.
+  // Défaut au premier chargement : masonry (cf. brief client).
   const gallerySelect = document.getElementById('gallerySelect');
   const galleryGrid = document.getElementById('galleryGrid');
   if (gallerySelect && galleryGrid) {
-    // Restaurer le choix éventuellement sauvegardé
-    const saved = localStorage.getItem('guru-gallery-layout');
-    if (saved === 'masonry') {
-      gallerySelect.value = 'masonry';
-      galleryGrid.classList.add('layout-masonry');
-    }
+    const saved = localStorage.getItem('guru-gallery-layout') || 'masonry';
+    gallerySelect.value = saved;
+    galleryGrid.classList.toggle('layout-masonry', saved === 'masonry');
     gallerySelect.addEventListener('change', () => {
       const isMasonry = gallerySelect.value === 'masonry';
       galleryGrid.classList.toggle('layout-masonry', isMasonry);
@@ -716,7 +731,9 @@ function initFontSwitcher() {
   }
 
   if (colorSelect) {
-    const savedTheme = localStorage.getItem('guru-color-template') || 'dark';
+    // Défaut au premier chargement : "cream" (Crème & Bleu marine — DA Valentin).
+    // L'utilisateur peut toujours basculer en sombre, le choix est persisté.
+    const savedTheme = localStorage.getItem('guru-color-template') || 'cream';
     colorSelect.value = savedTheme;
     applyColorTemplate(savedTheme);
     colorSelect.addEventListener('change', () => {
@@ -736,6 +753,37 @@ function initFontSwitcher() {
   }
 }
 
+// ===== Cards "Pour quels événements ?" → cliquables vers la galerie =====
+// Chaque carte agit comme un lien vers #gallery. On reste accessible :
+//   role="button" + tabindex (ajoutés en JS) + Enter/Space + curseur pointer.
+function initForWhoCardsLink() {
+  const cards = document.querySelectorAll('.for-who-card');
+  if (!cards.length) return;
+
+  const target = document.getElementById('gallery');
+  if (!target) return;
+
+  const go = () => {
+    const headerOffset = 80;
+    const top = target.getBoundingClientRect().top + window.pageYOffset - headerOffset;
+    window.scrollTo({ top, behavior: 'smooth' });
+  };
+
+  cards.forEach(card => {
+    card.setAttribute('role', 'button');
+    card.setAttribute('tabindex', '0');
+    card.setAttribute('aria-label', "Voir notre galerie de réalisations");
+    card.style.cursor = 'pointer';
+    card.addEventListener('click', go);
+    card.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        go();
+      }
+    });
+  });
+}
+
 // ===== INIT =====
 document.addEventListener('DOMContentLoaded', () => {
   initFaq();
@@ -747,6 +795,7 @@ document.addEventListener('DOMContentLoaded', () => {
   loadGallery();
   initLoadMore();
   initFontSwitcher();
+  initForWhoCardsLink();
 
   // Lang toggle
   document.getElementById('langToggle').addEventListener('click', () => {
