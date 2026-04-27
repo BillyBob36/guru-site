@@ -1172,14 +1172,16 @@ body.theme-cream .header.scrolled { background: rgba(251, 239, 223, 0.96); }
 .logos-marquee {
   position: relative;
   width: 100%;
-  /* `overflow: clip` au lieu de `overflow: hidden` : ça permet d'ajouter
-     `overflow-clip-margin` qui autorise un débordement contrôlé sans
-     impacter le layout. On donne 6px → ça absorbe le translateY(-2px) du
-     hover + la bordure 1px de la pastille, donc la bordure du haut reste
-     visible quand on survole une pastille en bord du bandeau. PAS de
-     padding ajouté → le gap inter-bandeaux reste exactement à 20px. */
-  overflow: clip;
-  overflow-clip-margin: 6px;
+  /* overflow: hidden classique. On a tenté `overflow: clip` +
+     `overflow-clip-margin: 6px` pour autoriser le translateY(-2px) du
+     hover à dépasser, mais le `mask-image` horizontal applique son alpha
+     UNIQUEMENT dans la box d'origine — au-delà du conteneur, alpha = 0,
+     donc le contenu débordant via clip-margin reste invisible. La seule
+     solution fiable est d'ajouter un peu de padding vertical interne
+     pour absorber le hover lift. On compense ce padding par une marge
+     entre bandeaux réduite, pour que le GAP VISIBLE entre pastilles
+     reste exactement de 20px. */
+  overflow: hidden;
   /* IMPORTANT : flex pour aligner les 2 pistes côte-à-côte (sans flex elles
      s'empilaient verticalement → on voyait 2 lignes de logos qui ne bouclaient
      pas). Avec flex, les 2 pistes occupent une bande horizontale unique, et
@@ -1187,7 +1189,9 @@ body.theme-cream .header.scrolled { background: rgba(251, 239, 223, 0.96); }
      (-100% - gap), la 2e arrive exactement à sa place → boucle invisible. */
   display: flex;
   flex-wrap: nowrap;
-  padding: 0;
+  /* 4px en haut et en bas → absorbent le translateY(-2) du hover + la
+     bordure 1px de la pastille (3px max) tout en gardant 1px de marge. */
+  padding: 4px 0;
   /* fade edges left/right pour atténuer l'apparition/disparition des items */
   -webkit-mask-image: linear-gradient(90deg,
     transparent 0%,
@@ -1221,11 +1225,11 @@ body.theme-cream .header.scrolled { background: rgba(251, 239, 223, 0.96); }
    animation-delay pour démarrer en milieu de cycle → les marques restent
    désynchronisées entre les 2 bandeaux. =========================== */
 .logos-marquee--reverse {
-  /* Gap vertical entre les 2 bandeaux = gap horizontal entre items (20px).
-     Maintenant que .logos-marquee n'a plus de padding vertical, ce 20px
-     est l'unique distance entre la dernière pastille du 1er bandeau et la
-     première pastille du 2nd. */
-  margin-top: 20px;
+  /* Gap visible entre la dernière pastille du 1er bandeau et la première
+     pastille du 2e doit être 20px (= gap horizontal entre items).
+     Cumul : M1.padding-bottom (4) + margin-top + M2.padding-top (4) = 20
+     → margin-top = 12px. */
+  margin-top: 12px;
   /* Espace entre le 2e bandeau et la stats-row qui suit. La règle
      `.logos-marquee:last-of-type` était bugguée parce que ce sélecteur
      s'applique au DERNIER div de type div parmi ses frères — or après
