@@ -30,8 +30,10 @@ const translations = {
     forWhoSubtitle: "Nous intervenons sur trois grandes catégories d'événements B2B.",
     forWho1Title: "Événements sous forte pression",
     forWho1Desc: "Festivals, shows en live, grandes conférences, événements à volumes massifs. Des contextes où la logistique doit être irréprochable et les volumes parfaitement maîtrisés.",
-    forWho2Title: "Soirées clients & moments premium",
-    forWho2Desc: "Lancements produits, soirées clients, events marque, séminaires haut de gamme. L'excellence culinaire au service de votre image.",
+    forWho2Title: "Soirées clients & grands comptes",
+    forWho2Desc: "Lancements produits, soirées clients, événements de marque, séminaires haut de gamme, comités de direction et conventions d'entreprise. L'excellence culinaire au service de votre image.",
+    forWho3Title: "Événements internes",
+    forWho3Desc: "Box repas, buffets staff, buffets de soirée, collations & snacks pour vos équipes sur le terrain, catering sur site, livraison de paniers repas. Une logistique souple pour nourrir vos équipes au quotidien comme sur les grands rendez-vous.",
 
     // Services 360
 
@@ -127,7 +129,9 @@ const translations = {
     formEventOpt1: "Événement sous pression",
     formEventOpt2: "Soirée clients / lancement",
     formEventOpt3: "Séminaire / conférence",
+    formEventOpt5: "Événement interne / box repas",
     formEventOpt4: "Autre (préciser)",
+    formEventOtherPlaceholder: "Précisez le type d'événement",
     formDate: "Date(s) envisagée(s)",
     formLocation: "Lieu (ville, salle si connue)",
     formGuests: "Nombre estimé de convives",
@@ -190,8 +194,10 @@ const translations = {
     forWhoSubtitle: "We serve three main categories of B2B events.",
     forWho1Title: "High-pressure events",
     forWho1Desc: "Festivals, live shows, large conferences, massive-volume events. Contexts where logistics must be flawless and volumes perfectly mastered.",
-    forWho2Title: "Client events & premium moments",
-    forWho2Desc: "Product launches, client evenings, brand events, high-end seminars. Culinary excellence at the service of your image.",
+    forWho2Title: "Client events & key accounts",
+    forWho2Desc: "Product launches, client evenings, brand events, high-end seminars, executive committees and corporate conventions. Culinary excellence at the service of your image.",
+    forWho3Title: "Internal events",
+    forWho3Desc: "Meal boxes, staff buffets, evening buffets, snacks for your on-site teams, on-site catering, packed-meal deliveries. Flexible logistics to feed your teams day to day and at major events.",
 
     // Services 360
 
@@ -287,7 +293,9 @@ const translations = {
     formEventOpt1: "High-pressure event",
     formEventOpt2: "Client evening / launch",
     formEventOpt3: "Seminar / conference",
+    formEventOpt5: "Internal event / meal boxes",
     formEventOpt4: "Other (specify)",
+    formEventOtherPlaceholder: "Specify the event type",
     formDate: "Planned date(s)",
     formLocation: "Location (city, venue if known)",
     formGuests: "Estimated number of guests",
@@ -445,12 +453,22 @@ function initScrollAnimations() {
 }
 
 // ===== SMOOTH SCROLL FOR NAV =====
+// Pris en charge :
+//   - href="#"        → retour tout en haut (logo header / footer)
+//   - href="#section" → scroll smooth vers la section (avec offset header)
 function initSmoothScroll() {
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function(e) {
-      e.preventDefault();
-      const target = document.querySelector(this.getAttribute('href'));
+      const href = this.getAttribute('href');
+      // Cas "logo cliquable" : on remonte tout en haut (best practice).
+      if (href === '#' || href === '') {
+        e.preventDefault();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        return;
+      }
+      const target = document.querySelector(href);
       if (target) {
+        e.preventDefault();
         const headerOffset = 80;
         const elementPosition = target.getBoundingClientRect().top;
         const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
@@ -529,9 +547,13 @@ function renderFilters() {
 }
 
 function buildGalleryItemHTML(item) {
+  // data-photo-src est lu par la lightbox (qui parcourt tous les items du
+  // grid pour construire le carousel prev/next). On ne met plus d'onclick
+  // inline : c'est délégué depuis #galleryGrid (cf. initGalleryLightbox).
+  const src = `${PHOTOS_BASE_PATH}${item.photo}`;
   return `
-    <div class="gallery-item" onclick="openLightbox('${PHOTOS_BASE_PATH}${item.photo}')">
-      <img src="${PHOTOS_BASE_PATH}${item.photo}" alt="${item.tags.join(', ')}" loading="lazy">
+    <div class="gallery-item" data-photo-src="${src}" tabindex="0" role="button" aria-label="Voir la photo en grand">
+      <img src="${src}" alt="${item.tags.join(', ')}" loading="lazy">
       <div class="gallery-tags">
         ${item.tags.map(t => `<span class="gallery-tag">${t}</span>`).join('')}
       </div>
@@ -611,102 +633,210 @@ function initLoadMore() {
 }
 
 // ===== LIGHTBOX =====
-function openLightbox(src) {
+// Carousel d'images plein écran avec :
+//   - Précédent / Suivant : flèches UI, clavier ←/→, swipe tactile
+//   - Compteur "n / total"
+//   - Fermeture : tap sur le fond, clic sur ✕, Escape, ou swipe vertical large
+//
+// Source de vérité = les éléments [data-photo-src] présents dans #galleryGrid
+// au moment de l'ouverture. Donc le carousel respecte automatiquement le
+// filtre actif et le "Voir plus" : on ne navigue qu'à l'intérieur des photos
+// actuellement visibles côté utilisateur.
+
+let _lightboxItems = [];
+let _lightboxIndex = 0;
+
+function _ensureLightbox() {
   let lightbox = document.getElementById('lightbox');
-  if (!lightbox) {
-    lightbox = document.createElement('div');
-    lightbox.id = 'lightbox';
-    lightbox.className = 'lightbox';
-    lightbox.innerHTML = '<button class="lightbox-close">&times;</button><img src="" alt="Photo">';
-    lightbox.addEventListener('click', (e) => {
-      if (e.target === lightbox || e.target.classList.contains('lightbox-close')) {
-        lightbox.classList.remove('active');
-      }
-    });
-    document.body.appendChild(lightbox);
-  }
-  lightbox.querySelector('img').src = src;
-  lightbox.classList.add('active');
+  if (lightbox) return lightbox;
+
+  lightbox = document.createElement('div');
+  lightbox.id = 'lightbox';
+  lightbox.className = 'lightbox';
+  lightbox.innerHTML = `
+    <button class="lightbox-close" aria-label="Fermer">&times;</button>
+    <button class="lightbox-prev" aria-label="Photo précédente">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <polyline points="15 18 9 12 15 6"></polyline>
+      </svg>
+    </button>
+    <button class="lightbox-next" aria-label="Photo suivante">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <polyline points="9 18 15 12 9 6"></polyline>
+      </svg>
+    </button>
+    <img src="" alt="Photo">
+    <div class="lightbox-counter" aria-live="polite"></div>`;
+  document.body.appendChild(lightbox);
+
+  const img = lightbox.querySelector('img');
+  const close = lightbox.querySelector('.lightbox-close');
+  const prev = lightbox.querySelector('.lightbox-prev');
+  const next = lightbox.querySelector('.lightbox-next');
+
+  // Fermeture : tap sur fond ou ✕
+  lightbox.addEventListener('click', (e) => {
+    if (e.target === lightbox) closeLightbox();
+  });
+  close.addEventListener('click', closeLightbox);
+
+  prev.addEventListener('click', (e) => { e.stopPropagation(); navLightbox(-1); });
+  next.addEventListener('click', (e) => { e.stopPropagation(); navLightbox(1); });
+
+  // Empêche la fermeture quand on clique sur l'image elle-même
+  img.addEventListener('click', (e) => e.stopPropagation());
+
+  // ===== Swipe tactile =====
+  // Seuil : 40px horizontal pour déclencher prev/next, 80px vertical pour
+  // fermer (geste de "balayage vers le bas" courant sur les viewers mobiles).
+  // On ignore le swipe si ratio horizontal < vertical pour éviter les conflits
+  // avec un scroll ratée.
+  let touchStartX = 0, touchStartY = 0, touchActive = false;
+  lightbox.addEventListener('touchstart', (e) => {
+    if (e.touches.length !== 1) { touchActive = false; return; }
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+    touchActive = true;
+  }, { passive: true });
+  lightbox.addEventListener('touchend', (e) => {
+    if (!touchActive) return;
+    touchActive = false;
+    const t = e.changedTouches[0];
+    const dx = t.clientX - touchStartX;
+    const dy = t.clientY - touchStartY;
+    if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 40) {
+      // swipe horizontal → navigation. Sens "naturel" : on tire l'image vers
+      // la gauche (dx<0) → photo suivante.
+      navLightbox(dx < 0 ? 1 : -1);
+    } else if (Math.abs(dy) > 80 && Math.abs(dy) > Math.abs(dx)) {
+      closeLightbox();
+    }
+  }, { passive: true });
+
+  return lightbox;
 }
 
-// Close lightbox on Escape
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') {
-    const lb = document.getElementById('lightbox');
-    if (lb) lb.classList.remove('active');
-  }
-});
+function _refreshLightbox() {
+  const lb = _ensureLightbox();
+  const img = lb.querySelector('img');
+  const counter = lb.querySelector('.lightbox-counter');
+  const prev = lb.querySelector('.lightbox-prev');
+  const next = lb.querySelector('.lightbox-next');
 
-// ===== FONT SWITCHER (DEV) =====
-function initFontSwitcher() {
-  const toggle = document.getElementById('fontSwitcherToggle');
-  const panel = document.getElementById('fontSwitcherPanel');
-  const close = document.getElementById('fontSwitcherClose');
-  const select = document.getElementById('fontSelect');
-  const current = document.getElementById('fontSwitcherCurrent');
+  const total = _lightboxItems.length;
+  if (total === 0) return;
+  const item = _lightboxItems[_lightboxIndex];
 
-  if (!toggle || !panel) return;
+  // Petit fade pour adoucir le swap (sinon le saut est sec)
+  img.classList.add('swapping');
+  // alt depuis l'item du DOM (récupère les tags pour décrire la photo aux SR)
+  const altText = item.querySelector('img')?.alt || 'Photo';
+  // double rAF pour laisser le navigateur peindre l'opacity:0 avant le swap
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    img.src = item.dataset.photoSrc;
+    img.alt = altText;
+    img.classList.remove('swapping');
+  }));
 
-  toggle.addEventListener('click', () => panel.classList.toggle('open'));
-  close.addEventListener('click', () => panel.classList.remove('open'));
+  counter.textContent = `${_lightboxIndex + 1} / ${total}`;
+  // Pas de boucle "vraie" : on fait du wrap, donc prev/next sont toujours
+  // utilisables tant qu'il y a >1 photo. On masque seulement quand 1 seule.
+  const single = total <= 1;
+  prev.style.display = single ? 'none' : '';
+  next.style.display = single ? 'none' : '';
+}
 
-  // Liste des fonts custom (pour activer la classe body.custom-heading-font)
-  const customFonts = ['Arsenica','Birds and Home','Brown Sugar','Palmore','Rattani','Sailing Club','Selga','Tritone','Zafrada'];
+function navLightbox(dir) {
+  if (_lightboxItems.length === 0) return;
+  const total = _lightboxItems.length;
+  _lightboxIndex = (_lightboxIndex + dir + total) % total;
+  _refreshLightbox();
+}
 
-  // Applique la valeur de font sélectionnée et synchronise les classes/labels.
-  // Factorisé pour pouvoir l'utiliser à la fois dans `change` et au boot
-  // (pour appliquer le défaut "Birds and Home").
-  const applyFont = (value, label) => {
-    document.documentElement.style.setProperty('--font-heading', value);
-    if (current && label) current.textContent = label;
-    const isCustom = customFonts.some(f => value.includes(`'${f}'`) || value.includes(f));
-    document.body.classList.toggle('custom-heading-font', isCustom);
-  };
+function openLightbox(startEl) {
+  const grid = document.getElementById('galleryGrid');
+  if (!grid) return;
+  // Source de vérité : les items réellement présents dans le DOM (donc
+  // affectés par le filtre courant et par "Voir plus").
+  _lightboxItems = Array.from(grid.querySelectorAll('[data-photo-src]'));
+  if (_lightboxItems.length === 0) return;
 
-  select.addEventListener('change', () => {
-    applyFont(select.value, select.options[select.selectedIndex].text);
-    localStorage.setItem('guru-font', select.value);
+  // Si on a passé un élément du grid, on retrouve son index ; sinon on ouvre
+  // sur la première photo.
+  _lightboxIndex = startEl ? Math.max(0, _lightboxItems.indexOf(startEl)) : 0;
+
+  const lb = _ensureLightbox();
+  _refreshLightbox();
+  lb.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox() {
+  const lb = document.getElementById('lightbox');
+  if (lb) lb.classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+// Délégation : un clic (ou touche Enter / Space) sur n'importe quel
+// .gallery-item ouvre la lightbox sur cette photo.
+function initGalleryLightbox() {
+  const grid = document.getElementById('galleryGrid');
+  if (!grid) return;
+  grid.addEventListener('click', (e) => {
+    const item = e.target.closest('[data-photo-src]');
+    if (item && grid.contains(item)) openLightbox(item);
   });
-
-  // Défaut au premier chargement : Birds and Home (cf. brief client)
-  // L'utilisateur peut toujours basculer manuellement, le choix est persisté.
-  const FONT_DEFAULT = "'Birds and Home', cursive";
-  const savedFont = localStorage.getItem('guru-font') || FONT_DEFAULT;
-  // On match dans le select pour récupérer le label affiché
-  const matchOpt = Array.from(select.options).find(o => o.value === savedFont);
-  if (matchOpt) {
-    select.value = savedFont;
-    applyFont(savedFont, matchOpt.text);
-  }
-
-  // Keyboard shortcut: Ctrl+Shift+F
-  document.addEventListener('keydown', (e) => {
-    if (e.ctrlKey && e.shiftKey && e.key === 'F') {
+  grid.addEventListener('keydown', (e) => {
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    const item = e.target.closest('[data-photo-src]');
+    if (item && grid.contains(item)) {
       e.preventDefault();
-      panel.classList.toggle('open');
+      openLightbox(item);
     }
   });
+}
 
-  // Disposition galerie : grille uniforme ou masonry.
-  // Défaut au premier chargement : masonry (cf. brief client).
-  const gallerySelect = document.getElementById('gallerySelect');
+// Clavier : Escape ferme, ←/→ navigue (uniquement quand la lightbox est ouverte)
+document.addEventListener('keydown', (e) => {
+  const lb = document.getElementById('lightbox');
+  if (!lb || !lb.classList.contains('active')) return;
+  if (e.key === 'Escape') closeLightbox();
+  else if (e.key === 'ArrowLeft')  navLightbox(-1);
+  else if (e.key === 'ArrowRight') navLightbox(1);
+});
+
+// ===== APPLICATION DES DÉFAUTS THÈME / FONT / GALERIE =====
+// Le panneau "gouvernail" qui permettait de basculer entre les variantes a été
+// retiré (cf. retour client mail du 30/04 — ce n'est pas une bonne pratique de
+// laisser l'utilisateur choisir l'apparence d'un site marchand). On applique
+// donc directement les valeurs par défaut validées côté DA :
+//   - Code couleur : cream (crème + bleu marine — DA Valentin)
+//   - Police titres : Birds and Home (cursive custom)
+//   - Disposition galerie : masonry (ratios d'origine)
+// La logique reste tolérante à un éventuel localStorage déjà posé chez les
+// premiers utilisateurs — on respecte leur préférence si elle existe.
+function initThemeDefaults() {
+  // ---- Police titres ----
+  const customFonts = ['Arsenica','Birds and Home','Brown Sugar','Palmore','Rattani','Sailing Club','Selga','Tritone','Zafrada'];
+  const FONT_DEFAULT = "'Birds and Home', cursive";
+  const savedFont = localStorage.getItem('guru-font') || FONT_DEFAULT;
+  document.documentElement.style.setProperty('--font-heading', savedFont);
+  const isCustom = customFonts.some(f => savedFont.includes(`'${f}'`) || savedFont.includes(f));
+  document.body.classList.toggle('custom-heading-font', isCustom);
+
+  // ---- Disposition galerie ----
   const galleryGrid = document.getElementById('galleryGrid');
-  if (gallerySelect && galleryGrid) {
-    const saved = localStorage.getItem('guru-gallery-layout') || 'masonry';
-    gallerySelect.value = saved;
-    galleryGrid.classList.toggle('layout-masonry', saved === 'masonry');
-    gallerySelect.addEventListener('change', () => {
-      const isMasonry = gallerySelect.value === 'masonry';
-      galleryGrid.classList.toggle('layout-masonry', isMasonry);
-      localStorage.setItem('guru-gallery-layout', gallerySelect.value);
-    });
+  if (galleryGrid) {
+    const savedLayout = localStorage.getItem('guru-gallery-layout') || 'masonry';
+    galleryGrid.classList.toggle('layout-masonry', savedLayout === 'masonry');
   }
 
-  // ===== Code couleur (thème) =====
-  // Deux templates : "dark" (premium sombre, identique à l'actuel) et "cream"
-  // (DA Valentin — crème + bleu marine #142F8A / #FBEFDF). On bascule via une
-  // classe sur <body> et on swap les SVG des logos pour préserver le contraste.
-  const colorSelect = document.getElementById('colorTemplateSelect');
+  // ---- Code couleur (thème) ----
+  // Deux templates restent dispo dans le CSS : "dark" (premium sombre) et
+  // "cream" (DA Valentin — crème + bleu marine #142F8A / #FBEFDF). On bascule
+  // via une classe sur <body> et on swap les SVG des logos pour préserver le
+  // contraste — la logique reste en place pour permettre un changement
+  // global facile depuis le code si besoin (sans toucher au DOM utilisateur).
   const logoIcone = document.querySelector('.logo .logo-icone');
   const logoTypo  = document.querySelector('.logo .logo-typo');
   const logoFooter = document.querySelector('.footer-logo .logo-svg');
@@ -720,37 +850,48 @@ function initFontSwitcher() {
     typo:   'images/logo-typo-bleu.svg',
     footer: 'images/logo-entier-xl-bleu.svg'
   };
+  const savedTheme = localStorage.getItem('guru-color-template') || 'cream';
+  const isCream = savedTheme === 'cream';
+  document.body.classList.toggle('theme-cream', isCream);
+  const set = isCream ? LOGO_BLEU : LOGO_BLANC;
+  if (logoIcone)  logoIcone.setAttribute('src', set.icone);
+  if (logoTypo)   logoTypo.setAttribute('src',  set.typo);
+  if (logoFooter) logoFooter.setAttribute('src', set.footer);
 
-  function applyColorTemplate(theme) {
-    const isCream = theme === 'cream';
-    document.body.classList.toggle('theme-cream', isCream);
-    const set = isCream ? LOGO_BLEU : LOGO_BLANC;
-    if (logoIcone)  logoIcone.setAttribute('src', set.icone);
-    if (logoTypo)   logoTypo.setAttribute('src',  set.typo);
-    if (logoFooter) logoFooter.setAttribute('src', set.footer);
-  }
-
-  if (colorSelect) {
-    // Défaut au premier chargement : "cream" (Crème & Bleu marine — DA Valentin).
-    // L'utilisateur peut toujours basculer en sombre, le choix est persisté.
-    const savedTheme = localStorage.getItem('guru-color-template') || 'cream';
-    colorSelect.value = savedTheme;
-    applyColorTemplate(savedTheme);
-    colorSelect.addEventListener('change', () => {
-      const theme = colorSelect.value;
-      localStorage.setItem('guru-color-template', theme);
-      applyColorTemplate(theme);
-    });
-  }
-
-  // Note : le toggle "Assets décoratifs" et la parallaxe associée ont été
-  // retirés du panneau dev (cf. retours client). Le calque .overlay-assets
-  // reste dans le DOM mais n'est plus activable — body.assets-on n'est
-  // jamais mis, donc opacity:0 le garde invisible.
-  // On nettoie quand même un éventuel ancien localStorage hérité.
+  // Nettoyage d'un éventuel localStorage hérité du toggle "Assets décoratifs".
   if (localStorage.getItem('guru-assets-on') !== null) {
     localStorage.removeItem('guru-assets-on');
   }
+}
+
+// ===== Form devis : champ texte "Autre (préciser)" qui apparaît à la demande =====
+// Quand l'utilisateur sélectionne "Autre" dans Type d'événement, on révèle un
+// input texte sous le select pour qu'il puisse préciser. Marqué `required` à
+// l'apparition pour forcer la saisie, retiré sinon (sinon le formulaire ne se
+// soumet plus dans les autres cas). Une petite animation de slide-down via
+// max-height pour rester en harmonie avec le reste des transitions du site.
+function initEventTypeOther() {
+  const select = document.getElementById('eventTypeSelect');
+  const input  = document.getElementById('eventTypeOther');
+  if (!select || !input) return;
+
+  const sync = () => {
+    const isAutre = select.value === 'autre';
+    if (isAutre) {
+      input.hidden = false;
+      input.required = true;
+      // léger focus pour guider la saisie quand l'utilisateur vient de choisir
+      requestAnimationFrame(() => input.focus({ preventScroll: true }));
+    } else {
+      input.hidden = true;
+      input.required = false;
+      input.value = '';
+    }
+  };
+
+  select.addEventListener('change', sync);
+  // Sync initial (au cas où le navigateur restaure une valeur après reload)
+  sync();
 }
 
 // ===== Cards "Pour quels événements ?" → cliquables vers la galerie =====
@@ -794,7 +935,9 @@ document.addEventListener('DOMContentLoaded', () => {
   initHeaderScroll();
   loadGallery();
   initLoadMore();
-  initFontSwitcher();
+  initGalleryLightbox();
+  initThemeDefaults();
+  initEventTypeOther();
   initForWhoCardsLink();
 
   // Lang toggle

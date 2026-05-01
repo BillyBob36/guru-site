@@ -237,7 +237,7 @@
         </div>
         <div class="for-who-card">
           <div class="card-image">
-            <img src="images/repas-assis.jpg" alt="Repas assis gastronomique pour soirée VIP et lancement de produit">
+            <img src="images/repas-assis.jpg" alt="Repas assis gastronomique pour soirée VIP, lancement de produit et grand compte corporate">
             <div class="card-image-overlay"></div>
           </div>
           <div class="card-content">
@@ -246,24 +246,26 @@
                 <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
               </svg>
             </div>
-            <h3 data-i18n="forWho2Title">Soirées clients & moments premium</h3>
-            <p data-i18n="forWho2Desc">Lancements produits, soirées clients, events marque, séminaires haut de gamme. L'excellence culinaire au service de votre image.</p>
+            <h3 data-i18n="forWho2Title">Soirées clients & grands comptes</h3>
+            <p data-i18n="forWho2Desc">Lancements produits, soirées clients, événements de marque, séminaires haut de gamme, comités de direction et conventions d'entreprise. L'excellence culinaire au service de votre image.</p>
           </div>
         </div>
         <div class="for-who-card">
           <div class="card-image">
-            <img src="images/buffet-service.jpg" alt="Buffet traiteur corporate pour séminaire et convention d'entreprise">
+            <img src="images/buffet-service.jpg" alt="Buffet, box repas et catering sur site pour les équipes internes">
             <div class="card-image-overlay"></div>
           </div>
           <div class="card-content">
             <div class="card-icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
-                <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
               </svg>
             </div>
-            <h3>Grands comptes & corporate</h3>
-            <p>Comités de direction, conventions d'entreprise, événements internes sur-mesure. Une offre sans limite de format, pensée pour les organisations qui exigent rigueur et discrétion.</p>
+            <h3 data-i18n="forWho3Title">Événements internes</h3>
+            <p data-i18n="forWho3Desc">Box repas, buffets staff, buffets de soirée, collations & snacks pour vos équipes sur le terrain, catering sur site, livraison de paniers repas. Une logistique souple pour nourrir vos équipes au quotidien comme sur les grands rendez-vous.</p>
           </div>
         </div>
       </div>
@@ -665,15 +667,20 @@
               <label data-i18n="formPhone">Téléphone</label>
               <input type="tel" name="telephone">
             </div>
-            <div class="form-group">
+            <div class="form-group" id="eventTypeGroup">
               <label data-i18n="formEventType">Type d'événement</label>
-              <select name="type_evenement" required>
+              <select name="type_evenement" id="eventTypeSelect" required>
                 <option value="" data-i18n="selectPlaceholder">Sélectionner…</option>
                 <option value="stress" data-i18n="formEventOpt1">Stress event / gros volume</option>
                 <option value="premium" data-i18n="formEventOpt2">Soirée premium / luxe</option>
                 <option value="corporate" data-i18n="formEventOpt3">Corporate / sur-mesure</option>
+                <option value="interne" data-i18n="formEventOpt5">Événement interne / box repas</option>
                 <option value="autre" data-i18n="formEventOpt4">Autre (préciser)</option>
               </select>
+              <input type="text" name="type_evenement_autre" id="eventTypeOther"
+                     class="event-type-other" data-i18n="formEventOtherPlaceholder"
+                     placeholder="Précisez le type d'événement"
+                     hidden>
             </div>
             <div class="form-group">
               <label data-i18n="formDate">Date(s) envisagée(s)</label>
@@ -752,50 +759,12 @@
     <a href="#devis" class="btn-cta" data-i18n="heroCta">Demander un devis</a>
   </div>
 
-  <!-- ===== DEV SWITCHER (typo + disposition galerie) ===== -->
-  <div class="font-switcher" id="fontSwitcher">
-    <button class="font-switcher-toggle" id="fontSwitcherToggle" title="Options de prévisualisation (Ctrl+Shift+F)">⚙</button>
-    <div class="font-switcher-panel" id="fontSwitcherPanel">
-      <div class="font-switcher-header">
-        <span>Prévisualisation</span>
-        <button class="font-switcher-close" id="fontSwitcherClose">×</button>
-      </div>
-
-      <div class="switcher-group">
-        <label class="switcher-label">Police des titres</label>
-        <div class="font-switcher-current" id="fontSwitcherCurrent">Space Grotesk (actuelle)</div>
-        <select id="fontSelect">
-          <option value="'Space Grotesk', system-ui, sans-serif">Space Grotesk (actuelle)</option>
-          <option value="'Arsenica', serif">Arsenica</option>
-          <option value="'Birds and Home', cursive">Birds and Home</option>
-          <option value="'Brown Sugar', cursive">Brown Sugar</option>
-          <option value="'Palmore', serif">Palmore</option>
-          <option value="'Rattani', cursive">Rattani</option>
-          <option value="'Sailing Club', cursive">Sailing Club</option>
-          <option value="'Selga', sans-serif">Selga</option>
-          <option value="'Tritone', sans-serif">Tritone</option>
-          <option value="'Zafrada', sans-serif">Zafrada</option>
-        </select>
-      </div>
-
-      <div class="switcher-group">
-        <label class="switcher-label">Disposition galerie</label>
-        <select id="gallerySelect">
-          <option value="grid">Grille uniforme (vignettes carrées)</option>
-          <option value="masonry">Masonry (ratios d'origine)</option>
-        </select>
-      </div>
-
-      <div class="switcher-group">
-        <label class="switcher-label">Code couleur</label>
-        <select id="colorTemplateSelect">
-          <option value="dark">Premium sombre (actuelle)</option>
-          <option value="cream">Crème &amp; Bleu marine</option>
-        </select>
-      </div>
-
-    </div>
-  </div>
+  <!-- Le panneau "gouvernail" (typo / galerie / thème) a été retiré (cf. retour
+       client du 30/04 : pas une bonne pratique de laisser l'utilisateur choisir
+       l'apparence d'un site marchand). Les défauts (cream + Birds and Home +
+       masonry) sont maintenant appliqués directement au boot par
+       initThemeDefaults() dans script.js — la logique de bascule reste
+       disponible côté CSS pour un éventuel switch global futur. -->
 
   <!-- Schema.org FAQ Structured Data -->
   <script type="application/ld+json">

@@ -992,17 +992,86 @@ body.theme-cream .header.scrolled { background: rgba(251, 239, 223, 0.96); }
   display: none; position: fixed; inset: 0; z-index: 2000;
   background: rgba(0,0,0,0.95); backdrop-filter: blur(20px);
   align-items: center; justify-content: center;
-  cursor: pointer;
+  cursor: zoom-out;
+  /* on ne capture plus le swipe vertical natif du browser : Escape ou tap fond
+     suffisent pour fermer ; le swipe horizontal pilote prev/next via JS */
+  touch-action: pan-y;
 }
 .lightbox.active { display: flex; }
 .lightbox img {
-  max-width: 90vw; max-height: 90vh; object-fit: contain;
+  max-width: 86vw; max-height: 88vh; object-fit: contain;
   border-radius: var(--radius-sm);
+  cursor: default;
+  /* fade quand on change d'image — pilotée en JS via classe .swapping */
+  opacity: 1;
+  transition: opacity 0.18s ease;
+  user-select: none;
+  -webkit-user-drag: none;
 }
-.lightbox-close {
-  position: absolute; top: 24px; right: 24px;
-  background: none; border: none; color: white;
-  font-size: 2rem; cursor: pointer;
+.lightbox img.swapping { opacity: 0; }
+.lightbox-close,
+.lightbox-prev,
+.lightbox-next {
+  position: absolute;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.14);
+  color: white;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 999px;
+  transition: background 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+.lightbox-close { top: 24px; right: 24px; width: 44px; height: 44px; font-size: 1.6rem; line-height: 1; }
+.lightbox-prev,
+.lightbox-next {
+  top: 50%; transform: translateY(-50%);
+  width: 52px; height: 52px;
+}
+.lightbox-prev { left: 24px; }
+.lightbox-next { right: 24px; }
+.lightbox-prev svg,
+.lightbox-next svg { width: 24px; height: 24px; }
+.lightbox-close:hover,
+.lightbox-prev:hover,
+.lightbox-next:hover {
+  background: rgba(255,255,255,0.18);
+  border-color: rgba(255,255,255,0.28);
+}
+.lightbox-prev:hover { transform: translateY(-50%) translateX(-2px); }
+.lightbox-next:hover { transform: translateY(-50%) translateX(2px); }
+.lightbox-prev:focus-visible,
+.lightbox-next:focus-visible,
+.lightbox-close:focus-visible {
+  outline: 2px solid rgba(255,255,255,0.65);
+  outline-offset: 2px;
+}
+/* Compteur "n / total" discret, en bas-centre */
+.lightbox-counter {
+  position: absolute;
+  bottom: 24px; left: 50%; transform: translateX(-50%);
+  color: rgba(255,255,255,0.7);
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
+  background: rgba(0,0,0,0.35);
+  padding: 6px 14px;
+  border-radius: 999px;
+  pointer-events: none;
+  user-select: none;
+}
+/* Mobile : tailles réduites + flèches qui restent à portée du pouce */
+@media (max-width: 768px) {
+  .lightbox img { max-width: 92vw; max-height: 78vh; }
+  .lightbox-close { top: 14px; right: 14px; width: 40px; height: 40px; }
+  .lightbox-prev,
+  .lightbox-next { width: 44px; height: 44px; }
+  .lightbox-prev { left: 10px; }
+  .lightbox-next { right: 10px; }
+  .lightbox-prev svg,
+  .lightbox-next svg { width: 20px; height: 20px; }
+  .lightbox-counter { bottom: 14px; font-size: 0.78rem; padding: 5px 12px; }
 }
 
 /* ===== WHY GURU ===== */
@@ -1308,7 +1377,7 @@ body.theme-cream .header.scrolled { background: rgba(251, 239, 223, 0.96); }
    via `transform: scale()` (cf. plus bas) : le silhouette grossit, mais
    la box du conteneur reste identique aux autres. */
 .logo-asus-rog       { --logo-src: url('images/logos/asus-rog.svg');     --logo-w: 36px; }
-.logo-blast          { --logo-src: url('images/logos/blast.svg');       --logo-w: 90px; }
+.logo-blast          { --logo-src: url('images/logos/blast.svg');       --logo-w: 105px; }
 .logo-epicgames      { --logo-src: url('images/logos/epicgames.svg');    --logo-w: 90px; }
 .logo-eva            { --logo-src: url('images/logos/eva.svg');         --logo-w: 75px; }
 .logo-fdj            { --logo-src: url('images/logos/fdj.svg');          --logo-w: 80px; }
@@ -1438,7 +1507,7 @@ body.theme-cream .logo-item--svg:hover {
      leur transform: scale() défini en règle générique → uniforme avec
      desktop. */
   .logo-asus-rog       { --logo-w: 28px; }
-  .logo-blast          { --logo-w: 72px; }
+  .logo-blast          { --logo-w: 84px; }
   .logo-epicgames      { --logo-w: 70px; }
   .logo-eva            { --logo-w: 60px; }
   .logo-fdj            { --logo-w: 64px; }
@@ -1746,6 +1815,22 @@ body.theme-cream .logo-item--svg:hover {
 
 .form-group select { cursor: pointer; appearance: none; }
 .form-group select option { background: var(--bg-card); color: var(--text); }
+
+/* Champ texte "Autre (préciser)" — apparaît sous le select Type d'événement
+   uniquement quand l'utilisateur sélectionne "Autre". Slide-down doux pour
+   rester en harmonie avec les autres transitions du site (lightbox, FAQ). */
+.event-type-other {
+  margin-top: 10px;
+  animation: slide-down-fade 0.28s ease-out;
+}
+.event-type-other[hidden] { display: none !important; }
+@keyframes slide-down-fade {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .event-type-other { animation: none; }
+}
 
 .checkbox-group {
   display: flex; flex-wrap: wrap; gap: 16px; margin-top: 8px;
