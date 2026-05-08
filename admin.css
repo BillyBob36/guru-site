@@ -378,9 +378,9 @@ body {
 .photo-card:hover .drag-handle-hint { opacity: 0.95; color: var(--accent); }
 .photo-card-body:active .drag-handle-hint { cursor: grabbing; }
 
-/* En "Petit" (planche-contact), on cache le hint pour ne pas saturer la vignette
-   compacte — la zone reste draggable, juste sans le picto. */
-.photo-grid.size-small .drag-handle-hint { display: none; }
+/* En "Petit" (planche-contact), on garde le picto mais on le réduit pour
+   rester proportionné aux btn-icon (eux-mêmes en 28×28 dans cette taille). */
+.photo-grid.size-small .drag-handle-hint svg { width: 18px; height: 18px; }
 
 .btn-icon {
   background: var(--bg-dark-secondary);
