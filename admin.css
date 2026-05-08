@@ -265,6 +265,14 @@ body {
   overflow: hidden;
   border: 1px solid var(--border);
   transition: var(--transition);
+  /* Carte en flex-column → la zone blanche (.photo-card-body) prend la
+     hauteur restante quel que soit le nombre de tags, ce qui permet
+     d'aligner les boutons d'action en bas via margin-top:auto plus loin.
+     Combiné à `align-items: stretch` (default du grid container), toutes
+     les cartes d'une même rangée ont la même hauteur → boutons alignés
+     horizontalement entre cartes voisines. */
+  display: flex;
+  flex-direction: column;
 }
 
 .photo-card:hover {
@@ -305,6 +313,11 @@ body {
      un hint visuel renforçant l'affordance). */
   cursor: grab;
   user-select: none;
+  /* Flex-column + flex:1 → cette zone occupe toute la hauteur restante de la
+     carte, et `.photo-card-actions` peut être poussé en bas via margin-top:auto. */
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 .photo-card-body:active { cursor: grabbing; }
 
@@ -337,6 +350,11 @@ body {
   display: flex;
   gap: 8px;
   align-items: center;
+  /* Pousse les boutons tout en bas de la zone blanche, indépendamment du
+     nombre de tags au-dessus (les cartes d'une même rangée ont la même
+     hauteur grâce au grid → tous les pictos sont parfaitement alignés
+     horizontalement entre vignettes voisines). */
+  margin-top: auto;
 }
 
 /* Picto "poignée" (≡) : 3 traits horizontaux sans fond, à l'extrême droite
