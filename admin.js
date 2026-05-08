@@ -228,6 +228,11 @@
       const tagsHTML = (item.tags || []).map(t => `<span class="tag-chip">${esc(t)}</span>`).join('');
       // data-photo identifie la photo de manière stable, indépendamment de l'index
       // (l'index change quand on réordonne, le filename non).
+      // Le `.photo-card-body` est le handle drag-and-drop : tout clic dans la
+      // zone blanche sous la photo démarre une réorganisation (sauf sur les
+      // boutons éditer / supprimer qui sont dans `filter` côté SortableJS).
+      // Le picto ≡ en bas à droite indique visuellement la draggabilité — il
+      // n'a pas de comportement propre, c'est juste un visual hint.
       return `
         <div class="photo-card" data-idx="${realIdx}" data-photo="${esc(item.photo)}">
           <div class="photo-card-img" data-action="preview" data-src="${esc(src)}">
@@ -239,6 +244,13 @@
             <div class="photo-card-actions">
               <button class="btn-icon" title="Modifier les tags" data-action="edit" data-idx="${realIdx}">&#9998;</button>
               <button class="btn-icon danger" title="Supprimer" data-action="delete" data-idx="${realIdx}">&#128465;</button>
+              <span class="drag-handle-hint" aria-hidden="true" title="Glissez pour réordonner">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                  <line x1="4" y1="7" x2="20" y2="7"></line>
+                  <line x1="4" y1="12" x2="20" y2="12"></line>
+                  <line x1="4" y1="17" x2="20" y2="17"></line>
+                </svg>
+              </span>
             </div>
           </div>
         </div>`;
@@ -310,19 +322,18 @@
       ghostClass: 'sortable-ghost',
       chosenClass: 'sortable-chosen',
       dragClass:   'sortable-drag',
-      // `delay` = temps avant qu'un mousedown / touchstart soit interprété comme
-      // un drag plutôt qu'un click. Sans ça, cliquer une vignette pour la
-      // prévisualiser bloquait silencieusement (le drag prenait le pas, mais
-      // était filtré par data-action="preview", et au final ni drag ni click
-      // ne se déclenchait). Avec 140ms : un clic court → preview lightbox ;
-      // un appui maintenu (souris ou doigt) → drag. Naturel des deux côtés.
-      delay: 140,
-      // delayOnTouchOnly: false (default) → le delay s'applique aussi à la souris
-      // `touchStartThreshold` autorise un micro-bougé du doigt sans annuler le
-      // delay (sinon le moindre tremblement annulait le drag).
-      touchStartThreshold: 4,
-      // On ne bloque QUE les boutons d'action — la photo reste draggable, on
-      // gère le conflit drag-vs-click via le delay ci-dessus.
+      // `handle` = SEUL élément qui peut initier un drag. On choisit la zone
+      // blanche sous la photo (`.photo-card-body`), donc :
+      //   - Clic sur la photo (.photo-card-img)        → zoom lightbox (pas
+      //     dans le handle → SortableJS ignore le mousedown).
+      //   - Clic n'importe où dans la zone blanche     → drag immédiat,
+      //     pas de délai, pas d'appui maintenu.
+      // Le picto ≡ en bas à droite de cette zone est juste un visual hint
+      // pour faire comprendre que toute la zone blanche est la "poignée".
+      handle: '.photo-card-body',
+      // Les boutons éditer / supprimer SONT dans le handle → on les filtre
+      // explicitement pour qu'un clic dessus déclenche leur action et non
+      // un drag. preventOnFilter:false garde la propagation du click.
       filter: '[data-action="edit"], [data-action="delete"], .btn-icon',
       preventOnFilter: false,
       onStart() { galleryGrid.classList.add('is-reordering'); },

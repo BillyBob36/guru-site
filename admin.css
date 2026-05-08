@@ -300,7 +300,13 @@ body {
 
 .photo-card-body {
   padding: 12px 16px 16px;
+  /* Toute la zone blanche sous la photo est la poignée drag-and-drop —
+     le curseur l'indique explicitement (le picto ≡ en bas à droite est juste
+     un hint visuel renforçant l'affordance). */
+  cursor: grab;
+  user-select: none;
 }
+.photo-card-body:active { cursor: grabbing; }
 
 .photo-card-filename {
   font-size: 0.78rem;
@@ -330,7 +336,33 @@ body {
 .photo-card-actions {
   display: flex;
   gap: 8px;
+  align-items: center;
 }
+
+/* Picto "poignée" (≡) : 3 traits horizontaux sans fond, à l'extrême droite
+   pour faire écho aux 2 boutons éditer/supprimer à gauche.
+   Pas de bordure, pas de background → l'œil le perçoit comme un simple
+   pictogramme, pas comme un bouton, ce qui suggère que c'est toute la zone
+   blanche qui sert de poignée et non ce seul picto. */
+.drag-handle-hint {
+  margin-left: auto;             /* repousse vers le bord droit */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  cursor: grab;
+  pointer-events: none;          /* le clic ne fait rien sur le picto seul —
+                                    c'est le .photo-card-body en arrière-plan
+                                    qui capture l'événement et démarre le drag */
+  opacity: 0.55;
+  transition: opacity 0.2s ease, color 0.2s ease;
+}
+.photo-card:hover .drag-handle-hint { opacity: 0.95; color: var(--accent); }
+.photo-card-body:active .drag-handle-hint { cursor: grabbing; }
+
+/* En "Petit" (planche-contact), on cache le hint pour ne pas saturer la vignette
+   compacte — la zone reste draggable, juste sans le picto. */
+.photo-grid.size-small .drag-handle-hint { display: none; }
 
 .btn-icon {
   background: var(--bg-dark-secondary);
