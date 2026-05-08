@@ -173,7 +173,10 @@ body {
   border-color: var(--accent);
 }
 
-/* Hints sous la toolbar (drag actif / drag désactivé par filtre) */
+/* Hints sous la toolbar (drag actif / drag désactivé par filtre).
+   Le sélecteur `[hidden]` ramène le `display: none` natif que notre
+   `display: inline-flex` écraserait sinon — sans lui les deux messages
+   restaient affichés en permanence. */
 .reorder-hint,
 .reorder-disabled {
   display: inline-flex;
@@ -185,6 +188,10 @@ body {
   border-radius: var(--radius-sm);
   font-style: italic;
   flex-basis: 100%;
+}
+.reorder-hint[hidden],
+.reorder-disabled[hidden] {
+  display: none !important;
 }
 .reorder-hint {
   background: rgba(20, 47, 138, 0.05);

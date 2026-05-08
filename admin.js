@@ -310,13 +310,20 @@
       ghostClass: 'sortable-ghost',
       chosenClass: 'sortable-chosen',
       dragClass:   'sortable-drag',
-      // Long-press 200ms sur tactile pour distinguer drag d'un tap sur l'image
-      delay: 200,
-      delayOnTouchOnly: true,
-      // L'image est zoomable au clic → on évite que le drag démarre depuis l'image
-      // (sinon Mobile : le drag passe avant le scroll). On laisse drag depuis tout
-      // le reste de la card.
-      filter: '[data-action="preview"], [data-action="edit"], [data-action="delete"], .btn-icon',
+      // `delay` = temps avant qu'un mousedown / touchstart soit interprété comme
+      // un drag plutôt qu'un click. Sans ça, cliquer une vignette pour la
+      // prévisualiser bloquait silencieusement (le drag prenait le pas, mais
+      // était filtré par data-action="preview", et au final ni drag ni click
+      // ne se déclenchait). Avec 140ms : un clic court → preview lightbox ;
+      // un appui maintenu (souris ou doigt) → drag. Naturel des deux côtés.
+      delay: 140,
+      // delayOnTouchOnly: false (default) → le delay s'applique aussi à la souris
+      // `touchStartThreshold` autorise un micro-bougé du doigt sans annuler le
+      // delay (sinon le moindre tremblement annulait le drag).
+      touchStartThreshold: 4,
+      // On ne bloque QUE les boutons d'action — la photo reste draggable, on
+      // gère le conflit drag-vs-click via le delay ci-dessus.
+      filter: '[data-action="edit"], [data-action="delete"], .btn-icon',
       preventOnFilter: false,
       onStart() { galleryGrid.classList.add('is-reordering'); },
       onEnd(evt) {

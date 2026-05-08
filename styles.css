@@ -1399,39 +1399,24 @@ body.theme-cream .header.scrolled { background: rgba(251, 239, 223, 0.96); }
    entre les deux → pas de saut, pas de redimensionnement de pastille,
    et le nom complet reste lisible quel que soit l'item. */
 .logo-item--svg {
-  /* DIMENSIONS UNIFORMES : tous les cadres font exactement la même taille,
-     peu importe la marque. Les silhouettes (de tailles différentes selon
-     les SVG) sont CENTRÉES dans cette boîte fixe — leurs dimensions
-     visuelles d'origine sont conservées (cf. retour client : "ne pas
-     resizer les logos, désolidariser la taille des logos de la taille
-     de leur cadre").
-     Pill 2x plus grande qu'avant (340×112 vs 170×56) → suit l'agrandissement
-     des silhouettes contrôlé par --logo-scale. */
+  /* Layout en COLONNE partout (desktop ET mobile) — décision client mai 2025 :
+     le cross-fade silhouette ↔ nom au survol n'a aucun sens en tactile et
+     n'apporte pas grand-chose en desktop ; on affiche les deux en permanence.
+     La pastille empile : silhouette du logo en haut, nom de la marque en bas. */
   width: 340px;
-  height: 112px;
+  min-height: 132px;
+  height: auto;
   box-sizing: border-box;
-  padding: 0;                 /* on utilise width/height fixes au lieu de padding */
+  padding: 16px 18px;
   /* Important : la silhouette utilise currentColor → on contrôle la couleur
      ici, par thème. */
   color: var(--text-dark-muted);  /* dark theme par défaut sur fond blanc pur */
-  /* Position relative : ancre pour les enfants .logo-img / .logo-name
-     positionnés en absolute → ils ne participent pas au sizing du cadre. */
   position: relative;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-}
-.logo-item--svg > .logo-img,
-.logo-item--svg > .logo-name {
-  /* Positionnés en absolute (centrés dans la pastille) → ils n'imposent
-     plus leur taille au conteneur. Le nom complet peut donc être plus
-     large que le cadre sans l'agrandir : il déborde visuellement, ce
-     qui est OK puisqu'on a `overflow: clip; overflow-clip-margin` au
-     niveau du marquee qui autorise un débordement contrôlé. */
-  position: absolute;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  transition: opacity 0.25s ease;
+  gap: 12px;
 }
 .logo-item--svg > .logo-name {
   font-family: var(--font-body);
@@ -1440,65 +1425,35 @@ body.theme-cream .header.scrolled { background: rgba(251, 239, 223, 0.96); }
   letter-spacing: 1px;
   text-transform: uppercase;
   color: currentColor;
-  white-space: nowrap;
+  white-space: normal;        /* permet le retour à la ligne (ex : "La Chaîne Parlementaire") */
+  text-align: center;
+  max-width: 100%;
+  line-height: 1.15;
   pointer-events: none;
-  opacity: 0;
+  opacity: 1;
 }
-.logo-item--svg:hover > .logo-img { opacity: 0; }
-.logo-item--svg:hover > .logo-name { opacity: 1; }
 
-/* Combinaison transform: translate(-50%,-50%) + scale() pour les 3 logos
-   à agrandir visuellement (Red Bull / Asus ROG / Mines). On REPLACE le
-   transform de centrage car CSS transforms ne se cumulent pas — on doit
-   réécrire avec translate puis scale. */
-.logo-item--svg > .logo-img.logo-redbull   { transform: translate(-50%, -50%) scale(1.32); }
-.logo-item--svg > .logo-img.logo-asus-rog  { transform: translate(-50%, -50%) scale(1.32); }
-.logo-item--svg > .logo-img.logo-mines     { transform: translate(-50%, -50%) scale(1.20); }
+/* Scale visuel pour les 3 marques dont la silhouette d'origine est plus
+   petite que la moyenne (Red Bull / Asus ROG / Mines). Plus de translate
+   nécessaire puisque les enfants sont en flux normal (flex-column). */
+.logo-item--svg > .logo-img.logo-redbull   { transform: scale(1.32); }
+.logo-item--svg > .logo-img.logo-asus-rog  { transform: scale(1.32); }
+.logo-item--svg > .logo-img.logo-mines     { transform: scale(1.20); }
 
-/* ===== Mobile ≤ 768 : layout en COLONNE, nom sous le logo =====
-   Sur tactile le hover ne se déclenche pas → le cross-fade silhouette ↔ nom
-   est invisible. On affiche donc en permanence le nom de la marque sous la
-   silhouette. La pastille passe en flex-direction: column.
-   On reste légèrement plus petit que desktop (--logo-scale: 1.5) pour
-   conserver une densité raisonnable et un bandeau qui scrolle bien. */
+/* Mobile : on réduit la taille globale + la pastille pour préserver la
+   densité du bandeau et garder le scroll fluide. Le layout reste identique
+   (flex-column, nom toujours visible). */
 @media (max-width: 768px) {
   .logo-item--svg {
     --logo-scale: 1.5;
     width: 200px;
-    height: auto;
     min-height: 96px;
     padding: 12px 8px;
-    flex-direction: column;
     gap: 8px;
   }
-  /* On sort les enfants du positionnement absolu : ils participent au flux
-     normal, donc le flex-column les empile (logo en haut, nom en bas). */
-  .logo-item--svg > .logo-img,
-  .logo-item--svg > .logo-name {
-    position: static;
-    transform: none;
-    opacity: 1;
-  }
-  /* Réinjecte les scales par-marque mais sans le translate(-50%,-50%) qui
-     servait au centrage absolute (devenu inutile en flex-column statique). */
-  .logo-item--svg > .logo-img.logo-redbull   { transform: scale(1.32); }
-  .logo-item--svg > .logo-img.logo-asus-rog  { transform: scale(1.32); }
-  .logo-item--svg > .logo-img.logo-mines     { transform: scale(1.20); }
-
-  /* Le hover ne doit plus masquer la silhouette / révéler le nom :
-     les deux sont déjà visibles en permanence. */
-  .logo-item--svg:hover > .logo-img,
-  .logo-item--svg:hover > .logo-name { opacity: 1; }
-
   .logo-item--svg > .logo-name {
     font-size: 0.74rem;
     letter-spacing: 0.5px;
-    /* on permet le retour à la ligne pour les noms longs (ex : "École des
-       Mines", "La Chaîne Parlementaire") plutôt que de les tronquer. */
-    white-space: normal;
-    text-align: center;
-    max-width: 100%;
-    line-height: 1.15;
   }
 }
 @media (max-width: 480px) {
@@ -1509,12 +1464,6 @@ body.theme-cream .header.scrolled { background: rgba(251, 239, 223, 0.96); }
     padding: 10px 6px;
   }
   .logo-item--svg > .logo-name { font-size: 0.7rem; }
-}
-/* Sur prefers-reduced-motion : pas de fade, on garde juste la silhouette
-   (le client peut toujours lire le nom dans l'aria-label / tooltip natif) */
-@media (prefers-reduced-motion: reduce) {
-  .logo-item--svg > .logo-img,
-  .logo-item--svg > .logo-name { transition: none; }
 }
 
 /* La règle "color: var(--text)" pour les silhouettes sur trust en thème
