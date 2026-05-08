@@ -2,25 +2,31 @@
 
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
+/* Code couleur "Crème & Bleu marine" (DA Valentin — validée mai 2025).
+   Identique au front-end : #FBEFDF / #142F8A. Les noms de variables sont
+   conservés (--bg-dark, --bg-dark-secondary…) pour ne pas casser tous les
+   sélecteurs en aval — leurs VALEURS sont maintenant les valeurs cream.
+   Les typos sont volontairement laissées en l'état (Space Grotesk + Inter)
+   pour préserver la lisibilité de l'admin sans switcher en cursive script. */
 :root {
-  --bg-dark: #0f0f12;
-  --bg-dark-secondary: #16161a;
-  --bg-card: #1a1a1f;
-  --bg-card-hover: #222229;
-  --accent: #d4a853;
-  --accent-light: #e8c87a;
-  --accent-dark: #b8923f;
-  --accent-glow: rgba(212, 168, 83, 0.25);
-  --text: #f5f5f0;
-  --text-muted: #9a9a95;
-  --border: rgba(255, 255, 255, 0.08);
+  --bg-dark: #FBEFDF;             /* fond principal — crème */
+  --bg-dark-secondary: #F4E5D2;   /* header / barres de tabs */
+  --bg-card: #FFF7EA;             /* cartes / inputs — crème très clair */
+  --bg-card-hover: #F4E5D2;
+  --accent: #142F8A;              /* bleu marine profond */
+  --accent-light: #2A4BB8;
+  --accent-dark: #0E2266;
+  --accent-glow: rgba(20, 47, 138, 0.22);
+  --text: #142F8A;                /* texte principal sur crème */
+  --text-muted: #4A5A8E;          /* sous-titres / placeholders */
+  --border: rgba(20, 47, 138, 0.14);
   --font-heading: 'Space Grotesk', system-ui, sans-serif;
   --font-body: 'Inter', system-ui, sans-serif;
   --radius: 16px;
   --radius-sm: 8px;
   --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  --danger: #e05252;
-  --danger-hover: #c93c3c;
+  --danger: #c43d3d;
+  --danger-hover: #a82e2e;
 }
 
 html { font-size: 16px; }
@@ -66,7 +72,7 @@ body {
   align-items: center;
   gap: 8px;
   background: var(--accent);
-  color: #0f0f12;
+  color: #FBEFDF;
   border: none;
   padding: 12px 28px;
   border-radius: var(--radius-sm);
@@ -167,11 +173,83 @@ body {
   border-color: var(--accent);
 }
 
+/* Hints sous la toolbar (drag actif / drag désactivé par filtre) */
+.reorder-hint,
+.reorder-disabled {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  font-style: italic;
+  flex-basis: 100%;
+}
+.reorder-hint {
+  background: rgba(20, 47, 138, 0.05);
+  border: 1px dashed rgba(20, 47, 138, 0.18);
+  color: var(--accent);
+}
+.reorder-hint svg { flex-shrink: 0; opacity: 0.7; }
+.reorder-disabled {
+  background: rgba(196, 61, 61, 0.06);
+  border: 1px dashed rgba(196, 61, 61, 0.20);
+  color: var(--danger);
+}
+
 /* ===== PHOTO GRID ===== */
 .photo-grid {
   display: grid;
+  /* La taille des vignettes est pilotée par les classes .size-* (cf. plus bas).
+     Default = medium 260px (le ratio historique). */
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   gap: 20px;
+}
+
+/* Sélecteur de taille de vignette — petit / moyen / grand / très grand.
+   On ajuste le `minmax` via `auto-fill` pour que le nombre de colonnes
+   s'adapte à la largeur de la fenêtre. Le client peut donc afficher 4×
+   plus de vignettes en "Petit" → moins de scroll pour réorganiser. */
+.photo-grid.size-small  { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; }
+.photo-grid.size-medium { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; }
+.photo-grid.size-large  { grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 22px; }
+.photo-grid.size-xl     { grid-template-columns: repeat(auto-fill, minmax(440px, 1fr)); gap: 28px; }
+
+/* En "Petit" : on cache les méta (filename + tags) pour ne garder QUE l'image
+   — c'est une vue "planche-contact" idéale pour réorganiser à grande échelle. */
+.photo-grid.size-small .photo-card-body { padding: 8px 10px; }
+.photo-grid.size-small .photo-card-filename { font-size: 0.7rem; }
+.photo-grid.size-small .photo-card-tags { display: none; }
+.photo-grid.size-small .btn-icon { width: 28px; height: 28px; font-size: 0.85rem; }
+
+/* ===== Drag & drop reorder (SortableJS) ===== */
+.photo-card.draggable { cursor: grab; }
+.photo-card.draggable:active { cursor: grabbing; }
+.photo-grid.is-reordering .photo-card-img { cursor: grabbing; }
+
+/* SortableJS pose des classes sur l'élément en cours de drag :
+   - .sortable-ghost  → la "case fantôme" qui montre la cible de dépose
+   - .sortable-chosen → l'élément que l'utilisateur a saisi
+   - .sortable-drag   → le clone visuel qui suit le curseur */
+.photo-card.sortable-ghost {
+  opacity: 0.35;
+  background: rgba(20, 47, 138, 0.08);
+  border-color: var(--accent);
+}
+.photo-card.sortable-chosen {
+  cursor: grabbing;
+  border-color: var(--accent);
+  box-shadow: 0 12px 32px rgba(20, 47, 138, 0.22);
+}
+.photo-card.sortable-drag {
+  opacity: 0.95;
+  transform: scale(1.02);
+  box-shadow: 0 18px 40px rgba(20, 47, 138, 0.28);
+  cursor: grabbing;
+}
+@media (prefers-reduced-motion: reduce) {
+  .photo-card.sortable-drag { transform: none; }
 }
 
 .photo-card {
@@ -183,9 +261,9 @@ body {
 }
 
 .photo-card:hover {
-  border-color: rgba(255, 255, 255, 0.15);
+  border-color: var(--accent);
   transform: translateY(-2px);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 8px 32px rgba(20, 47, 138, 0.18);
 }
 
 .photo-card-img {
@@ -383,7 +461,7 @@ body {
 
 .rotation-controls button:hover {
   background: var(--accent);
-  color: #0f0f12;
+  color: #FBEFDF;
 }
 
 .upload-card-body {
@@ -469,13 +547,13 @@ body {
 
 .new-tag-input button:hover {
   background: var(--accent);
-  color: #0f0f12;
+  color: #FBEFDF;
 }
 
 .btn-add-photo {
   width: 100%;
   background: var(--accent);
-  color: #0f0f12;
+  color: #FBEFDF;
   border: none;
   padding: 10px 20px;
   border-radius: var(--radius-sm);
@@ -500,7 +578,7 @@ body {
   display: none;
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.7);
+  background: rgba(20, 47, 138, 0.55);
   backdrop-filter: blur(4px);
   z-index: 500;
   align-items: center;
@@ -601,7 +679,7 @@ body {
 
 .modal-new-tag button:hover {
   background: var(--accent);
-  color: #0f0f12;
+  color: #FBEFDF;
 }
 
 .modal-actions {
@@ -633,7 +711,7 @@ body {
 
 .btn-save {
   background: var(--accent);
-  color: #0f0f12;
+  color: #FBEFDF;
 }
 
 .btn-save:hover {
@@ -682,14 +760,14 @@ body {
 /* ===== SCROLLBAR ===== */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
+::-webkit-scrollbar-thumb { background: rgba(20, 47, 138, 0.18); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(20, 47, 138, 0.32); }
 
 /* ===== LIGHTBOX ===== */
 .admin-lightbox {
   display: none;
   position: fixed; inset: 0;
-  background: rgba(0, 0, 0, 0.92);
+  background: rgba(20, 47, 138, 0.92);
   z-index: 700;
   align-items: center; justify-content: center;
   padding: 32px;
@@ -753,7 +831,7 @@ body {
 }
 .tags-add button {
   background: var(--accent);
-  color: #0f0f12;
+  color: #FBEFDF;
   border: none;
   padding: 12px 22px;
   border-radius: var(--radius-sm);
@@ -780,7 +858,7 @@ body {
   padding: 12px 16px;
   transition: var(--transition);
 }
-.tag-row:hover { border-color: rgba(255,255,255,0.15); }
+.tag-row:hover { border-color: var(--accent); }
 .tag-row-info { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
 .tag-row-name {
   font-weight: 500; color: var(--text);
@@ -876,7 +954,7 @@ body {
 }
 .seg-btn.active {
   background: var(--accent);
-  color: #0f0f12;
+  color: #FBEFDF;
   font-weight: 600;
 }
 .rot-group { display: inline-flex; gap: 6px; }
@@ -894,7 +972,7 @@ body {
 }
 .rot-group button:hover {
   background: var(--accent);
-  color: #0f0f12;
+  color: #FBEFDF;
   border-color: var(--accent);
 }
 
@@ -926,55 +1004,59 @@ body {
 /* ===== Login overlay ===== */
 .login-overlay {
   position: fixed; inset: 0; z-index: 9999;
-  background: rgba(10, 10, 14, 0.96);
+  background: rgba(20, 47, 138, 0.55);
   display: flex; align-items: center; justify-content: center;
   padding: 20px;
+  backdrop-filter: blur(6px);
 }
 .login-overlay.hidden { display: none; }
 .login-box {
-  background: #16161d;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
   border-radius: 16px;
   padding: 32px;
   max-width: 360px;
   width: 100%;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 20px 60px rgba(20, 47, 138, 0.18);
 }
-.login-box h2 { margin: 0 0 8px; font-size: 1.3rem; color: #fff; }
-.login-box p { margin: 0 0 20px; color: rgba(255, 255, 255, 0.6); font-size: 0.9rem; }
+.login-box h2 { margin: 0 0 8px; font-size: 1.3rem; color: var(--accent); font-family: var(--font-heading); }
+.login-box p { margin: 0 0 20px; color: var(--text-muted); font-size: 0.9rem; }
 .login-box input {
   width: 100%; padding: 12px 14px; box-sizing: border-box;
-  border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 8px;
-  background: rgba(255, 255, 255, 0.04); color: #fff; font-size: 1rem;
+  border: 1px solid var(--border); border-radius: 8px;
+  background: rgba(20, 47, 138, 0.04); color: var(--text); font-size: 1rem;
   margin-bottom: 12px;
 }
-.login-box input:focus { outline: none; border-color: #c9a961; }
+.login-box input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
 .login-box button {
   width: 100%; padding: 12px; border: none; border-radius: 8px;
-  background: #c9a961; color: #0a0a0e; font-weight: 600; font-size: 1rem;
+  background: var(--accent); color: #FBEFDF; font-weight: 600; font-size: 1rem;
   cursor: pointer;
+  transition: var(--transition);
 }
+.login-box button:hover { background: var(--accent-light); }
 .login-box button:disabled { opacity: 0.6; cursor: not-allowed; }
 .login-error {
   margin-top: 12px; padding: 10px 12px; border-radius: 8px;
-  background: rgba(239, 68, 68, 0.12); color: #ff8a8a; font-size: 0.85rem;
+  background: rgba(196, 61, 61, 0.12); color: var(--danger); font-size: 0.85rem;
 }
 
 /* ===== Header actions ===== */
 .header-actions { display: flex; gap: 10px; align-items: center; }
 .sync-indicator {
-  font-size: 0.8rem; color: rgba(255, 255, 255, 0.5);
+  font-size: 0.8rem; color: var(--text-muted);
   padding: 6px 10px; border-radius: 6px;
-  background: rgba(255, 255, 255, 0.04);
+  background: rgba(20, 47, 138, 0.06);
 }
-.sync-indicator.syncing { color: #c9a961; }
-.sync-indicator.error { color: #ff8a8a; }
+.sync-indicator.syncing { color: var(--accent); }
+.sync-indicator.error { color: var(--danger); }
 .btn-logout {
-  padding: 8px 14px; border: 1px solid rgba(255, 255, 255, 0.12);
-  background: transparent; color: rgba(255, 255, 255, 0.7); border-radius: 6px;
+  padding: 8px 14px; border: 1px solid var(--border);
+  background: transparent; color: var(--text-muted); border-radius: 6px;
   cursor: pointer; font-size: 0.85rem;
+  transition: var(--transition);
 }
-.btn-logout:hover { background: rgba(255, 255, 255, 0.05); color: #fff; }
+.btn-logout:hover { background: rgba(20, 47, 138, 0.06); color: var(--accent); border-color: var(--accent); }
 @media (max-width: 640px) {
   .sync-indicator { display: none; }
 }

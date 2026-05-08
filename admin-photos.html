@@ -43,11 +43,28 @@
   <section class="tab-panel active" id="tabGallery">
     <div class="toolbar">
       <input type="text" id="searchInput" placeholder="Rechercher par nom de fichier...">
-      <select id="filterTag">
+      <select id="filterTag" aria-label="Filtrer par tag">
         <option value="">Tous les tags</option>
       </select>
+      <select id="sizeSelect" aria-label="Taille des vignettes" title="Taille des vignettes">
+        <option value="small">Petit</option>
+        <option value="medium" selected>Moyen</option>
+        <option value="large">Grand</option>
+        <option value="xl">Très grand</option>
+      </select>
+      <span class="reorder-hint" id="reorderHint" hidden>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+        Glissez les photos pour réorganiser leur ordre d'affichage sur le site
+      </span>
+      <span class="reorder-disabled" id="reorderDisabled" hidden>
+        Désactivez le filtre / la recherche pour pouvoir réorganiser
+      </span>
     </div>
-    <div class="photo-grid" id="galleryGrid">
+    <div class="photo-grid size-medium" id="galleryGrid">
       <div class="empty-state" style="grid-column:1/-1">
         <p>Chargement...</p>
       </div>
@@ -108,6 +125,11 @@
   <!-- ===== TOAST ===== -->
   <div class="toast" id="toast"></div>
 
-  <script src="admin.js"></script>
+  <!-- SortableJS — drag & drop reorder de la galerie (cf. admin.js : initSortable).
+       Petit (~10ko gzip), zéro dépendance, support tactile (long-press).
+       Les deux scripts utilisent `defer` pour garantir que SortableJS expose
+       son global avant que admin.js ne lance init() / initSortable(). */ -->
+  <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js" defer></script>
+  <script src="admin.js" defer></script>
 </body>
 </html>

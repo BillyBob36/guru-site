@@ -1,27 +1,22 @@
-/* ===== CUSTOM FONTS (Propositions Valentin) ===== */
-/* Toutes les typos display sont chargées en Regular (poids 400).
-   Elles sont caractérielles : pas besoin de gras. font-weight:400 sur toutes
-   évite le faux-bold synthétisé par le navigateur (glyphes qui se touchent). */
-@font-face { font-family: 'Arsenica'; src: url('fonts/Arsenica-Regular.otf') format('opentype'); font-weight: 400; font-display: swap; }
+/* ===== CUSTOM FONT — Birds and Home =====
+   Validation client (mai 2025) : Birds and Home est la seule typo display
+   retenue pour les titres. Chargée en Regular (poids 400) — la typo est
+   caractérielle, pas besoin de gras, et un faux-bold synthétisé par le
+   navigateur ferait coller les glyphes. Les autres propositions Valentin
+   (Arsenica / Brown Sugar / Palmore / Rattani / Sailing Club / Selga /
+   Tritone / Zafrada) ont été retirées avec l'ancien switcher. */
 @font-face { font-family: 'Birds and Home'; src: url('fonts/Birds and Home.otf') format('opentype'); font-weight: 400; font-display: swap; }
-@font-face { font-family: 'Brown Sugar'; src: url('fonts/Brown Sugar .otf') format('opentype'); font-weight: 400; font-display: swap; }
-@font-face { font-family: 'Palmore'; src: url('fonts/Palmore.otf') format('opentype'); font-weight: 400; font-display: swap; }
-@font-face { font-family: 'Rattani'; src: url('fonts/Allmo Studio - Rattani.otf') format('opentype'); font-weight: 400; font-display: swap; }
-@font-face { font-family: 'Sailing Club'; src: url('fonts/SailingClub-Regular.woff2') format('woff2'); font-weight: 400; font-display: swap; }
-@font-face { font-family: 'Selga'; src: url('fonts/Selga.otf') format('opentype'); font-weight: 400; font-display: swap; }
-@font-face { font-family: 'Tritone'; src: url('fonts/Champagne Design - Tritone Regular.otf') format('opentype'); font-weight: 400; font-display: swap; }
-@font-face { font-family: 'Zafrada'; src: url('fonts/Pedroglifos - Zafrada Normal.otf') format('opentype'); font-weight: 400; font-display: swap; }
 
-/* Quand une typo custom est active via le switcher :
-   - on neutralise le gras hérité (pour ne pas déclencher de faux-bold)
-   - on ouvre légèrement le tracking pour éviter que les glyphes se touchent */
-body.custom-heading-font h1,
-body.custom-heading-font h2,
-body.custom-heading-font h3,
-body.custom-heading-font .highlight,
-body.custom-heading-font .section-title,
-body.custom-heading-font .hero-title,
-body.custom-heading-font .stat-number {
+/* Birds and Home étant la typo de tous les titres, on désactive le faux-bold
+   du navigateur et on ouvre un peu le tracking (sinon les boucles cursives
+   se touchent). Ces règles sont appliquées sans condition de classe. */
+h1,
+h2,
+h3,
+.highlight,
+.section-title,
+.hero-title,
+.stat-number {
   font-weight: 400 !important;
   font-synthesis: none;
   -webkit-font-smoothing: antialiased;
@@ -65,8 +60,8 @@ body.custom-heading-font .stat-number {
   --hero-overlay-mid:  rgba(15, 15, 18, 0.6);
   --hero-overlay-to:   rgba(15, 15, 18, 0.9);
 
-  /* Typography */
-  --font-heading: 'Space Grotesk', system-ui, sans-serif;
+  /* Typography — typos validées (mai 2025) */
+  --font-heading: 'Birds and Home', cursive;
   --font-body: 'Inter', system-ui, sans-serif;
 
   /* Spacing */
@@ -889,15 +884,35 @@ body.theme-cream .header.scrolled { background: rgba(251, 239, 223, 0.96); }
   border-color: var(--accent); font-weight: 600;
 }
 
+/* ===== GALERIE — DISPOSITION MASONRY (ratios d'origine préservés) =====
+   Utilise CSS multi-columns : compatible tous navigateurs, zéro JS.
+   Layout validé client (mai 2025) ; la variante "grille uniforme" a été
+   retirée avec le panneau dev. La classe `.layout-masonry` reste posée
+   par JS (initGalleryLayout) pour que le CSS de fallback ne s'applique
+   qu'en cas de plantage du JS. */
 .gallery-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
+  display: block;
+  column-count: 4;
+  column-gap: 16px;
 }
-
-@media (max-width: 1024px) { .gallery-grid { grid-template-columns: repeat(3, 1fr); } }
-@media (max-width: 768px) { .gallery-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 480px) { .gallery-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; } }
+.gallery-grid .gallery-item {
+  break-inside: avoid;
+  -webkit-column-break-inside: avoid;
+  page-break-inside: avoid;
+  margin-bottom: 16px;
+  aspect-ratio: auto;
+  display: block;
+}
+.gallery-grid .gallery-item img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: initial;
+  aspect-ratio: auto;
+}
+@media (max-width: 1024px) { .gallery-grid { column-count: 3; } }
+@media (max-width: 768px)  { .gallery-grid { column-count: 2; column-gap: 12px; } .gallery-grid .gallery-item { margin-bottom: 12px; } }
+@media (max-width: 480px)  { .gallery-grid { column-count: 2; column-gap: 10px; } .gallery-grid .gallery-item { margin-bottom: 10px; } }
 
 /* ===== GALERIE — APPARITION FLUIDE (initial + load more) ===== */
 @keyframes gallery-item-appear {
@@ -915,32 +930,6 @@ body.theme-cream .header.scrolled { background: rgba(251, 239, 223, 0.96); }
     opacity: 1; transform: none;
   }
 }
-
-/* ===== GALERIE — VARIANTE MASONRY (ratios d'origine préservés) =====
-   Utilise CSS multi-columns : compatible tous navigateurs, zéro JS. */
-.gallery-grid.layout-masonry {
-  display: block;
-  column-count: 4;
-  column-gap: 16px;
-}
-.gallery-grid.layout-masonry .gallery-item {
-  break-inside: avoid;
-  -webkit-column-break-inside: avoid;
-  page-break-inside: avoid;
-  margin-bottom: 16px;
-  aspect-ratio: auto;
-  display: block;
-}
-.gallery-grid.layout-masonry .gallery-item img {
-  width: 100%;
-  height: auto;
-  display: block;
-  object-fit: initial;
-  aspect-ratio: auto;
-}
-@media (max-width: 1024px) { .gallery-grid.layout-masonry { column-count: 3; } }
-@media (max-width: 768px)  { .gallery-grid.layout-masonry { column-count: 2; column-gap: 12px; } .gallery-grid.layout-masonry .gallery-item { margin-bottom: 12px; } }
-@media (max-width: 480px)  { .gallery-grid.layout-masonry { column-count: 2; column-gap: 10px; } .gallery-grid.layout-masonry .gallery-item { margin-bottom: 10px; } }
 
 .gallery-item {
   position: relative; overflow: hidden;
@@ -1357,8 +1346,12 @@ body.theme-cream .header.scrolled { background: rgba(251, 239, 223, 0.96); }
    logos visuellement plus grands sans que `mask-size: contain` les bride. */
 .logo-item .logo-img {
   display: block;
-  height: var(--logo-h, 26px);
-  width: var(--logo-w, 80px);
+  /* --logo-scale est un coefficient global (default 2) appliqué partout :
+     les --logo-w / --logo-h par-marque restent dans leurs unités de base et
+     on multiplie ici. Permet de re-tweaker la taille globale du bandeau en
+     un seul endroit (cf. retour client : "agrandir les logos de 2 à 3 fois"). */
+  height: calc(var(--logo-h, 26px) * var(--logo-scale, 2));
+  width:  calc(var(--logo-w, 80px) * var(--logo-scale, 2));
   background-color: currentColor;
   -webkit-mask: var(--logo-src) center / contain no-repeat;
   mask: var(--logo-src) center / contain no-repeat;
@@ -1411,9 +1404,11 @@ body.theme-cream .header.scrolled { background: rgba(251, 239, 223, 0.96); }
      les SVG) sont CENTRÉES dans cette boîte fixe — leurs dimensions
      visuelles d'origine sont conservées (cf. retour client : "ne pas
      resizer les logos, désolidariser la taille des logos de la taille
-     de leur cadre"). */
-  width: 170px;
-  height: 56px;
+     de leur cadre").
+     Pill 2x plus grande qu'avant (340×112 vs 170×56) → suit l'agrandissement
+     des silhouettes contrôlé par --logo-scale. */
+  width: 340px;
+  height: 112px;
   box-sizing: border-box;
   padding: 0;                 /* on utilise width/height fixes au lieu de padding */
   /* Important : la silhouette utilise currentColor → on contrôle la couleur
@@ -1440,7 +1435,7 @@ body.theme-cream .header.scrolled { background: rgba(251, 239, 223, 0.96); }
 }
 .logo-item--svg > .logo-name {
   font-family: var(--font-body);
-  font-size: 0.78rem;
+  font-size: 0.92rem;
   font-weight: 600;
   letter-spacing: 1px;
   text-transform: uppercase;
@@ -1460,12 +1455,60 @@ body.theme-cream .header.scrolled { background: rgba(251, 239, 223, 0.96); }
 .logo-item--svg > .logo-img.logo-asus-rog  { transform: translate(-50%, -50%) scale(1.32); }
 .logo-item--svg > .logo-img.logo-mines     { transform: translate(-50%, -50%) scale(1.20); }
 
+/* ===== Mobile ≤ 768 : layout en COLONNE, nom sous le logo =====
+   Sur tactile le hover ne se déclenche pas → le cross-fade silhouette ↔ nom
+   est invisible. On affiche donc en permanence le nom de la marque sous la
+   silhouette. La pastille passe en flex-direction: column.
+   On reste légèrement plus petit que desktop (--logo-scale: 1.5) pour
+   conserver une densité raisonnable et un bandeau qui scrolle bien. */
 @media (max-width: 768px) {
-  .logo-item--svg { width: 140px; height: 48px; padding: 0; }
-  .logo-item--svg > .logo-name { font-size: 0.66rem; letter-spacing: 0.5px; }
+  .logo-item--svg {
+    --logo-scale: 1.5;
+    width: 200px;
+    height: auto;
+    min-height: 96px;
+    padding: 12px 8px;
+    flex-direction: column;
+    gap: 8px;
+  }
+  /* On sort les enfants du positionnement absolu : ils participent au flux
+     normal, donc le flex-column les empile (logo en haut, nom en bas). */
+  .logo-item--svg > .logo-img,
+  .logo-item--svg > .logo-name {
+    position: static;
+    transform: none;
+    opacity: 1;
+  }
+  /* Réinjecte les scales par-marque mais sans le translate(-50%,-50%) qui
+     servait au centrage absolute (devenu inutile en flex-column statique). */
+  .logo-item--svg > .logo-img.logo-redbull   { transform: scale(1.32); }
+  .logo-item--svg > .logo-img.logo-asus-rog  { transform: scale(1.32); }
+  .logo-item--svg > .logo-img.logo-mines     { transform: scale(1.20); }
+
+  /* Le hover ne doit plus masquer la silhouette / révéler le nom :
+     les deux sont déjà visibles en permanence. */
+  .logo-item--svg:hover > .logo-img,
+  .logo-item--svg:hover > .logo-name { opacity: 1; }
+
+  .logo-item--svg > .logo-name {
+    font-size: 0.74rem;
+    letter-spacing: 0.5px;
+    /* on permet le retour à la ligne pour les noms longs (ex : "École des
+       Mines", "La Chaîne Parlementaire") plutôt que de les tronquer. */
+    white-space: normal;
+    text-align: center;
+    max-width: 100%;
+    line-height: 1.15;
+  }
 }
 @media (max-width: 480px) {
-  .logo-item--svg { width: 120px; height: 42px; padding: 0; }
+  .logo-item--svg {
+    --logo-scale: 1.3;
+    width: 170px;
+    min-height: 88px;
+    padding: 10px 6px;
+  }
+  .logo-item--svg > .logo-name { font-size: 0.7rem; }
 }
 /* Sur prefers-reduced-motion : pas de fade, on garde juste la silhouette
    (le client peut toujours lire le nom dans l'aria-label / tooltip natif) */
@@ -1498,36 +1541,9 @@ body.theme-cream .logo-item--svg:hover {
   color: var(--accent-dark);    /* #0E2266 */
 }
 
-/* Mobile : réduit la taille des silhouettes ET des paddings pour préserver
-   un bandeau lisible et compact. La marquee reste fluide. */
-@media (max-width: 768px) {
-  .logo-item .logo-img { height: 20px; }
-  .logo-item--svg { padding: 10px 16px; }
-  /* Sur mobile : --logo-w base (sans bump), Red Bull / Asus / Mines gardent
-     leur transform: scale() défini en règle générique → uniforme avec
-     desktop. */
-  .logo-asus-rog       { --logo-w: 28px; }
-  .logo-blast          { --logo-w: 84px; }
-  .logo-epicgames      { --logo-w: 70px; }
-  .logo-eva            { --logo-w: 60px; }
-  .logo-fdj            { --logo-w: 64px; }
-  .logo-fise           { --logo-w: 52px; }
-  .logo-fnac           { --logo-w: 56px; }
-  .logo-karmine-corp   { --logo-w: 22px; }
-  .logo-lancome        { --logo-w: 86px; }
-  .logo-lcp            { --logo-w: 46px; }
-  .logo-mines          { --logo-w: 30px; }
-  .logo-playstation    { --logo-w: 78px; }
-  .logo-redbull        { --logo-w: 72px; }
-  .logo-riotgames      { --logo-w: 80px; }
-  .logo-speedons       { --logo-w: 48px; }
-  .logo-starladder     { --logo-w: 36px; }
-  .logo-ubisoft        { --logo-w: 60px; }
-}
-@media (max-width: 480px) {
-  .logo-item .logo-img { height: 18px; }
-  .logo-item--svg { padding: 8px 14px; }
-}
+/* Note : il n'y a plus d'overrides --logo-w par-marque sur mobile.
+   La taille globale est pilotée par --logo-scale (cf. media query plus haut)
+   qui multiplie les valeurs de base. */
 
 .stats-row {
   display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px;
@@ -1958,182 +1974,10 @@ body.theme-cream .logo-item--svg:hover {
 }
 .fade-up.visible { opacity: 1; transform: translateY(0); }
 
-/* ===== FONT SWITCHER (DEV TOOL) ===== */
-.font-switcher {
-  position: fixed; bottom: 24px; right: 24px; z-index: 9999;
-}
-.font-switcher-toggle {
-  width: 48px; height: 48px; border-radius: 50%;
-  background: var(--accent); color: var(--bg-dark);
-  border: none; font-size: 1.3rem; cursor: pointer;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.3);
-  transition: var(--transition);
-}
-body.theme-cream .font-switcher-toggle { color: #FBEFDF; }
-body.theme-cream #fontSelect,
-body.theme-cream #gallerySelect,
-body.theme-cream #colorTemplateSelect,
-body.theme-cream .assets-toggle {
-  background: rgba(20, 47, 138, 0.05);
-}
-body.theme-cream .assets-toggle-track { background: rgba(20, 47, 138, 0.12); }
-body.theme-cream .assets-toggle[aria-pressed="true"] .assets-toggle-thumb { background: #FBEFDF; }
-.font-switcher-toggle:hover { transform: scale(1.1); }
-.font-switcher-panel {
-  display: none; position: absolute; bottom: 60px; right: 0;
-  background: var(--bg-card); border: 1px solid var(--border);
-  border-radius: var(--radius); padding: 20px;
-  min-width: 280px;
-  box-shadow: 0 12px 40px rgba(0,0,0,0.5);
-}
-.font-switcher-panel.open { display: block; }
-.font-switcher-header {
-  display: flex; justify-content: space-between; align-items: center;
-  margin-bottom: 16px;
-  font-size: 0.85rem; font-weight: 600; color: var(--text);
-  text-transform: uppercase; letter-spacing: 1px;
-}
-.font-switcher-close {
-  background: none; border: none; color: var(--text-muted);
-  font-size: 1.5rem; cursor: pointer;
-}
-.font-switcher-current {
-  font-size: 0.8rem; color: var(--accent); margin-bottom: 12px;
-  font-weight: 500;
-}
-.switcher-group { margin-bottom: 16px; }
-.switcher-group:last-child { margin-bottom: 0; }
-.switcher-label {
-  display: block;
-  font-size: 0.72rem; font-weight: 600;
-  text-transform: uppercase; letter-spacing: 0.08em;
-  color: var(--text-muted);
-  margin-bottom: 8px;
-}
-#fontSelect, #gallerySelect, #colorTemplateSelect {
-  width: 100%; padding: 12px 16px;
-  background: rgba(255,255,255,0.05); border: 1px solid var(--border);
-  border-radius: var(--radius-sm); color: var(--text);
-  font-family: var(--font-body); font-size: 0.9rem;
-  cursor: pointer;
-}
-#fontSelect option, #gallerySelect option, #colorTemplateSelect option { background: var(--bg-card); color: var(--text); }
-
-/* Toggle "assets décoratifs" */
-.assets-toggle {
-  display: flex; align-items: center; gap: 12px;
-  width: 100%; padding: 10px 14px;
-  background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border);
-  border-radius: var(--radius-sm); cursor: pointer;
-  font-family: var(--font-body); font-size: 0.9rem;
-  color: var(--text-muted);
-  transition: var(--transition);
-}
-.assets-toggle:hover { border-color: var(--accent); color: var(--text); }
-.assets-toggle-track {
-  position: relative; width: 36px; height: 20px;
-  background: rgba(255, 255, 255, 0.10);
-  border-radius: 10px; flex-shrink: 0;
-  transition: var(--transition);
-}
-.assets-toggle-thumb {
-  position: absolute; top: 2px; left: 2px;
-  width: 16px; height: 16px;
-  background: var(--text-muted);
-  border-radius: 50%;
-  transition: var(--transition);
-}
-.assets-toggle[aria-pressed="true"] .assets-toggle-track { background: var(--accent); }
-.assets-toggle[aria-pressed="true"] .assets-toggle-thumb {
-  left: 18px; background: var(--bg-dark);
-}
-.assets-toggle[aria-pressed="true"] { color: var(--accent); border-color: var(--accent); }
-.switcher-hint {
-  margin-top: 8px;
-  font-size: 0.72rem; color: var(--text-muted);
-  line-height: 1.5; opacity: 0.85;
-}
-
-/* ===== OVERLAY ASSETS (fork + chopsticks décoratifs) =====
-   Bonnes pratiques retenues :
-   - calque global pointer-events:none (jamais bloquant pour l'UX)
-   - parallaxe légère via transform (GPU) — pas de reflow scroll
-   - chaque asset a un "ancrage" % (top de section) + un translateY animé
-   - apparition progressive en `IntersectionObserver` (.is-visible)
-   - rotation/échelle légèrement aléatoire pour casser la symétrie
-   - drop-shadow douce pour intégrer aux fonds clairs ET sombres
-   - cachés par défaut, activés via body.assets-on */
-.overlay-assets {
-  position: fixed; inset: 0;
-  pointer-events: none;
-  z-index: 5; /* sous le header (1000) et le sticky-cta (999), au-dessus du contenu */
-  overflow: hidden;
-  opacity: 0;
-  transition: opacity 0.6s ease;
-}
-body.assets-on .overlay-assets { opacity: 1; }
-
-.overlay-asset {
-  position: absolute;
-  width: auto;                      /* la hauteur pilote — les assets sont très verticaux */
-  height: clamp(180px, 32vh, 360px);
-  pointer-events: none;
-  user-select: none;
-  opacity: 0;
-  filter: drop-shadow(0 14px 30px rgba(0, 0, 0, 0.35));
-  transform: translate3d(0, 30px, 0) rotate(var(--rot, 0deg));
-  transition:
-    opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
-    transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
-  will-change: transform, opacity;
-  animation: asset-drift 9s ease-in-out infinite alternate;
-}
-.overlay-asset.is-visible {
-  opacity: 0.95;
-  transform: translate3d(0, 0, 0) rotate(var(--rot, 0deg));
-}
-
-/* Léger flottement perpétuel — donne vie au calque sans agresser */
-@keyframes asset-drift {
-  from { translate: 0 0; }
-  to   { translate: 0 -10px; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .overlay-asset { animation: none; }
-}
-
-/* Positions : 3 paliers verticaux (haut / milieu / bas du flux) avec
-   alternance droite/gauche et angles différents pour briser la régularité.
-   Le calque étant `position: fixed`, on translate via JS en fonction du
-   scroll Y pour donner l'illusion qu'ils accompagnent le défilement. */
-/* Hauteurs propres à chaque "palier" (haut/milieu/bas) pour briser la régularité */
-.asset-fork.asset-pos-1       { top: 18vh;  left: -3vw;  --rot: -22deg; transform-origin: top left; height: clamp(220px, 36vh, 380px); }
-.asset-chopsticks.asset-pos-1 { top: 26vh;  right: -3vw; --rot: 14deg;  transform-origin: top right; height: clamp(220px, 36vh, 380px); }
-
-.asset-fork.asset-pos-2       { top: 95vh;  right: 2vw;  --rot: 38deg;  transform-origin: top right; height: clamp(160px, 26vh, 280px); }
-.asset-chopsticks.asset-pos-2 { top: 110vh; left: 4vw;   --rot: -28deg; transform-origin: top left;  height: clamp(180px, 28vh, 300px); }
-
-.asset-fork.asset-pos-3       { top: 175vh; left: 6vw;   --rot: -10deg; height: clamp(150px, 24vh, 260px); }
-.asset-chopsticks.asset-pos-3 { top: 190vh; right: 8vw;  --rot: 22deg;  height: clamp(150px, 24vh, 260px); }
-
-/* Sur fond crème → drop-shadow plus douce (l'image est déjà colorée bois/or) */
-body.theme-cream .overlay-asset {
-  filter: drop-shadow(0 12px 22px rgba(20, 47, 138, 0.18));
-}
-
-/* Sur petit écran : on garde la fourchette/baguette mais plus discrètes
-   (positions extrêmes peuvent dépasser, c'est voulu, mais on aère la lecture) */
-@media (max-width: 768px) {
-  .overlay-asset { height: clamp(120px, 22vh, 200px); opacity: 0.85; }
-  .asset-fork.asset-pos-1       { height: clamp(160px, 26vh, 240px); }
-  .asset-chopsticks.asset-pos-1 { height: clamp(160px, 26vh, 240px); }
-  .asset-fork.asset-pos-2,
-  .asset-chopsticks.asset-pos-3 { display: none; } /* aération */
-}
-
-@media (max-width: 1024px) {
-  .font-switcher { bottom: 90px; }
-}
+/* Note : le panneau "gouvernail" (font-switcher / sélecteur thème / sélecteur
+   layout) et le calque overlay-assets (fork + chopsticks décoratifs) ont été
+   retirés du code — décision client validée le 05/05. Les défauts validés
+   (cream + Birds and Home + masonry) sont désormais figés en CSS / HTML. */
 
 /* ===== SCROLLBAR ===== */
 ::-webkit-scrollbar { width: 8px; }
@@ -2293,33 +2137,39 @@ body.theme-cream .section-light .why-card p   { color: var(--text-muted); }
 
 /* Le card-image-overlay fade vers le bg de la carte — qu'il faut suivre,
    sinon on voit une coupure entre l'image et la zone texte.
-   On rend le bas du gradient PLEINEMENT solide (de 80% à 100%) pour masquer
-   la ligne 1px qui apparaissait au bord pendant l'animation scale.
+   Stops calibrés (mai 2025, retour client) pour laisser la photo bien visible :
+   - 0 → 68 %  : photo intacte (~150px sur 220px de hauteur de carte)
+   - 68 → 96 % : fondu progressif vers le crème
+   - 96 → 100 %: solid #FBEFDF qui sert de "pont" propre vers .card-content
+                 (masque la ligne 1px qui apparaissait pendant le hover scale).
    Couleur explicite (#FBEFDF) pour rester aligné avec le bg crème pur des cartes
    et NON la variable --bg-card (qui reste en #FFF7EA pour les autres composants). */
 body.theme-cream .section-light .for-who-card .card-image-overlay,
 body.theme-cream .section-light .why-card .card-image-overlay {
   background: linear-gradient(180deg,
     transparent 0%,
-    transparent 45%,
-    #FBEFDF 80%,
+    transparent 78%,
+    #FBEFDF 98%,
     #FBEFDF 100%);
 }
 
 /* Bridge entre l'image et la partie texte : la gradient overlay vit DANS
    .card-image (clippée à height:220px), donc pendant le `scale(1.05)` de l'image
    il pouvait subsister 1-2px d'image visibles au bord — le temps que le navigateur
-   recompose. On fait chevaucher .card-content sur les 10 derniers pixels de
+   recompose. On fait chevaucher .card-content sur les 8 derniers pixels de
    .card-image avec un fond crème opaque : peu importe le micro-décalage de
-   l'animation, il y a toujours 10px de masque solide qui couvrent la jonction.
+   l'animation, il y a toujours 8px de masque solide qui couvrent la jonction.
+   Padding-top resserré (mai 2025, retour client : "la zone blanche au-dessus
+   des pictos est trop grande") — passe de 42 à 28 px pour rapprocher visuellement
+   le picto du bas de la photo.
    Couleur explicite (#FBEFDF) pour rester alignée avec le bg crème pur des cartes. */
 body.theme-cream .section-light .for-who-card .card-content,
 body.theme-cream .section-light .why-card .card-content {
   position: relative;
   z-index: 2;
   background: #FBEFDF;
-  margin-top: -10px;
-  padding-top: 42px;            /* 32px d'origine + 10px pour conserver l'espacement interne */
+  margin-top: -6px;
+  padding-top: 22px;            /* resserré au max pour rapprocher le picto du bas de la photo */
   border-radius: 0 0 var(--radius-lg) var(--radius-lg); /* on respecte les coins arrondis */
 }
 

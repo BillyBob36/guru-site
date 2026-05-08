@@ -32,7 +32,7 @@ const translations = {
     forWho1Desc: "Festivals, shows en live, grandes conférences, événements à volumes massifs. Des contextes où la logistique doit être irréprochable et les volumes parfaitement maîtrisés.",
     forWho2Title: "Soirées clients & grands comptes",
     forWho2Desc: "Lancements produits, soirées clients, événements de marque, séminaires haut de gamme, comités de direction et conventions d'entreprise. L'excellence culinaire au service de votre image.",
-    forWho3Title: "Événements internes",
+    forWho3Title: "Catering en toutes circonstances / Box repas",
     forWho3Desc: "Box repas, buffets staff, buffets de soirée, collations & snacks pour vos équipes sur le terrain, catering sur site, livraison de paniers repas. Une logistique souple pour nourrir vos équipes au quotidien comme sur les grands rendez-vous.",
 
     // Services 360
@@ -196,7 +196,7 @@ const translations = {
     forWho1Desc: "Festivals, live shows, large conferences, massive-volume events. Contexts where logistics must be flawless and volumes perfectly mastered.",
     forWho2Title: "Client events & key accounts",
     forWho2Desc: "Product launches, client evenings, brand events, high-end seminars, executive committees and corporate conventions. Culinary excellence at the service of your image.",
-    forWho3Title: "Internal events",
+    forWho3Title: "Catering for every occasion / Meal boxes",
     forWho3Desc: "Meal boxes, staff buffets, evening buffets, snacks for your on-site teams, on-site catering, packed-meal deliveries. Flexible logistics to feed your teams day to day and at major events.",
 
     // Services 360
@@ -805,63 +805,21 @@ document.addEventListener('keydown', (e) => {
   else if (e.key === 'ArrowRight') navLightbox(1);
 });
 
-// ===== APPLICATION DES DÉFAUTS THÈME / FONT / GALERIE =====
-// Le panneau "gouvernail" qui permettait de basculer entre les variantes a été
-// retiré (cf. retour client mail du 30/04 — ce n'est pas une bonne pratique de
-// laisser l'utilisateur choisir l'apparence d'un site marchand). On applique
-// donc directement les valeurs par défaut validées côté DA :
-//   - Code couleur : cream (crème + bleu marine — DA Valentin)
-//   - Police titres : Birds and Home (cursive custom)
-//   - Disposition galerie : masonry (ratios d'origine)
-// La logique reste tolérante à un éventuel localStorage déjà posé chez les
-// premiers utilisateurs — on respecte leur préférence si elle existe.
-function initThemeDefaults() {
-  // ---- Police titres ----
-  const customFonts = ['Arsenica','Birds and Home','Brown Sugar','Palmore','Rattani','Sailing Club','Selga','Tritone','Zafrada'];
-  const FONT_DEFAULT = "'Birds and Home', cursive";
-  const savedFont = localStorage.getItem('guru-font') || FONT_DEFAULT;
-  document.documentElement.style.setProperty('--font-heading', savedFont);
-  const isCustom = customFonts.some(f => savedFont.includes(`'${f}'`) || savedFont.includes(f));
-  document.body.classList.toggle('custom-heading-font', isCustom);
-
-  // ---- Disposition galerie ----
+// ===== DÉFAUTS GALERIE =====
+// Le code couleur (cream) et la police des titres (Birds and Home) sont
+// désormais figés en CSS et dans le HTML (`<body class="theme-cream">`).
+// Cette fonction n'a plus qu'à appliquer la disposition masonry de la galerie
+// (qui reste pilotée par une classe pour que le CSS de fallback grid serve
+// de garde-fou si jamais le JS plante). Les anciens systèmes de switching
+// (typo / thème / layout via panneau "gouvernail" + localStorage) ont été
+// supprimés — décision client validée le 05/05.
+function initGalleryLayout() {
   const galleryGrid = document.getElementById('galleryGrid');
-  if (galleryGrid) {
-    const savedLayout = localStorage.getItem('guru-gallery-layout') || 'masonry';
-    galleryGrid.classList.toggle('layout-masonry', savedLayout === 'masonry');
-  }
+  if (galleryGrid) galleryGrid.classList.add('layout-masonry');
 
-  // ---- Code couleur (thème) ----
-  // Deux templates restent dispo dans le CSS : "dark" (premium sombre) et
-  // "cream" (DA Valentin — crème + bleu marine #142F8A / #FBEFDF). On bascule
-  // via une classe sur <body> et on swap les SVG des logos pour préserver le
-  // contraste — la logique reste en place pour permettre un changement
-  // global facile depuis le code si besoin (sans toucher au DOM utilisateur).
-  const logoIcone = document.querySelector('.logo .logo-icone');
-  const logoTypo  = document.querySelector('.logo .logo-typo');
-  const logoFooter = document.querySelector('.footer-logo .logo-svg');
-  const LOGO_BLANC = {
-    icone:  'images/logo-icone-blanc.svg',
-    typo:   'images/logo-typo-blanc.svg',
-    footer: 'images/logo-entier-xl-blanc.svg'
-  };
-  const LOGO_BLEU = {
-    icone:  'images/logo-icone-bleu.svg',
-    typo:   'images/logo-typo-bleu.svg',
-    footer: 'images/logo-entier-xl-bleu.svg'
-  };
-  const savedTheme = localStorage.getItem('guru-color-template') || 'cream';
-  const isCream = savedTheme === 'cream';
-  document.body.classList.toggle('theme-cream', isCream);
-  const set = isCream ? LOGO_BLEU : LOGO_BLANC;
-  if (logoIcone)  logoIcone.setAttribute('src', set.icone);
-  if (logoTypo)   logoTypo.setAttribute('src',  set.typo);
-  if (logoFooter) logoFooter.setAttribute('src', set.footer);
-
-  // Nettoyage d'un éventuel localStorage hérité du toggle "Assets décoratifs".
-  if (localStorage.getItem('guru-assets-on') !== null) {
-    localStorage.removeItem('guru-assets-on');
-  }
+  // Nettoyage d'éventuels localStorage hérités des anciennes variantes.
+  ['guru-font', 'guru-gallery-layout', 'guru-color-template', 'guru-assets-on']
+    .forEach(k => { if (localStorage.getItem(k) !== null) localStorage.removeItem(k); });
 }
 
 // ===== Form devis : champ texte "Autre (préciser)" qui apparaît à la demande =====
@@ -936,7 +894,7 @@ document.addEventListener('DOMContentLoaded', () => {
   loadGallery();
   initLoadMore();
   initGalleryLightbox();
-  initThemeDefaults();
+  initGalleryLayout();
   initEventTypeOther();
   initForWhoCardsLink();
 

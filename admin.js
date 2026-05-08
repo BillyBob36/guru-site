@@ -226,8 +226,10 @@
         ? URL.createObjectURL(newPhotos.get(item.photo))
         : 'gallery/' + item.photo;
       const tagsHTML = (item.tags || []).map(t => `<span class="tag-chip">${esc(t)}</span>`).join('');
+      // data-photo identifie la photo de manière stable, indépendamment de l'index
+      // (l'index change quand on réordonne, le filename non).
       return `
-        <div class="photo-card" data-idx="${realIdx}">
+        <div class="photo-card" data-idx="${realIdx}" data-photo="${esc(item.photo)}">
           <div class="photo-card-img" data-action="preview" data-src="${esc(src)}">
             <img src="${esc(src)}" alt="${esc(item.photo)}" loading="lazy">
           </div>
@@ -241,6 +243,9 @@
           </div>
         </div>`;
     }).join('');
+
+    // Re-init drag-drop reorder à chaque rendu (innerHTML détruit l'instance précédente).
+    initSortable();
   }
 
   function renderFilterDropdown() {
@@ -251,6 +256,89 @@
 
   filterTag.addEventListener('change', renderGallery);
   searchInput.addEventListener('input', renderGallery);
+
+  // ---- Sélecteur de taille des vignettes ----
+  // 4 niveaux : petit / moyen / grand / très grand. Le choix est persisté
+  // en localStorage pour rester stable entre les sessions.
+  const sizeSelect = document.getElementById('sizeSelect');
+  const SIZE_KEY = 'guru-admin-thumb-size';
+  function applyThumbSize(size) {
+    galleryGrid.classList.remove('size-small','size-medium','size-large','size-xl');
+    galleryGrid.classList.add('size-' + size);
+  }
+  if (sizeSelect) {
+    const saved = localStorage.getItem(SIZE_KEY) || 'medium';
+    sizeSelect.value = saved;
+    applyThumbSize(saved);
+    sizeSelect.addEventListener('change', () => {
+      const v = sizeSelect.value;
+      applyThumbSize(v);
+      localStorage.setItem(SIZE_KEY, v);
+    });
+  }
+
+  // ---- Drag & drop reorder (SortableJS) ----
+  // L'ordre dans `galleryData[]` (= ordre dans tags.json) est aussi l'ordre
+  // d'affichage côté site public (cf. script.js : la galerie rend les items
+  // dans l'ordre du tableau). Donc réordonner ici = changer l'ordre vu par
+  // le client final.
+  //
+  // Subtlety : quand un filtre tag/recherche est actif, le DOM ne montre
+  // qu'un sous-ensemble des photos. Réordonner ce sous-ensemble seul
+  // produirait un résultat incohérent (l'ordre relatif des photos non
+  // visibles sauterait). On désactive donc le drag-drop tant qu'un filtre
+  // est actif, avec un message d'aide explicite.
+  let sortableInstance = null;
+  const reorderHint = document.getElementById('reorderHint');
+  const reorderDisabled = document.getElementById('reorderDisabled');
+
+  function isFilterActive() {
+    return !!filterTag.value || !!searchInput.value.trim();
+  }
+
+  function initSortable() {
+    if (typeof Sortable === 'undefined') return;
+    if (sortableInstance) { sortableInstance.destroy(); sortableInstance = null; }
+
+    const filterActive = isFilterActive();
+    if (reorderHint) reorderHint.hidden = filterActive;
+    if (reorderDisabled) reorderDisabled.hidden = !filterActive;
+    if (filterActive) return; // pas de drag tant que la vue est filtrée
+
+    sortableInstance = new Sortable(galleryGrid, {
+      animation: 180,
+      ghostClass: 'sortable-ghost',
+      chosenClass: 'sortable-chosen',
+      dragClass:   'sortable-drag',
+      // Long-press 200ms sur tactile pour distinguer drag d'un tap sur l'image
+      delay: 200,
+      delayOnTouchOnly: true,
+      // L'image est zoomable au clic → on évite que le drag démarre depuis l'image
+      // (sinon Mobile : le drag passe avant le scroll). On laisse drag depuis tout
+      // le reste de la card.
+      filter: '[data-action="preview"], [data-action="edit"], [data-action="delete"], .btn-icon',
+      preventOnFilter: false,
+      onStart() { galleryGrid.classList.add('is-reordering'); },
+      onEnd(evt) {
+        galleryGrid.classList.remove('is-reordering');
+        if (evt.oldIndex === evt.newIndex) return;
+
+        // Recalcule galleryData[] depuis l'ordre actuel des cards dans le DOM
+        // (data-photo = clé stable, à l'inverse de data-idx qui devient invalide
+        // après chaque réordo).
+        const newOrder = Array.from(galleryGrid.querySelectorAll('.photo-card[data-photo]'))
+          .map(el => el.dataset.photo);
+        const byPhoto = new Map(galleryData.map(it => [it.photo, it]));
+        galleryData = newOrder.map(p => byPhoto.get(p)).filter(Boolean);
+
+        persistTags();
+        toast('Ordre d\'affichage mis à jour');
+
+        // Re-render pour rafraîchir les data-idx (utilisés par edit/delete)
+        renderGallery();
+      },
+    });
+  }
 
   // Delegate clicks on gallery grid
   galleryGrid.addEventListener('click', e => {
