@@ -460,11 +460,13 @@ body.theme-cream .header.scrolled { background: rgba(251, 239, 223, 0.96); }
   .nav {
     position: fixed; top: 0; left: 0; right: 0; bottom: 0;
     width: 100vw; height: 100vh; height: 100dvh;
-    background: #0f0f12;
+    /* Fond crème (cohérent avec la charte validée mai 2025) — les radiales bleu
+       marine apportent juste un léger relief sans casser la teinte dominante. */
+    background: #FBEFDF;
     background-image:
-      radial-gradient(circle at 20% 15%, rgba(212, 168, 83, 0.12) 0%, transparent 55%),
-      radial-gradient(circle at 85% 90%, rgba(212, 168, 83, 0.08) 0%, transparent 50%),
-      linear-gradient(180deg, #111114 0%, #0a0a0d 100%);
+      radial-gradient(circle at 20% 15%, rgba(20, 47, 138, 0.10) 0%, transparent 55%),
+      radial-gradient(circle at 85% 90%, rgba(20, 47, 138, 0.06) 0%, transparent 50%),
+      linear-gradient(180deg, #FBEFDF 0%, #F4E5D2 100%);
     flex-direction: column; align-items: center; justify-content: center;
     padding: 80px 24px 40px; gap: 4px;
     transform: translateX(100%);
@@ -482,7 +484,7 @@ body.theme-cream .header.scrolled { background: rgba(251, 239, 223, 0.96); }
     letter-spacing: 0.01em;
   }
   .nav a:hover, .nav a.active {
-    background: rgba(212, 168, 83, 0.1);
+    background: rgba(20, 47, 138, 0.08);
     color: var(--accent);
   }
   .btn-cta-header { margin: 24px 0 0 0; font-size: 1rem; }
