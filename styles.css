@@ -1744,6 +1744,14 @@ body.theme-cream .logo-item--svg:hover {
   margin-bottom: 48px;
 }
 
+/* Centre aussi le BLOC subtitle (qui a max-width: 560px) — sans cette règle
+   le paragraphe restait collé à gauche du form-header même si son TEXTE
+   interne était centré via text-align hérité. */
+.form-header .section-subtitle {
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .form-grid {
   display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px;
 }
