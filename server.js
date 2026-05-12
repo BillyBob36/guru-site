@@ -50,6 +50,30 @@ seedDataDir();
 const app = express();
 app.use(express.json({ limit: '2mb' }));
 
+// --- Redirection 301 host-based vers le canonique ---
+// Certains domaines secondaires (anciens noms commerciaux) pointent en DNS vers
+// notre serveur mais ne doivent PAS afficher le site — ils doivent juste
+// rediriger en 301 vers guruworld.group. On gère ça en amont du routeur Express
+// pour que TOUT (HTTP+HTTPS, /admin-photos.html, /api/*, etc.) soit redirigé
+// d'un coup. Le path et la query string d'origine sont préservés.
+//
+// Pourquoi pas via le redirecteur OVH (213.186.33.5) ? Parce que guru-paris.fr
+// est encore rattaché à l'hébergement WP OVH et que celui-ci intercepte le
+// trafic HTTPS pour servir l'ancien WordPress. En faisant pointer le DNS chez
+// nous, on bypass complètement OVH et on contrôle 100% de la redirection.
+const CANONICAL_URL  = 'https://guruworld.group';
+const REDIRECT_HOSTS = new Set([
+  'guru-paris.fr',
+  'www.guru-paris.fr',
+]);
+app.use((req, res, next) => {
+  const host = (req.headers.host || '').split(':')[0].toLowerCase();
+  if (REDIRECT_HOSTS.has(host)) {
+    return res.redirect(301, CANONICAL_URL + req.originalUrl);
+  }
+  next();
+});
+
 // --- Middleware d'auth pour toutes les routes d'écriture ---
 function requireAdmin(req, res, next) {
   if (!ADMIN_PASSWORD) {
