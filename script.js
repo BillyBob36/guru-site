@@ -160,9 +160,12 @@ const translations = {
     formBudgetOpt5: "Plus de 100 000 €",
     formContext: "Contexte & objectifs de votre événement",
     formSubmit: "Envoyer ma demande de devis",
+    formSubmitting: "Envoi…",
+    formToastSuccess: "Demande envoyée — on vous recontacte sous 24h.",
+    formToastError: "Oups, l'envoi a échoué. Réessayez ou contactez-nous directement.",
 
     // Footer
-    footerText: "© 2025 Guru – Traiteur événementiel premium. Tous droits réservés.",
+    footerText: "© 2026 Guru – Traiteur événementiel premium. Tous droits réservés.",
 
     // Misc
     selectPlaceholder: "Sélectionner…",
@@ -328,9 +331,12 @@ const translations = {
     formBudgetOpt5: "More than €100,000",
     formContext: "Context & goals of your event",
     formSubmit: "Send my quote request",
+    formSubmitting: "Sending…",
+    formToastSuccess: "Request sent — we'll get back to you within 24h.",
+    formToastError: "Oops, sending failed. Try again or contact us directly.",
 
     // Footer
-    footerText: "© 2025 Guru – Premium event catering. All rights reserved.",
+    footerText: "© 2026 Guru – Premium event catering. All rights reserved.",
 
     // Misc
     selectPlaceholder: "Select…",
@@ -463,12 +469,18 @@ function initScrollAnimations() {
 // ===== SMOOTH SCROLL FOR NAV =====
 // Pris en charge :
 //   - href="#"        → retour tout en haut (logo header / footer)
-//   - href="#section" → scroll smooth vers la section (avec offset header)
+//   - href="#section" → scroll smooth vers la section
+//
+// On utilise `scrollIntoView` (au lieu d'un calcul one-shot window.scrollTo)
+// pour que le navigateur recalcule la position cible AU FUR ET À MESURE du
+// scroll. Combiné avec `html { scroll-padding-top: 80px }` dans styles.css,
+// les ancres tombent pile au bon endroit même si des images lazy se chargent
+// pendant le défilement (sinon : le calcul initial assume une hauteur du DOM
+// qui change quand les images apparaissent → on atterrit à côté).
 function initSmoothScroll() {
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function(e) {
       const href = this.getAttribute('href');
-      // Cas "logo cliquable" : on remonte tout en haut (best practice).
       if (href === '#' || href === '') {
         e.preventDefault();
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -477,14 +489,7 @@ function initSmoothScroll() {
       const target = document.querySelector(href);
       if (target) {
         e.preventDefault();
-        const headerOffset = 80;
-        const elementPosition = target.getBoundingClientRect().top;
-        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-
-        window.scrollTo({
-          top: offsetPosition,
-          behavior: 'smooth'
-        });
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
     });
   });
@@ -860,6 +865,89 @@ function initEventTypeOther() {
   sync();
 }
 
+// ===== Form devis : soumission AJAX (FormData + fetch) =====
+// Au lieu de laisser le navigateur faire la soumission HTML classique (qui
+// part en `application/x-www-form-urlencoded` → 301 → erreur CORS aléatoire
+// sur Firefox cf. doc Web3Forms), on intercepte le submit et on envoie via
+// fetch + FormData. Avantages :
+//   - Marche sur tous les navigateurs (la doc Web3Forms le recommande
+//     explicitement)
+//   - Pas de navigation après envoi → plus de form pré-rempli au retour
+//     ni d'ancre qui retombe bizarrement (bug client mai 2026)
+//   - On contrôle l'UX post-envoi : toast de confirmation + reset + scroll
+//     tout en haut du site
+function initFormAjax() {
+  const form = document.getElementById('devisForm');
+  if (!form) return;
+  const submitBtn = form.querySelector('button[type="submit"]');
+  if (!submitBtn) return;
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (submitBtn.disabled) return;
+
+    // État "envoi en cours" — on garde l'attribut data-i18n pour que la
+    // bascule FR/EN au milieu d'une soumission soit gérée correctement
+    // (mais c'est extrêmement rare).
+    const t = translations[currentLang] || translations.fr;
+    const originalText = submitBtn.textContent;
+    submitBtn.disabled = true;
+    submitBtn.textContent = t.formSubmitting || 'Envoi…';
+
+    try {
+      const fd = new FormData(form);
+      const r = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        body: fd,
+        // pas de Content-Type : le navigateur génère multipart/form-data
+        // avec la bonne boundary (Web3Forms recommande FormData explicitement)
+      });
+      const data = await r.json().catch(() => ({}));
+
+      if (r.ok && data.success) {
+        showFormToast('success');
+        form.reset();
+        // Re-synchronise le champ "Autre" du select type d'événement
+        // (l'input précision doit redisparaître après reset)
+        const select = document.getElementById('eventTypeSelect');
+        if (select) select.dispatchEvent(new Event('change'));
+        // Retour tout en haut du site (UX demandée par le client)
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        showFormToast('error', data.message);
+      }
+    } catch (err) {
+      console.error('[form] submission failed', err);
+      showFormToast('error');
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = originalText;
+    }
+  });
+}
+
+// Toast de confirmation / erreur — affiché en haut-droite, auto-dismiss 5s
+function showFormToast(type, customMsg) {
+  let toast = document.getElementById('formToast');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.id = 'formToast';
+    toast.setAttribute('role', 'status');
+    toast.setAttribute('aria-live', 'polite');
+    document.body.appendChild(toast);
+  }
+  const t = translations[currentLang] || translations.fr;
+  const defaultMsg = type === 'success'
+    ? (t.formToastSuccess || 'Demande envoyée.')
+    : (t.formToastError   || 'Envoi échoué.');
+  toast.textContent = customMsg || defaultMsg;
+  toast.className = `form-toast form-toast-${type} visible`;
+  clearTimeout(toast._timer);
+  toast._timer = setTimeout(() => {
+    toast.classList.remove('visible');
+  }, 5500);
+}
+
 // ===== Cards "Pour quels événements ?" → cliquables vers la galerie =====
 // Chaque carte agit comme un lien vers #gallery. On reste accessible :
 //   role="button" + tabindex (ajoutés en JS) + Enter/Space + curseur pointer.
@@ -904,6 +992,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initGalleryLightbox();
   initGalleryLayout();
   initEventTypeOther();
+  initFormAjax();
   initForWhoCardsLink();
 
   // Lang toggle
