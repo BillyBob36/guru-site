@@ -563,10 +563,20 @@ function buildGalleryItemHTML(item) {
   // data-photo-src est lu par la lightbox (qui parcourt tous les items du
   // grid pour construire le carousel prev/next). On ne met plus d'onclick
   // inline : c'est délégué depuis #galleryGrid (cf. initGalleryLightbox).
+  //
+  // Pas de loading="lazy" : sans ça les images n'ont pas de dimensions
+  // intrinsèques avant chargement réseau, et la masonry pose les colonnes
+  // sur une hauteur 0 → la galerie grossit DURANT le scroll quand les
+  // images arrivent. Conséquence : les ancres CTA "Demander un devis"
+  // (cible #devis, situé APRÈS la galerie) tombaient à côté car le doc
+  // était plus court au moment du calcul de target. En eager loading,
+  // les 12 photos initiales se téléchargent en parallèle dès le DOMReady,
+  // la galerie atteint sa hauteur finale très vite, plus de shift.
+  // `decoding="async"` garde le décodage non-bloquant pour le first paint.
   const src = `${PHOTOS_BASE_PATH}${item.photo}`;
   return `
     <div class="gallery-item" data-photo-src="${src}" tabindex="0" role="button" aria-label="Voir la photo en grand">
-      <img src="${src}" alt="${item.tags.join(', ')}" loading="lazy">
+      <img src="${src}" alt="${item.tags.join(', ')}" decoding="async">
       <div class="gallery-tags">
         ${item.tags.map(t => `<span class="gallery-tag">${t}</span>`).join('')}
       </div>
