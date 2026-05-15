@@ -333,11 +333,18 @@ html {
   scroll-behavior: smooth;
   font-size: 16px;
   /* Offset natif pour TOUS les scroll-to-anchor : ancres CTA, scrollIntoView,
-     navigation par lien #id, retour clavier, etc. Évite que la cible soit
-     cachée sous le header fixed (80px de haut). Travaille aussi correctement
-     quand des images lazy se chargent pendant le scroll (le browser recalcule
-     à chaque step, contrairement à un calcul JS one-shot). */
-  scroll-padding-top: 80px;
+     navigation par lien #id, retour clavier, etc.
+     Choix de 0px (mai 2026, retour client "tous les scrolls tombent un cran
+     de molette trop haut") :
+     - Chaque section a déjà `padding: 120px 0`, donc la section-tag est à
+       ~120px sous l'anchor de la section.
+     - Avec scroll-padding-top: 0, l'anchor tombe à viewport y=0 (sous le
+       header transparent/blurry de 80px) → section-tag visible à y=120
+       (40px sous le bord du header).
+     - Avec scroll-padding-top: 80, on perdait 80px supplémentaires → la
+       section-tag tombait à y=200, ce qui faisait un trou cream énorme
+       entre le header et le contenu. */
+  scroll-padding-top: 0;
 }
 
 body {
@@ -1787,6 +1794,13 @@ body.theme-cream .logo-item--svg:hover {
   padding: 14px 18px;
   color: var(--text); font-family: var(--font-body); font-size: 0.95rem;
   transition: var(--transition);
+  /* Fix débordement mobile : sans width:100% les inputs gardent leur taille
+     de contenu native (size=20 par défaut, soit ~150-180px). Le min-width:0
+     force le flex child à ignorer sa "min-content width" intrinsèque pour
+     pouvoir descendre en dessous de la largeur du parent quand le viewport
+     est étroit. */
+  width: 100%;
+  min-width: 0;
 }
 
 .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
